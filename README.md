@@ -1,0 +1,11 @@
+Bullet♥︎ (usually just called Bullet) is a board game created by designer Joshua Van Laningham and published by Level 99 Games. The original game is a board game with puzzle game elements, meant to be played with multiple people. Here is the description of the game, straight from the publisher page.
+
+"In Bullet♥︎, players take on the role of heroines in a far-flung future Earth and use their incredible powers to defend the Earth from evil — as well as from one another! Each heroine's powers manifest in a different form, with players controlling sound, paper, technology, gravity, triangles, and more!
+
+Turns are simultaneous. Place bullets in your sight, with the color of bullet determining the column and the number how far down in that column it is placed. Use actions to manipulate bullets to form configurations matching your patterns. Using a pattern removes bullets from your sight and sends them to the opponent. When placing bullets, you skip over existing bullets in the column you place it in, with the bullet hitting you if it is placed off your sight. At the end of the turn, you'll gain even more bullets from the center bag as well as what the opponent sent, ensuring each new turn is more hectic than the last!
+
+Choosing what order to place bullets, use actions, and use patterns in is key to staying alive as long as possible! Playing with the optional timer makes for even more intense play!" - Level 99 Games
+
+This project will only include single-player modes such as Score Attack and Boss Battle, and will only feature a small selection of heroines to play as; the exact amount will vary depending on time taken, but the current plan is for two heroines in the original set: Adelheid Beckenbauer and Esfir Volkova, as well as their respective boss forms. This will be a month-long project; if there is still spare time, I will add more, but I currently only consider those two a priority.
+
+This test project is not intended to be used for commercial purposes. It is built for the sole purpose of testing my programming skills. All original art assets and game design rules originally belong to Level 99 Games. If Level 99 Games asks me to take it down, I will immediately comply and remove the project. 
