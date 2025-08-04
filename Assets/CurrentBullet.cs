@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class FieldBullet : MonoBehaviour
+public class CurrentBullet : MonoBehaviour
 {
     [SerializeField] private Image bulletBackground;
     [SerializeField] private Image bulletIcon;

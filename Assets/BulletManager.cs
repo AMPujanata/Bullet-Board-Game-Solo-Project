@@ -1,9 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
 
 public enum BulletColor { Red = 0, Blue = 1, Green = 2, Yellow = 3, Pink = 4}
 
@@ -23,18 +20,14 @@ public class Bullet
     }
 }
 
-[Serializable]
-public class BulletColorUIProperty
-{
-    public BulletColor BulletColorRequirement;
-    public Sprite BulletSprite;
-    public Color MainUIColor;
-}
-
 public class BulletManager : MonoBehaviour
 {
-    [SerializeField] private GameObject bulletPrefab;
-    [SerializeField] private BulletColorUIProperty[] bulletColorUIProperties;
+    public static BulletManager Instance;
+
+    private void Awake()
+    {
+        if (Instance == null) Instance = this;
+    }
 
     // SerializeField exposes the List in editor to make debugging easier
     [SerializeField] private List<Bullet> bulletsInCenter = new List<Bullet>();
@@ -76,11 +69,7 @@ public class BulletManager : MonoBehaviour
 
     private void Start()
     {
-        // currently only used to test functions. Currently testing: initializing bullets, grabbing a random bullet from the list, then initializing it
+        // currently only used to test functions. Currently testing: initializing bullets
         InitializeStartingBullets();
-        Bullet randomChosenBullet = TakeRandomBulletFromCenter();
-        BulletColorUIProperty chosenColorUIProperty = Array.Find(bulletColorUIProperties, property => property.BulletColorRequirement == randomChosenBullet.Color);
-        GameObject newBulletObject = GameObject.Instantiate(bulletPrefab, this.transform); // THIS.TRANSFORM TEMPORARY UNTIL CANVAS IS FLESHED OUT
-        newBulletObject.GetComponent<FieldBullet>().Initialize(randomChosenBullet, chosenColorUIProperty);
     }
 }
