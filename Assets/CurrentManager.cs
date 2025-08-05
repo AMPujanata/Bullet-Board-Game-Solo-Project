@@ -1,16 +1,19 @@
 using UnityEngine;
 using System;
 
-[Serializable]
-public class BulletColorUIProperty
-{
-    public BulletColor BulletColorRequirement;
-    public Sprite BulletSprite;
-    public Color MainUIColor;
-}
-
 public class CurrentManager : MonoBehaviour
 {
+    public static CurrentManager Instance { get;  private set; }
+
+    private void Awake()
+    {
+        if (Instance == null) Instance = this;
+        else
+        {
+            Destroy(this); // Make sure there's only ever one 
+            return; // do NOT run any other code
+        }
+    }
 
     [Serializable]
     public class BulletSpace
@@ -66,6 +69,7 @@ public class CurrentManager : MonoBehaviour
         else
         {
             Debug.Log("No space remaining! Life lost!");
+            PlayerManager.Instance.ModifyCurrentHP(-1);
         }
     }
 

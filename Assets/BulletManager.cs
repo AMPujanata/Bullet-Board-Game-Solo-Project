@@ -1,32 +1,21 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum BulletColor { Red = 0, Blue = 1, Green = 2, Yellow = 3, Pink = 4}
-
-[Serializable]
-public class Bullet
-{
-    public BulletColor Color;
-    public int Number;
-    public bool IsStar;
-    public bool IsFacedown;
-    public Bullet(BulletColor color = BulletColor.Red, int number = 1, bool isStar = false, bool isFacedown = false)
-    {
-        Color = color;
-        Number = number;
-        IsStar = isStar;
-        IsFacedown = isFacedown;
-    }
-}
 
 public class BulletManager : MonoBehaviour
 {
-    public static BulletManager Instance;
+    public static BulletManager Instance { get; private set; }
 
     private void Awake()
     {
         if (Instance == null) Instance = this;
+        else
+        {
+            Destroy(this); // Make sure there's only ever one 
+            return; // do NOT run any other code
+        }
+
+        InitializeStartingBullets();
     }
 
     // SerializeField exposes the List in editor to make debugging easier
@@ -34,7 +23,7 @@ public class BulletManager : MonoBehaviour
 
     public Bullet TakeRandomBulletFromCenter()
     {
-        Bullet randomChosenBullet = bulletsInCenter[UnityEngine.Random.Range(0, bulletsInCenter.Count - 1)];
+        Bullet randomChosenBullet = bulletsInCenter[Random.Range(0, bulletsInCenter.Count - 1)];
         bulletsInCenter.Remove(randomChosenBullet);
         return randomChosenBullet;
     }
@@ -65,11 +54,5 @@ public class BulletManager : MonoBehaviour
                 }
             }
         }
-    }
-
-    private void Start()
-    {
-        // currently only used to test functions. Currently testing: initializing bullets
-        InitializeStartingBullets();
     }
 }
