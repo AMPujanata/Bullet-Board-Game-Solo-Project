@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -19,13 +20,13 @@ public class PlayerManager : MonoBehaviour
 
     [SerializeField] private PlayerData playerData;
 
-    [SerializeField] private TMPro.TMP_Text nameText;
+    [SerializeField] private TMP_Text nameText;
     [SerializeField] private Slider hpBar;
-    [SerializeField] private TMPro.TMP_Text hpBarText;
+    [SerializeField] private TMP_Text hpBarText;
     [SerializeField] private Slider apBar;
-    [SerializeField] private TMPro.TMP_Text apBarText;
-    [SerializeField] private TMPro.TMP_Text passiveNameText;
-    [SerializeField] private TMPro.TMP_Text passiveDescriptionText;
+    [SerializeField] private TMP_Text apBarText;
+    [SerializeField] private TMP_Text passiveNameText;
+    [SerializeField] private TMP_Text passiveDescriptionText;
 
     private int currentHP;
     private int currentAP;
@@ -48,13 +49,18 @@ public class PlayerManager : MonoBehaviour
         passiveDescriptionText.text = playerData.PassiveDescription;
     }
 
-    public void ModifyCurrentHP(int value)
+    public void ModifyCurrentHP(int value) // increases or decreases current HP by the value's amount
     {
         currentHP += value;
         hpBar.value = currentHP;
         hpBarText.text = currentHP.ToString() + " / " + playerData.MaxHP.ToString();
         if (currentHP > playerData.MaxHP) currentHP = playerData.MaxHP;
-        if (currentHP <= 0) Debug.Log("Game over!");
+        if (currentHP <= 0)
+        {
+            Vector3 centerOfScreen = new Vector3(Screen.width / 2, Screen.height / 2, 0);
+            PopupManager.Instance.DisplayPopup("Game Over!", "OK", centerOfScreen);
+            Debug.Log("Game over!");
+        }
     }
 
     public int GetCurrentHP()
