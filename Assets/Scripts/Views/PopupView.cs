@@ -10,7 +10,6 @@ public class PopupView : MonoBehaviour
     [SerializeField] private TMP_Text popupText;
     [SerializeField] private Button popupButton;
     [SerializeField] private TMP_Text popupButtonText;
-
     public void Initialize(string popupString, string popupButtonString, float fadeDuration = 0f, Action onButtonPress = null)
     {
         popupText.text = popupString;
@@ -22,7 +21,7 @@ public class PopupView : MonoBehaviour
         }
         popupButton.onClick.AddListener(() =>
         {
-            Destroy(this.gameObject);
+            PopupManager.Instance.ClosePopup();
         });
     }
 }

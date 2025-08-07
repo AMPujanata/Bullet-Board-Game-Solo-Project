@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class BulletManager : MonoBehaviour
+public class CenterManager : MonoBehaviour
 {
-    public static BulletManager Instance { get; private set; }
+    public static CenterManager Instance { get; private set; }
 
     private void Awake()
     {
@@ -19,16 +19,16 @@ public class BulletManager : MonoBehaviour
     }
 
     // SerializeField exposes the List in editor to make debugging easier
-    [SerializeField] private List<Bullet> bulletsInCenter = new List<Bullet>();
+    [SerializeField] private List<BulletData> bulletsInCenter = new List<BulletData>();
 
-    public Bullet TakeRandomBulletFromCenter()
+    public BulletData TakeRandomBulletFromCenter()
     {
-        Bullet randomChosenBullet = bulletsInCenter[Random.Range(0, bulletsInCenter.Count - 1)];
+        BulletData randomChosenBullet = bulletsInCenter[Random.Range(0, bulletsInCenter.Count - 1)];
         bulletsInCenter.Remove(randomChosenBullet);
         return randomChosenBullet;
     }
 
-    public void AddBulletToCenter(Bullet newBullet)
+    public void AddBulletToCenter(BulletData newBullet)
     {
         bulletsInCenter.Add(newBullet);
     }
@@ -46,11 +46,11 @@ public class BulletManager : MonoBehaviour
                 int numberOfRegularBullets = number != 4 ? 6 : 2;
                 for(int bulletLoop = 0; bulletLoop < numberOfRegularBullets; bulletLoop++)
                 {
-                    bulletsInCenter.Add(new Bullet((BulletColor)color, number, false));
+                    bulletsInCenter.Add(new BulletData((BulletColor)color, number, false));
                 }
                 for(int starBulletLoop = 0; starBulletLoop < 2; starBulletLoop++)
                 {
-                    bulletsInCenter.Add(new Bullet((BulletColor)color, number, true));
+                    bulletsInCenter.Add(new BulletData((BulletColor)color, number, true));
                 }
             }
         }

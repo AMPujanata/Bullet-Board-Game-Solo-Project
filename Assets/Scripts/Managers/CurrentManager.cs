@@ -1,25 +1,13 @@
 using UnityEngine;
 using System;
 
-public class CurrentManager : MonoBehaviour
+public class CurrentManager : MonoBehaviour // SPLIT INTO MANAGER AND VIEW LATER
 {
-    public static CurrentManager Instance { get;  private set; }
-
-    private void Awake()
-    {
-        if (Instance == null) Instance = this;
-        else
-        {
-            Destroy(this); // Make sure there's only ever one 
-            return; // do NOT run any other code
-        }
-    }
-
     [Serializable]
     public class BulletSpace
     {
         public GameObject SpaceObject;
-        [NonSerialized] public Bullet SpaceProperties; // bullet properties don't need to be serialized on launch, only modified at runtime
+        [NonSerialized] public BulletData SpaceProperties; // bullet properties don't need to be serialized on launch, only modified at runtime
     }
 
     [SerializeField] private BulletColorUIProperty[] bulletColorUIProperties;
@@ -33,7 +21,7 @@ public class CurrentManager : MonoBehaviour
 
     public void SpawnBulletToCurrent()
     {
-        Bullet bulletToSpawn = BulletManager.Instance.TakeRandomBulletFromCenter();
+        BulletData bulletToSpawn = CenterManager.Instance.TakeRandomBulletFromCenter();
 
         BulletColorUIProperty chosenColorUIProperty = Array.Find(bulletColorUIProperties, property => property.BulletColorRequirement == bulletToSpawn.Color);
         BulletSpace[] columnToSearchIn = bulletToSpawn.Color switch // pick column to spawn into depending on bullet color
@@ -69,7 +57,7 @@ public class CurrentManager : MonoBehaviour
         else
         {
             Debug.Log("No space remaining! Life lost!");
-            PlayerManager.Instance.ModifyCurrentHP(-1);
+            GameManager.Instance.Player1.ModifyCurrentHP(-1);
         }
     }
 

@@ -9,8 +9,8 @@ public class CurrentBullet : MonoBehaviour
     [SerializeField] private Image bulletIcon;
     [SerializeField] private Image bulletStarIcon;
     [SerializeField] private TMPro.TMP_Text bulletNumberText;
-    private Bullet bulletProperties;
-    public void Initialize(Bullet initialBullet, BulletColorUIProperty uiProperties)
+    private BulletData bulletProperties;
+    public void Initialize(BulletData initialBullet, BulletColorUIProperty uiProperties)
     {
         bulletProperties = initialBullet;
         bulletBackground.color = uiProperties.MainUIColor;

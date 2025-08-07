@@ -18,9 +18,10 @@ public class PopupManager : MonoBehaviour
         }
     }
 
+    [SerializeField] private CanvasGroup mainCanvasGroup;
+    [SerializeField] private Canvas notificationCanvas;
     [SerializeField] private GameObject popupPrefab;
     private GameObject currentPopup;
-    [SerializeField] private Canvas notificationCanvas;
 
     public void DisplayPopup(string popupString, string popupButtonString, Vector3 popupLocation, float fadeDuration = 0f,  Action onButtonPress = null)
     {
@@ -30,8 +31,15 @@ public class PopupManager : MonoBehaviour
             return; // don't make a new popup
         }
 
-        GameObject newPopup = Instantiate(popupPrefab, notificationCanvas.transform);
-        newPopup.GetComponent<RectTransform>().position = popupLocation;
-        newPopup.GetComponent<PopupView>().Initialize(popupString, popupButtonString, fadeDuration, onButtonPress);
+        currentPopup = Instantiate(popupPrefab, notificationCanvas.transform);
+        currentPopup.GetComponent<RectTransform>().position = popupLocation;
+        currentPopup.GetComponent<PopupView>().Initialize(popupString, popupButtonString, fadeDuration, onButtonPress);
+        mainCanvasGroup.interactable = false;
+    }
+
+    public void ClosePopup()
+    {
+        mainCanvasGroup.interactable = true;
+        Destroy(currentPopup);
     }
 }
