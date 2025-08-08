@@ -404,10 +404,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 513654a200fff7e45a730997e6626790, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionButton: {fileID: 4173017587173745716}
-  actionIcon: {fileID: 3604896550248377588}
-  actionCostText: {fileID: 7028206563326626590}
-  actionDescriptionText: {fileID: 7267828438240685675}
+  _actionButton: {fileID: 4173017587173745716}
+  _actionIcon: {fileID: 3604896550248377588}
+  _actionCostText: {fileID: 7028206563326626590}
+  _actionDescriptionText: {fileID: 7267828438240685675}
 --- !u!1 &8194784313065128761
 GameObject:
   m_ObjectHideFlags: 0

@@ -5,19 +5,19 @@ using System;
 
 public class ActionButtonView : MonoBehaviour
 {
-    [SerializeField] private Button actionButton;
-    [SerializeField] private Image actionIcon;
-    [SerializeField] private TMP_Text actionCostText;
-    [SerializeField] private TMP_Text actionDescriptionText;
+    [SerializeField] private Button _actionButton;
+    [SerializeField] private Image _actionIcon;
+    [SerializeField] private TMP_Text _actionCostText;
+    [SerializeField] private TMP_Text _actionDescriptionText;
 
     public void Initialize(string actionCost, string actionDescription, Sprite actionIconSprite = null, Action onActionClick = null)
     {
-        actionCostText.text = actionCost;
-        actionDescriptionText.text = actionDescription;
-        actionIcon.sprite = actionIconSprite;
+        _actionCostText.text = actionCost;
+        _actionDescriptionText.text = actionDescription;
+        _actionIcon.sprite = actionIconSprite;
         if (onActionClick != null)
         {
-            actionButton.onClick.AddListener(() => onActionClick());
+            _actionButton.onClick.AddListener(() => onActionClick());
         }
     }
 }

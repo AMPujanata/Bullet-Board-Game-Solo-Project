@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public class CenterManager : MonoBehaviour
 {
     public static CenterManager Instance { get; private set; }
@@ -19,25 +18,24 @@ public class CenterManager : MonoBehaviour
     }
 
     // SerializeField exposes the List in editor to make debugging easier
-    [SerializeField] private List<BulletData> bulletsInCenter = new List<BulletData>();
+    [SerializeField] private List<BulletData> _bulletsInCenter = new List<BulletData>();
 
     public BulletData TakeRandomBulletFromCenter()
     {
-        BulletData randomChosenBullet = bulletsInCenter[Random.Range(0, bulletsInCenter.Count - 1)];
-        bulletsInCenter.Remove(randomChosenBullet);
+        BulletData randomChosenBullet = _bulletsInCenter[Random.Range(0, _bulletsInCenter.Count - 1)];
+        _bulletsInCenter.Remove(randomChosenBullet);
         return randomChosenBullet;
     }
 
     public void AddBulletToCenter(BulletData newBullet)
     {
-        bulletsInCenter.Add(newBullet);
+        _bulletsInCenter.Add(newBullet);
     }
 
     private void InitializeStartingBullets()
     {
         // There are 140 bullets. 5 colors, 4 numbers (with 6 bullets for 1/2/3, and 2 for 4), and 2 star bullets of each number.
         // Instead of writing them all down one by one, better to programatically create new bullets; easier to scale up later
-        // There will never be any new bullets added to the bag mid-game. So there is no reason to separate the Bullet initialization into a separate function
 
         for(int color = 0; color < 5; color++)
         {
@@ -46,11 +44,11 @@ public class CenterManager : MonoBehaviour
                 int numberOfRegularBullets = number != 4 ? 6 : 2;
                 for(int bulletLoop = 0; bulletLoop < numberOfRegularBullets; bulletLoop++)
                 {
-                    bulletsInCenter.Add(new BulletData((BulletColor)color, number, false));
+                    AddBulletToCenter(new BulletData((BulletColor)color, number, false));
                 }
                 for(int starBulletLoop = 0; starBulletLoop < 2; starBulletLoop++)
                 {
-                    bulletsInCenter.Add(new BulletData((BulletColor)color, number, true));
+                    AddBulletToCenter(new BulletData((BulletColor)color, number, true));
                 }
             }
         }

@@ -7,19 +7,21 @@ using System;
 
 public class PopupView : MonoBehaviour
 {
-    [SerializeField] private TMP_Text popupText;
-    [SerializeField] private Button popupButton;
-    [SerializeField] private TMP_Text popupButtonText;
+    [SerializeField] private TMP_Text _popupText;
+    [SerializeField] private Button _popupButton;
+    [SerializeField] private TMP_Text _popupButtonText;
     public void Initialize(string popupString, string popupButtonString, float fadeDuration = 0f, Action onButtonPress = null)
     {
-        popupText.text = popupString;
-        popupButtonText.text = popupButtonString;
+        _popupText.text = popupString;
+        _popupButtonText.text = popupButtonString;
+
         if(onButtonPress != null)
         {
-            popupButton.onClick.RemoveAllListeners();
-            popupButton.onClick.AddListener(() => onButtonPress());
+            _popupButton.onClick.RemoveAllListeners();
+            _popupButton.onClick.AddListener(() => onButtonPress());
         }
-        popupButton.onClick.AddListener(() =>
+
+        _popupButton.onClick.AddListener(() =>
         {
             PopupManager.Instance.ClosePopup();
         });

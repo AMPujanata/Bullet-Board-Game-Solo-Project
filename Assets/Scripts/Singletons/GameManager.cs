@@ -17,9 +17,9 @@ public class GameManager : MonoBehaviour
 
         DontDestroyOnLoad(gameObject);
 
-        Player1 = FindObjectOfType<PlayerManager>(); // move to a "when starting gameplay" method later
+        Player1 = FindObjectOfType<PlayerController>(); // move to a "when starting gameplay" method later
     }
 
-    public PlayerManager Player1 { get; private set; }
+    public PlayerController Player1 { get; private set; }
 
 }

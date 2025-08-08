@@ -4,29 +4,27 @@ using UnityEngine.UI;
 
 public class PlayerView : MonoBehaviour
 {
-    [SerializeField] private TMP_Text nameText;
-    [SerializeField] private Slider hpBar;
-    [SerializeField] private TMP_Text hpBarText;
-    [SerializeField] private TMP_Text passiveNameText;
-    [SerializeField] private TMP_Text passiveDescriptionText;
+    [SerializeField] private TMP_Text _nameText;
+    [SerializeField] private Slider _hpBar;
+    [SerializeField] private TMP_Text _hpBarText;
+    [SerializeField] private TMP_Text _passiveNameText;
+    [SerializeField] private TMP_Text _passiveDescriptionText;
 
-    private int maxHP;
     public void Initialize(PlayerData playerData)
     {
-        nameText.text = playerData.PlayerName;
-        maxHP = playerData.MaxHP;
+        _nameText.text = playerData.PlayerName;
 
-        hpBar.maxValue = maxHP;
-        ChangeHPValue(maxHP);
+        ChangeHPValue(playerData.MaxHP, playerData.MaxHP);
 
-        passiveNameText.text = playerData.PassiveName;
-        passiveDescriptionText.text = playerData.PassiveDescription;
+        _passiveNameText.text = playerData.PassiveName;
+        _passiveDescriptionText.text = playerData.PassiveDescription;
     }
 
-    public void ChangeHPValue(int currentHP)
+    public void ChangeHPValue(int currentHP, int maxHP)
     {
-        hpBar.value = currentHP;
-        hpBarText.text = currentHP + " / " + maxHP;
+        _hpBar.value = currentHP;
+        _hpBar.maxValue = maxHP;
+        _hpBarText.text = currentHP + " / " + maxHP;
         if (currentHP <= 0)
         {
             Vector3 centerOfScreen = new Vector3(Screen.width / 2, Screen.height / 2, 0);

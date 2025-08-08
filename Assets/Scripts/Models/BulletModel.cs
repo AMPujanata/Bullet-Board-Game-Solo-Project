@@ -2,7 +2,6 @@ using UnityEngine;
 
 public enum BulletColor { Red = 0, Blue = 1, Green = 2, Yellow = 3, Pink = 4 }
 
-[System.Serializable]
 public class BulletData
 {
     public BulletColor Color;
@@ -25,4 +24,3 @@ public class BulletColorUIProperty
     public Sprite BulletSprite;
     public Color MainUIColor;
 }
-

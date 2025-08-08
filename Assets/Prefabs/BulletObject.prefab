@@ -89,10 +89,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44924734910dfc14d8eeb78a45bb2740, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletBackground: {fileID: 4812469831454366200}
-  bulletIcon: {fileID: 2946218314310185301}
-  bulletStarIcon: {fileID: 5187500672260372822}
-  bulletNumberText: {fileID: 2306011763573582347}
+  _bulletBackground: {fileID: 4812469831454366200}
+  _bulletIcon: {fileID: 2946218314310185301}
+  _bulletStarIcon: {fileID: 5187500672260372822}
+  _bulletNumberText: {fileID: 2306011763573582347}
 --- !u!1 &6648590628895927573
 GameObject:
   m_ObjectHideFlags: 0
