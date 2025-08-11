@@ -7,8 +7,10 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private PlayerData _playerData;
     [SerializeField] private PlayerView _playerView;
-    [SerializeField] private ActionController _actionManager;
-    [SerializeField] private CurrentController _currentManager;
+    [SerializeField] private ActionController _actionController;
+    public ActionController ActionController { get { return _actionController; } }
+    [SerializeField] private CurrentController _currentController;
+    public CurrentController CurrentController { get { return _currentController; } }
 
     private int currentHP;
     public int CurrentHP { get; private set; }
@@ -20,7 +22,7 @@ public class PlayerController : MonoBehaviour
         maxHP = _playerData.MaxHP;
         currentHP = maxHP;
         _playerView.Initialize(_playerData);
-        _actionManager.Initialize(_playerData.MaxAP, _playerData.Actions);
+        _actionController.Initialize(_playerData.MaxAP, _playerData.Actions);
     }
 
     public void ModifyCurrentHP(int value) // increases or decreases current HP by the value's amount

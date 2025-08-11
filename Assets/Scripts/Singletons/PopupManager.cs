@@ -31,8 +31,7 @@ public class PopupManager : MonoBehaviour
             return; // don't make a new popup
         }
 
-        _currentPopup = Instantiate(_popupPrefab, _notificationCanvas.transform);
-        _currentPopup.GetComponent<RectTransform>().position = popupLocation;
+        _currentPopup = Instantiate(_popupPrefab, popupLocation, Quaternion.identity, _notificationCanvas.transform);
         _currentPopup.GetComponent<PopupView>().Initialize(popupString, popupButtonString, fadeDuration, onButtonPress);
         _mainCanvasGroup.interactable = false;
     }

@@ -27,8 +27,8 @@ public class PlayerView : MonoBehaviour
         _hpBarText.text = currentHP + " / " + maxHP;
         if (currentHP <= 0)
         {
-            Vector3 centerOfScreen = new Vector3(Screen.width / 2, Screen.height / 2, 0);
-            PopupManager.Instance.DisplayPopup("Game Over!", "OK", centerOfScreen);
+            Vector2 popupLocation = Camera.main.ViewportToWorldPoint(new Vector2(0.5f, 0.5f));
+            PopupManager.Instance.DisplayPopup("Game Over!", "OK", popupLocation);
         }
     }
 }

@@ -17,6 +17,20 @@ public class CurrentView : MonoBehaviour
     [SerializeField] private BulletColorUIProperty[] _bulletColorUIProperties;
     [SerializeField] private CurrentRow[] _currentGrid;
 
+    private void Awake()
+    {
+        int numberOfRows = _currentGrid.Length;
+        int numberOfColumns = _currentGrid[0].CurrentSpaces.Length;
+
+        for (int i = 0; i < numberOfRows; i++)
+        {
+            for (int j = 0; j < numberOfColumns; j++)
+            {
+                _currentGrid[i].CurrentSpaces[j].Initialize(new Vector2Int(i, j));
+            }
+        }
+    }
+
     public CurrentSpace[,] GetCurrentGrid()
     {
         int numberOfRows = _currentGrid.Length;
@@ -46,13 +60,27 @@ public class CurrentView : MonoBehaviour
         return returnColumn;
     }
 
-    public void SpawnNewCurrentBulletObject(int row, int column, BulletData bulletData)
+    public CurrentSpace GetCurrentSpace(Vector2Int cell)
     {
-        CurrentSpace selectedSpace = _currentGrid[row].CurrentSpaces[column];
+        CurrentSpace returnSpace = _currentGrid[cell.x].CurrentSpaces[cell.y];
+        return returnSpace;
+    }
+
+    public void SpawnNewCurrentBulletObject(Vector2Int cell, BulletData bulletData)
+    {
+        CurrentSpace selectedSpace = _currentGrid[cell.x].CurrentSpaces[cell.y];
         selectedSpace.BulletProperties = bulletData;
 
-        GameObject newBulletObject = Instantiate(_bulletPrefab, selectedSpace.gameObject.transform);
+        GameObject newBulletObject = Instantiate(_bulletPrefab, selectedSpace.BulletParent);
         BulletColorUIProperty chosenColorUIProperty = Array.Find(_bulletColorUIProperties, property => property.BulletColorRequirement == selectedSpace.BulletProperties.Color);
         newBulletObject.GetComponent<BulletView>().Initialize(bulletData, chosenColorUIProperty);
+    }
+
+    public void RemoveCurrentBulletObject(Vector2Int cell)
+    {
+        CurrentSpace selectedSpace = _currentGrid[cell.x].CurrentSpaces[cell.y];
+        selectedSpace.BulletProperties = null;
+
+        Destroy(selectedSpace.BulletParent.GetChild(0).gameObject);
     }
 }

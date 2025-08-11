@@ -518,7 +518,7 @@ Canvas:
   m_GameObject: {fileID: 48179261}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_Camera: {fileID: 519420031}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
@@ -5745,8 +5745,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerData: {fileID: 11400000, guid: dd2293342729b1d48a2dc8def6fc5e4d, type: 2}
   _playerView: {fileID: 1601856003}
-  _actionManager: {fileID: 1438830431}
-  _currentManager: {fileID: 799415692}
+  _actionController: {fileID: 1438830431}
+  _currentController: {fileID: 799415692}
 --- !u!114 &1601856003
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7599,7 +7599,7 @@ Canvas:
   m_GameObject: {fileID: 2021945759}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_Camera: {fileID: 519420031}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
