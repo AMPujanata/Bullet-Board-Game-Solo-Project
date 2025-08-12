@@ -10,7 +10,7 @@ public class PopupView : MonoBehaviour
     [SerializeField] private TMP_Text _popupText;
     [SerializeField] private Button _popupButton;
     [SerializeField] private TMP_Text _popupButtonText;
-    public void Initialize(string popupString, string popupButtonString, float fadeDuration = 0f, Action onButtonPress = null)
+    public void Initialize(string popupString, string popupButtonString, Action onButtonPress = null)
     {
         _popupText.text = popupString;
         _popupButtonText.text = popupButtonString;

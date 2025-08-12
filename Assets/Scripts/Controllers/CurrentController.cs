@@ -1,5 +1,8 @@
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(CurrentView))]
 public class CurrentController : MonoBehaviour
@@ -11,7 +14,7 @@ public class CurrentController : MonoBehaviour
     private Vector2Int _previousActiveSpacePosition = new Vector2Int(-1, -1);
     private Vector2Int _activeSpacePosition = new Vector2Int(-1, -1);
     private PatternSpaceData _currentSpaceRequirement = null;
-    private bool _shouldCancelHoverRoutine = false;
+    private bool _shouldCancelSpaceSelection = false;
     #endregion
 
     public void SendBulletToCurrent()
@@ -28,7 +31,6 @@ public class CurrentController : MonoBehaviour
             if (chosenCurrentColumn[spaceToSpawnInto].BulletProperties == null) spacesMoved++;
             if (spacesMoved >= spacesToMoveDown)
             {
-                Debug.Log("Space found in time!");
                 break;
             }
         }
@@ -39,7 +41,6 @@ public class CurrentController : MonoBehaviour
         }
         else
         {
-            Debug.Log("No space remaining! Life lost!");
             GameManager.Instance.ActivePlayer.ModifyCurrentHP(-1);
         }
     }
@@ -48,10 +49,20 @@ public class CurrentController : MonoBehaviour
     {
         CurrentSpace chosenSpace = _currentView.GetCurrentSpace(removeCell);
         BulletData chosenProperty = chosenSpace.BulletProperties;
-        // do something with the bullet properties later, esp. if it's star
         CenterManager.Instance.AddBulletToCenter(chosenProperty);
+        if(chosenProperty.IsStar) GameManager.Instance.ActivePlayer.ActionController.ActivateStarActions();
         _currentView.RemoveCurrentBulletObject(removeCell);
 
+    }
+
+    public void MoveBulletInCurrent(Vector2Int oldCell, Vector2Int newCell)
+    {
+        CurrentSpace chosenSpace = _currentView.GetCurrentSpace(oldCell);
+        CurrentSpace finalSpace = _currentView.GetCurrentSpace(newCell);
+        BulletData chosenProperty = chosenSpace.BulletProperties;
+        finalSpace.BulletProperties = chosenProperty;
+        chosenSpace.BulletProperties = null;
+        _currentView.MoveCurrentBulletObject(oldCell, newCell);
     }
 
     public void UpdateActiveSpace(Vector2Int cell)
@@ -95,20 +106,92 @@ public class CurrentController : MonoBehaviour
         // if all conditions are met, return true
         return true;
     }
+
+    public void CheckSpacesToMoveIntoOrthogonal(Vector2Int startingCell, int radius, Direction[] allowedDirections, Action<bool, Vector2Int, int> callback)
+    {
+        CurrentSpace[,] currentGrid = _currentView.GetCurrentGrid();
+        int upBoundary = 0;
+        int downBoundary = currentGrid.GetLength(0) - 1;
+        int leftBoundary = 0;
+        int rightBoundary = currentGrid.GetLength(1) - 1;
+
+        // clamp within the Grid's boundaries, and set the spaces to search inbase on allowed directions
+        int rowsStart = Mathf.Clamp(Array.Exists(allowedDirections, direction => direction == Direction.Up) ? startingCell.x - radius : startingCell.x, upBoundary, downBoundary);
+        int rowsEnd = Mathf.Clamp(Array.Exists(allowedDirections, direction => direction == Direction.Down) ? startingCell.x + radius : startingCell.x, upBoundary, downBoundary);
+        int columnsStart = Mathf.Clamp(Array.Exists(allowedDirections, direction => direction == Direction.Left) ? startingCell.y - radius : startingCell.y, leftBoundary, rightBoundary);
+        int columnsEnd = Mathf.Clamp(Array.Exists(allowedDirections, direction => direction == Direction.Right) ? startingCell.y + radius : startingCell.y, leftBoundary, rightBoundary);
+
+        Dictionary<Vector2Int, int> validCellsWithDistances = new Dictionary<Vector2Int, int>();
+
+        for (int row = rowsStart; row <= rowsEnd; row++)
+        {
+            for (int column = columnsStart; column <= columnsEnd; column++)
+            {
+                int distance = Mathf.Abs(row - startingCell.x) + Mathf.Abs(column - startingCell.y); // calculate distance from starting cell
+                if (distance <= radius)
+                {
+                    if (currentGrid[row, column].BulletProperties == null && !((row == startingCell.x) && (column == startingCell.y))) // don't highlight spaces with bullets already in them and don't highlight starting space
+                    {
+                        validCellsWithDistances.Add(new Vector2Int(row, column), distance);
+                        currentGrid[row, column].SetSpaceValidity(true, true);
+                    }
+                }
+            }
+        }
+
+        StartCoroutine(SelectSpaceToMoveIntoRoutine(validCellsWithDistances, callback));
+    }
+
+    private IEnumerator SelectSpaceToMoveIntoRoutine(Dictionary<Vector2Int, int> validCellsWithDistances, Action<bool, Vector2Int, int> callback) // currently supports orthogonally adjacent squares only
+    {
+        while (!_shouldCancelSpaceSelection)
+        {
+            if (Input.GetMouseButtonDown(0)) // try to do something when the left mouse button is clicked
+            {
+                PointerEventData eventData = new PointerEventData(EventSystem.current)
+                {
+                    position = Input.mousePosition
+                };
+                List<RaycastResult> results = new List<RaycastResult>();
+                EventSystem.current.RaycastAll(eventData, results);
+
+                foreach (RaycastResult result in results)
+                {
+                    if (result.gameObject.GetComponent<CurrentSpace>()) // find the first current space our mouse is over
+                    {
+                        Vector2Int cellPosition = result.gameObject.GetComponent<CurrentSpace>().CurrentCell;
+                        if (validCellsWithDistances.ContainsKey(cellPosition))
+                        {
+                            ResetAllSpaceHighlights();
+                            callback.Invoke(true, cellPosition, validCellsWithDistances[cellPosition]);
+                            yield break;
+                        }
+                    }
+                }
+            }
+            yield return null;
+        }
+        // Asked to cancel, callback that the function was cancelled
+        ResetAllSpaceHighlights();
+        _shouldCancelSpaceSelection = false;
+        callback.Invoke(false, new Vector2Int(-1, -1), -1);
+        yield break;
+    }
+
     #region On Hover Functions
-    public void CheckValidSpacesOnHover(PatternSpaceData[,] spaceRequirements, System.Action<bool, Vector2Int> callback)
+    public void CheckValidSpacesOnHover(PatternSpaceData[,] spaceRequirements, Action<bool, Vector2Int> callback)
     {
         _isAcceptingHoverInputs = true;
 
         // for now, use only a single space for the debug action
         PatternSpaceData spaceRequirement = spaceRequirements[0,0];
         _currentSpaceRequirement = spaceRequirement;
-        StartCoroutine(CheckValidSpacesOnHoverRoutine(callback));
+        StartCoroutine(SelectValidSpacesOnHoverRoutine(callback));
     }
 
-    private IEnumerator CheckValidSpacesOnHoverRoutine(System.Action<bool, Vector2Int> callback) // this will constantly check and highlight spaces that are valid or invalid
+    private IEnumerator SelectValidSpacesOnHoverRoutine(Action<bool, Vector2Int> callback) // this will constantly check and highlight spaces that are valid or invalid
     {
-        while (!_shouldCancelHoverRoutine)
+        while (!_shouldCancelSpaceSelection)
         {
             BulletData activeSpaceData;
 
@@ -140,8 +223,9 @@ public class CurrentController : MonoBehaviour
                     activeSpaceData = _currentView.GetCurrentSpace(_activeSpacePosition).BulletProperties;
                     if (IsSpaceValidForPattern(_currentSpaceRequirement, activeSpaceData))
                     {
-                        callback.Invoke(true, _activeSpacePosition);
+                        Vector2Int returnValue = _activeSpacePosition;
                         CheckValidSpacesOnHoverCleanup();
+                        callback.Invoke(true, returnValue);
                         yield break;
                     }
                 }
@@ -149,8 +233,8 @@ public class CurrentController : MonoBehaviour
             yield return null;
         }
         // function was cancelled, do cleanup and tell the callback it was cancelled
-        callback.Invoke(false, new Vector2Int(-1, -1));
         CheckValidSpacesOnHoverCleanup();
+        callback.Invoke(false, new Vector2Int(-1, -1));
         yield break;
     }
 
@@ -160,13 +244,13 @@ public class CurrentController : MonoBehaviour
         _previousActiveSpacePosition.Set(-1, -1);
         _activeSpacePosition.Set(-1, -1);
         _currentSpaceRequirement = null;
-        _shouldCancelHoverRoutine = false;
+        _shouldCancelSpaceSelection = false;
         ResetAllSpaceHighlights();
     }
 
-    public void CancelCheckValidSpacesOnHover()
+    public void CancelSpaceSelection()
     {
-        _shouldCancelHoverRoutine = true;
+        _shouldCancelSpaceSelection = true;
     }
     #endregion
 }

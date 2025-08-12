@@ -33,6 +33,21 @@ public class ActionController : MonoBehaviour
         }
     }
 
+    public void ActivateStarActions()
+    {
+        ActionSpace[] actionSpaces = _actionView.GetActionSpaces();
+        for (int i = 0; i < actionSpaces.Length; i++)
+        {
+            if (actionSpaces[i].SpaceProperties != null)
+            {
+                if (actionSpaces[i].SpaceProperties.IsStar)
+                {
+                    actionSpaces[i].SpaceProperties.OnActivated();
+                }
+            }
+        }
+    }
+
     public void ModifyCurrentAP(int value) // increases or decreases current HP by the value's amount
     {
         _currentAP += value;

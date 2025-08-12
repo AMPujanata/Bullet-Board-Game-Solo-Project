@@ -17,8 +17,7 @@ public class CenterManager : MonoBehaviour
         InitializeStartingBullets();
     }
 
-    // SerializeField exposes the List in editor to make debugging easier
-    [SerializeField] private List<BulletData> _bulletsInCenter = new List<BulletData>();
+    private List<BulletData> _bulletsInCenter = new List<BulletData>();
 
     public BulletData TakeRandomBulletFromCenter()
     {

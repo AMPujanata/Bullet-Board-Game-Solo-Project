@@ -83,4 +83,13 @@ public class CurrentView : MonoBehaviour
 
         Destroy(selectedSpace.BulletParent.GetChild(0).gameObject);
     }
+
+    public void MoveCurrentBulletObject(Vector2Int oldCell, Vector2Int newCell)
+    {
+        CurrentSpace oldSpace = _currentGrid[oldCell.x].CurrentSpaces[oldCell.y];
+        CurrentSpace newSpace = _currentGrid[newCell.x].CurrentSpaces[newCell.y];
+        GameObject bulletObjectToMove = oldSpace.BulletParent.GetChild(0).gameObject;
+        bulletObjectToMove.transform.SetParent(newSpace.BulletParent);
+        bulletObjectToMove.transform.position = newSpace.BulletParent.transform.position;
+    }
 }
