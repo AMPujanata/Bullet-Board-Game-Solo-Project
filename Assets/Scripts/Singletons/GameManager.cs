@@ -19,6 +19,15 @@ public class GameManager : MonoBehaviour
 
         Player1 = FindObjectOfType<PlayerController>(); // move to a "when starting gameplay" method later
         ActivePlayer = Player1;
+
+        StartCoroutine(BeginSetup());
+    }
+
+    private IEnumerator BeginSetup()
+    {
+        yield return null;
+        ActivePlayer.DrawNewPattern();
+        yield break;
     }
 
     public PlayerController ActivePlayer { get; private set; }

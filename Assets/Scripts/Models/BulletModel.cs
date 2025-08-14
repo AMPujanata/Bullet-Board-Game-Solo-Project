@@ -28,11 +28,11 @@ public class BulletColorUIProperty
 [System.Serializable]
 public class PatternSpaceData
 {
-    public bool NeedsBullet = false;
-    public bool NeedsEmpty = false;
-    public BulletColor ColorRequired = BulletColor.Any;
-    public int NumberRequired = -1;
-    public bool NeedsSameNumber = false;
-    public bool NeedsStarBullet = false;
-    public bool WillClearBullet = false;
+    public bool NeedsBullet;
+    public bool NeedsEmpty;
+    public BulletColor ColorRequired;
+    public int NumberRequired;
+    public bool NeedsSameNumber;
+    public bool NeedsStarBullet;
+    public bool WillClearBullet;
 }
