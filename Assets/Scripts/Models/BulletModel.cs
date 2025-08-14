@@ -8,7 +8,7 @@ public class BulletData
     public int Number;
     public bool IsStar;
     public bool IsFacedown;
-    public BulletData(BulletColor color = BulletColor.Red, int number = 1, bool isStar = false, bool isFacedown = false)
+    public BulletData(BulletColor color = BulletColor.Any, int number = 0, bool isStar = false, bool isFacedown = false)
     {
         Color = color;
         Number = number;
@@ -35,4 +35,14 @@ public class PatternSpaceData
     public bool NeedsSameNumber;
     public bool NeedsStarBullet;
     public bool WillClearBullet;
+    public PatternSpaceData(bool needsBullet = false, bool needsEmpty = false, BulletColor colorRequired = BulletColor.Any, int numberRequired = 0, bool needsSameNumber = false, bool needsStarBullet = false, bool willClearBullet = false)
+    {
+        NeedsBullet = needsBullet;
+        NeedsEmpty = needsEmpty;
+        ColorRequired = colorRequired;
+        NumberRequired = numberRequired;
+        NeedsSameNumber = needsSameNumber;
+        NeedsStarBullet = needsStarBullet;
+        WillClearBullet = willClearBullet;
+    }
 }

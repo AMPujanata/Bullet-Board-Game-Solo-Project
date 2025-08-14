@@ -5747,7 +5747,7 @@ MonoBehaviour:
   _playerView: {fileID: 1601856003}
   _actionController: {fileID: 1438830431}
   _currentController: {fileID: 799415692}
-  _testCardData: {fileID: 11400000, guid: 6c9a22051659e0d4d8ac2f2467f91597, type: 2}
+  _testCardData: {fileID: 11400000, guid: 5c608ecc3d49bcb45a3416fa76efb77e, type: 2}
   _testPatternCardPrefab: {fileID: 1421154185964237108, guid: f3d5771c578f67845af733907fde73b4, type: 3}
 --- !u!114 &1601856003
 MonoBehaviour:

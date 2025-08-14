@@ -24,7 +24,7 @@ public class MoveBulletSideOrDownAction : BaseAction
         Vector2 popupLocation = Camera.main.ViewportToWorldPoint(new Vector2(0.8f, 0.5f));
         PopupManager.Instance.DisplayPopup("Choose a bullet to move.", "Cancel", popupLocation, GameManager.Instance.ActivePlayer.CurrentController.CancelSpaceSelection);
 
-        PatternSpaceData anyBullet = new PatternSpaceData { NeedsBullet = true };
+        PatternSpaceData anyBullet = new PatternSpaceData(true);
         PatternSpaceData[,] patternData = new PatternSpaceData[1, 1] { { anyBullet } };
 
         GameManager.Instance.ActivePlayer.CurrentController.CheckValidSpacesOnHover(patternData, (bool isSuccessfulSelect, Vector2Int bulletCell) =>

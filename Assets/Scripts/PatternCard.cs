@@ -16,6 +16,7 @@ public class PatternCard : MonoBehaviour
         _patternName.text = patternName;
         _patternDescription.text = patternDescription;
         _patternOwner.text = patternOwner;
+        _patternSpaceDatas = patternSpaceDatas;
 
         int rows = patternSpaceDatas.GetLength(0);
         int columns = patternSpaceDatas.GetLength(1);
@@ -39,12 +40,13 @@ public class PatternCard : MonoBehaviour
         Vector2 popupLocation = Camera.main.ViewportToWorldPoint(new Vector2(0.8f, 0.5f));
         PopupManager.Instance.DisplayPopup("Choose a valid bullet pattern to clear.", "Cancel", popupLocation, GameManager.Instance.ActivePlayer.CurrentController.CancelSpaceSelection);
 
-        GameManager.Instance.ActivePlayer.CurrentController.CheckValidSpacesOnHover(_patternSpaceDatas, (bool isSuccessful, Vector2Int finalCell) =>
+        GameManager.Instance.ActivePlayer.CurrentController.CheckValidSpacesOnHover(_patternSpaceDatas, (bool isSuccessful, Vector2Int finalTopLeftCell) =>
         {
             if (!isSuccessful) return;
             PopupManager.Instance.ClosePopup();
 
-            //GameManager.Instance.ActivePlayer.CurrentController.RemoveBulletFromCurrent(finalCell);
+            GameManager.Instance.ActivePlayer.CurrentController.RemoveBulletsFromCurrentWithPattern(finalTopLeftCell, _patternSpaceDatas);
+            // Card disposal pattern here
         });
     }
 }
