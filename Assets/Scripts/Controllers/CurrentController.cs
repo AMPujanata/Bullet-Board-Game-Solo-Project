@@ -218,63 +218,64 @@ public class CurrentController : MonoBehaviour
                 _previousActiveSpacePosition = _activeSpacePosition;
                 ResetAllSpaceHighlights(); // always blank out all highlights before starting to highlight spaces
 
-                if ((_activeSpacePosition.x == -1) || (_activeSpacePosition.y == -1)) continue; // no need to highlight spaces or process mouse clicks if we're not on an active space
-
-                // our pattern's "anchor" is on our mouse, but that "anchor" corresponds to the "topleft middle" square, or in other words: hovered space - ((Ceil(length / 2) - 1)
-                // the extra -1 is needed to account for the fact arrays start from 0
-                // EX: Length 1 = 0, Length 2 = 0, Length 3 = -1, Length  4 = -1, Length 5 = -2
-                // Also, clamp the pattern to be within the current grid arrays
-
-                CurrentSpace[,] currentGrid = _currentView.GetCurrentGrid();
-
-                int patternRows = _currentSpaceRequirements.GetLength(0);
-                int patternColumns = _currentSpaceRequirements.GetLength(1);
-
-                int startingRow = _activeSpacePosition.x - (Mathf.CeilToInt((float)patternRows / 2) - 1);
-                int startingColumn = _activeSpacePosition.y - (Mathf.CeilToInt((float)patternColumns / 2) - 1);
-
-                int currentHoveredRow = Mathf.Clamp(startingRow, 0, currentGrid.GetLength(0) - patternRows);
-                int currentHoveredColumn = Mathf.Clamp(startingColumn, 0, currentGrid.GetLength(1) - patternColumns);
-
-                if (Input.GetMouseButtonDown(0))
+                if ((_activeSpacePosition.x != -1) && (_activeSpacePosition.y != -1)) // no need to highlight spaces or process mouse clicks if we're not on an active space
                 {
-                    bool isPatternValid = true;
+                    // our pattern's "anchor" is on our mouse, but that "anchor" corresponds to the "topleft middle" square, or in other words: hovered space - ((Ceil(length / 2) - 1)
+                    // the extra -1 is needed to account for the fact arrays start from 0
+                    // EX: Length 1 = 0, Length 2 = 0, Length 3 = -1, Length  4 = -1, Length 5 = -2
+                    // Also, clamp the pattern to be within the current grid arrays
+
+                    CurrentSpace[,] currentGrid = _currentView.GetCurrentGrid();
+
+                    int patternRows = _currentSpaceRequirements.GetLength(0);
+                    int patternColumns = _currentSpaceRequirements.GetLength(1);
+
+                    int startingRow = _activeSpacePosition.x - (Mathf.CeilToInt((float)patternRows / 2) - 1);
+                    int startingColumn = _activeSpacePosition.y - (Mathf.CeilToInt((float)patternColumns / 2) - 1);
+
+                    int currentHoveredRow = Mathf.Clamp(startingRow, 0, currentGrid.GetLength(0) - patternRows);
+                    int currentHoveredColumn = Mathf.Clamp(startingColumn, 0, currentGrid.GetLength(1) - patternColumns);
+
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        bool isPatternValid = true;
+                        for (int i = 0; i < patternRows; i++)
+                        {
+                            for (int j = 0; j < patternColumns; j++)
+                            {
+                                Vector2Int comparisonPosition = new Vector2Int(currentHoveredRow + i, currentHoveredColumn + j);
+                                CurrentSpace currentSpace = _currentView.GetCurrentSpace(comparisonPosition);
+                                if (!IsSpaceValidForPattern(_currentSpaceRequirements[i, j], currentSpace.BulletProperties)) // if it matches, set to correct color. otherwise, set to incorrect color
+                                {
+                                    isPatternValid = false;
+                                    break;
+                                }
+                            }
+                            if (!isPatternValid) break;
+                        }
+                        if (isPatternValid)
+                        {
+                            Vector2Int returnValue = new Vector2Int(currentHoveredRow, currentHoveredColumn);
+                            CheckValidSpacesOnHoverCleanup();
+                            callback.Invoke(true, returnValue);
+                            yield break;
+                        }
+                    }
+
                     for (int i = 0; i < patternRows; i++)
                     {
                         for (int j = 0; j < patternColumns; j++)
                         {
                             Vector2Int comparisonPosition = new Vector2Int(currentHoveredRow + i, currentHoveredColumn + j);
                             CurrentSpace currentSpace = _currentView.GetCurrentSpace(comparisonPosition);
-                            if (!IsSpaceValidForPattern(_currentSpaceRequirements[i, j], currentSpace.BulletProperties)) // if it matches, set to correct color. otherwise, set to incorrect color
+                            if (IsSpaceValidForPattern(_currentSpaceRequirements[i, j], currentSpace.BulletProperties)) // if it matches, set to correct color. otherwise, set to incorrect color
                             {
-                                isPatternValid = false;
-                                break;
+                                currentSpace.SetSpaceValidity(true, true);
                             }
-                        }
-                        if (!isPatternValid) break;
-                    }
-                    if (isPatternValid)
-                    {
-                        Vector2Int returnValue = new Vector2Int(currentHoveredRow, currentHoveredColumn);
-                        CheckValidSpacesOnHoverCleanup();
-                        callback.Invoke(true, returnValue);
-                        yield break;
-                    }
-                }
-
-                for (int i = 0; i < patternRows; i++)
-                {
-                    for (int j = 0; j < patternColumns; j++)
-                    {
-                        Vector2Int comparisonPosition = new Vector2Int(currentHoveredRow + i, currentHoveredColumn + j);
-                        CurrentSpace currentSpace = _currentView.GetCurrentSpace(comparisonPosition);
-                        if (IsSpaceValidForPattern(_currentSpaceRequirements[i, j], currentSpace.BulletProperties)) // if it matches, set to correct color. otherwise, set to incorrect color
-                        {
-                            currentSpace.SetSpaceValidity(true, true);
-                        }
-                        else
-                        {
-                            currentSpace.SetSpaceValidity(true, false);
+                            else
+                            {
+                                currentSpace.SetSpaceValidity(true, false);
+                            }
                         }
                     }
                 }

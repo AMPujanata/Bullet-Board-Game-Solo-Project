@@ -25,8 +25,18 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator BeginSetup()
     {
-        yield return null;
-        ActivePlayer.DrawNewPattern();
+        yield return new WaitForSeconds(0.5f);
+        int precaution = 0;
+        while (ActivePlayer.PatternController.GetNumberOfCardsInHand() < 3)
+        {
+            ActivePlayer.PatternController.DrawPatternFromDeck();
+            precaution++;
+            if (precaution > 10)
+            {
+                Debug.Log("Infinite loop beginning; breaking!");
+                break;
+            }
+        }
         yield break;
     }
 

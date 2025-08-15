@@ -18,6 +18,16 @@ MonoBehaviour:
   PassiveName: Debug Passive
   PassiveDescription: This doesn't do anything.
   Actions:
-  - {fileID: 11400000, guid: 1f701dfe10b81254192931d69e3d93da, type: 2}
   - {fileID: 11400000, guid: 04eb0b6507299c14b9f2ee67679bf0b2, type: 2}
+  - {fileID: 11400000, guid: 5a55f4cdfe3e3b64a8d6902f2fb426ab, type: 2}
+  - {fileID: 11400000, guid: 1f701dfe10b81254192931d69e3d93da, type: 2}
   - {fileID: 11400000, guid: 12618aa133912fe428d7ab017e835341, type: 2}
+  Patterns:
+  - {fileID: 11400000, guid: 5c608ecc3d49bcb45a3416fa76efb77e, type: 2}
+  - {fileID: 11400000, guid: 6c9a22051659e0d4d8ac2f2467f91597, type: 2}
+  - {fileID: 11400000, guid: 5c608ecc3d49bcb45a3416fa76efb77e, type: 2}
+  - {fileID: 11400000, guid: 6c9a22051659e0d4d8ac2f2467f91597, type: 2}
+  - {fileID: 11400000, guid: 5c608ecc3d49bcb45a3416fa76efb77e, type: 2}
+  - {fileID: 11400000, guid: 6c9a22051659e0d4d8ac2f2467f91597, type: 2}
+  - {fileID: 11400000, guid: 5c608ecc3d49bcb45a3416fa76efb77e, type: 2}
+  - {fileID: 11400000, guid: 6c9a22051659e0d4d8ac2f2467f91597, type: 2}

@@ -1,2 +1,3 @@
 Art Assets:
 Placeholder Character Image: dicortesia - Dressup Minigame / Character Customizer for Renpy https://dicortesia.itch.io/dressup-minigame-for-renpy
+All Other Assets: Bullet Community Template https://www.level99games.com/blogs/bullet/bullet-component-templates-customs-tips

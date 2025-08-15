@@ -9,17 +9,31 @@ public class PatternCard : MonoBehaviour
     [SerializeField] private TMP_Text _patternOwner;
     [SerializeField] private Transform _patternSpaceGridParent;
     [SerializeField] private GameObject _patternSpacePrefab;
-    private PatternSpaceData[,] _patternSpaceDatas;
-
-    public void Initialize(string patternName, string patternDescription, string patternOwner, PatternSpaceData[,] patternSpaceDatas)
+    public PatternCardData PatternCardDataProperties;
+    private PatternSpaceData[,] _patternSpaceGrid;
+    public void Initialize(string patternName, string patternDescription, string patternOwner, PatternCardData patternCardData)
     {
         _patternName.text = patternName;
         _patternDescription.text = patternDescription;
         _patternOwner.text = patternOwner;
-        _patternSpaceDatas = patternSpaceDatas;
+        PatternCardDataProperties = patternCardData;
 
-        int rows = patternSpaceDatas.GetLength(0);
-        int columns = patternSpaceDatas.GetLength(1);
+        int numberOfRows = PatternCardDataProperties.PatternGrid.Length;
+        int numberOfColumns = PatternCardDataProperties.PatternGrid[0].PatternSpaces.Length;
+        PatternSpaceData[,] patternSpaceGrid = new PatternSpaceData[numberOfRows, numberOfColumns];
+
+        for (int i = 0; i < numberOfRows; i++)
+        {
+            for (int j = 0; j < numberOfColumns; j++)
+            {
+                patternSpaceGrid[i, j] = PatternCardDataProperties.PatternGrid[i].PatternSpaces[j];
+            }
+        }
+
+        _patternSpaceGrid = patternSpaceGrid;
+
+        int rows = _patternSpaceGrid.GetLength(0);
+        int columns = _patternSpaceGrid.GetLength(1);
         _patternSpaceGridParent.GetComponent<GridLayoutGroup>().constraint = GridLayoutGroup.Constraint.FixedColumnCount;
         _patternSpaceGridParent.GetComponent<GridLayoutGroup>().constraintCount = columns;
 
@@ -28,25 +42,24 @@ public class PatternCard : MonoBehaviour
             for(int j = 0; j < columns; j++)
             {
                 GameObject newPatternSpace = Instantiate(_patternSpacePrefab, _patternSpaceGridParent);
-                newPatternSpace.GetComponent<PatternSpaceView>().Initialize(patternSpaceDatas[i, j]);
+                newPatternSpace.GetComponent<PatternSpaceView>().Initialize(_patternSpaceGrid[i, j]);
             }
         }
 
     }
-
 
     public void SelectPattern()
     {
         Vector2 popupLocation = Camera.main.ViewportToWorldPoint(new Vector2(0.8f, 0.5f));
         PopupManager.Instance.DisplayPopup("Choose a valid bullet pattern to clear.", "Cancel", popupLocation, GameManager.Instance.ActivePlayer.CurrentController.CancelSpaceSelection);
 
-        GameManager.Instance.ActivePlayer.CurrentController.CheckValidSpacesOnHover(_patternSpaceDatas, (bool isSuccessful, Vector2Int finalTopLeftCell) =>
+        GameManager.Instance.ActivePlayer.CurrentController.CheckValidSpacesOnHover(_patternSpaceGrid, (bool isSuccessful, Vector2Int finalTopLeftCell) =>
         {
             if (!isSuccessful) return;
             PopupManager.Instance.ClosePopup();
 
-            GameManager.Instance.ActivePlayer.CurrentController.RemoveBulletsFromCurrentWithPattern(finalTopLeftCell, _patternSpaceDatas);
-            // Card disposal pattern here
+            GameManager.Instance.ActivePlayer.CurrentController.RemoveBulletsFromCurrentWithPattern(finalTopLeftCell, _patternSpaceGrid);
+            GameManager.Instance.ActivePlayer.PatternController.DiscardPatternFromHand(this);
         });
     }
 }
