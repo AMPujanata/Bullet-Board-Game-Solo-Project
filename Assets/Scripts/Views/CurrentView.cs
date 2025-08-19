@@ -11,7 +11,7 @@ public class CurrentView : MonoBehaviour
     {
         public CurrentSpace[] CurrentSpaces;
     }
-
+    [SerializeField] private TMPro.TMP_Text _sendBulletText;
     [SerializeField] private GameObject _bulletPrefab;
 
     [SerializeField] private BulletColorUIProperty[] _bulletColorUIProperties;
@@ -91,5 +91,17 @@ public class CurrentView : MonoBehaviour
         GameObject bulletObjectToMove = oldSpace.BulletParent.GetChild(0).gameObject;
         bulletObjectToMove.transform.SetParent(newSpace.BulletParent);
         bulletObjectToMove.transform.position = newSpace.BulletParent.transform.position;
+    }
+
+    public void UpdateCurrentBulletsText(int currentCount)
+    {
+        if(currentCount > 0)
+        {
+            _sendBulletText.text = "Send Bullet\n(" + currentCount + " bullets remaining";
+        }
+        else
+        {
+            _sendBulletText.text = "Begin End Phase";
+        }
     }
 }

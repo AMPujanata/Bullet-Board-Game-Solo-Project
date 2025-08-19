@@ -8,6 +8,7 @@ using UnityEngine.EventSystems;
 public class CurrentController : MonoBehaviour
 {
     [SerializeField] private CurrentView _currentView;
+    private List<BulletData> _bulletsInCurrentBag = new List<BulletData>();
 
     #region Hover Routine Variables
     private bool _isAcceptingHoverInputs = false;
@@ -17,9 +18,28 @@ public class CurrentController : MonoBehaviour
     private bool _shouldCancelSpaceSelection = false;
     #endregion
 
+    public void DrawBulletsFromCenter(int bulletCount)
+    {
+        for(int i = 0;  i < bulletCount; i++)
+        {
+            _bulletsInCurrentBag.Add(CenterManager.Instance.TakeRandomBulletFromCenter());
+        }
+        _currentView.UpdateCurrentBulletsText(_bulletsInCurrentBag.Count);
+    }
+
     public void SendBulletToCurrent()
     {
-        BulletData bulletToSpawn = CenterManager.Instance.TakeRandomBulletFromCenter();
+        if(_bulletsInCurrentBag.Count <= 0)
+        {
+            GameManager.Instance.BeginEndPhase();
+            //Vector2 popupLocation = Camera.main.ViewportToWorldPoint(new Vector2(0.5f, 0.5f));
+            //PopupManager.Instance.DisplayPopup("No bullet left to place!", "OK", popupLocation);
+            return;
+        }
+
+        BulletData bulletToSpawn = _bulletsInCurrentBag[UnityEngine.Random.Range(0, _bulletsInCurrentBag.Count - 1)];
+        _bulletsInCurrentBag.Remove(bulletToSpawn);
+        _currentView.UpdateCurrentBulletsText(_bulletsInCurrentBag.Count);
         CurrentSpace[] chosenCurrentColumn = _currentView.GetCurrentColumnByColor((int)bulletToSpawn.Color);
 
         int spacesToMoveDown = bulletToSpawn.Number;

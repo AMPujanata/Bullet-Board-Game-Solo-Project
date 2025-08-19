@@ -54,4 +54,10 @@ public class ActionController : MonoBehaviour
         Mathf.Clamp(_currentAP, 0, _maxAP);
         _actionView.ChangeAPValue(_currentAP, _maxAP);
     }
+
+    public void RefreshAP()
+    {
+        _currentAP = _maxAP;
+        _actionView.ChangeAPValue(_currentAP, _maxAP);
+    }
 }

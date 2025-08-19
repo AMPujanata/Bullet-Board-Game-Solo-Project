@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PatternController : MonoBehaviour
 {
+    public int MaxHandSize { get; private set; } = 3;
     [SerializeField] private PatternView _patternView;
     private List<PatternCardData> _cardsInDeck = new List<PatternCardData>();
     private List<PatternCardData> _cardsInDiscard = new List<PatternCardData>();
@@ -50,6 +51,21 @@ public class PatternController : MonoBehaviour
         UpdateDeckAndDiscardCount();
     }
 
+    public void DrawToMaxHandSize()
+    {
+        int precaution = 0;
+        while (_cardsInHand.Count < MaxHandSize)
+        {
+            DrawPatternFromDeck();
+            precaution++;
+            if (precaution > 10)
+            {
+                Debug.Log("Infinite loop beginning; breaking!");
+                break;
+            }
+        }
+    }
+
     public void DiscardPatternFromHand(PatternCard removeCard)
     {
         if (_cardsInHand.Contains(removeCard))
@@ -70,6 +86,13 @@ public class PatternController : MonoBehaviour
     public int GetNumberOfCardsInDeck()
     {
         return _cardsInDeck.Count;
+    }
+    #endregion
+
+    #region Setter Functions
+    public void SetMaxHandSize(int maxSize)
+    {
+        MaxHandSize = maxSize;
     }
     #endregion
 }

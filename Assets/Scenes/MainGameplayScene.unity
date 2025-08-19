@@ -3551,6 +3551,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed1ab1c7ce0ff154c82b45087a6770dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _sendBulletText: {fileID: 819896797}
   _bulletPrefab: {fileID: 3117871829832881686, guid: 8b48eacc43235c147882ac129082f4c2, type: 3}
   _bulletColorUIProperties:
   - BulletColorRequirement: 0
@@ -6993,8 +6994,6 @@ MonoBehaviour:
   _actionController: {fileID: 1438830431}
   _currentController: {fileID: 799415692}
   _patternController: {fileID: 659724636}
-  _testCardData: {fileID: 11400000, guid: 5c608ecc3d49bcb45a3416fa76efb77e, type: 2}
-  _testPatternCardPrefab: {fileID: 1421154185964237108, guid: f3d5771c578f67845af733907fde73b4, type: 3}
 --- !u!114 &1601856003
 MonoBehaviour:
   m_ObjectHideFlags: 0
