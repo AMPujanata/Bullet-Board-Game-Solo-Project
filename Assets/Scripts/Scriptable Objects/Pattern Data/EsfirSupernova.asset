@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1754dbb7c2c2f324d9e11030b594cd20, type: 3}
+  m_Name: EsfirSupernova
+  m_EditorClassIdentifier: 
+  PatternName: Supernova
+  PatternDescription: '"If you can''t take the heat, disappear!"'
+  PatternOwner: Esfir Volkova
+  PatternGrid:
+  - PatternSpaces:
+    - NeedsBullet: 0
+      NeedsEmpty: 0
+      ColorRequired: -1
+      NumberRequired: 0
+      NeedsSameNumber: 0
+      NeedsStarBullet: 0
+      WillClearBullet: 0
+    - NeedsBullet: 0
+      NeedsEmpty: 0
+      ColorRequired: -1
+      NumberRequired: 0
+      NeedsSameNumber: 0
+      NeedsStarBullet: 0
+      WillClearBullet: 1
+  - PatternSpaces:
+    - NeedsBullet: 1
+      NeedsEmpty: 0
+      ColorRequired: -1
+      NumberRequired: 0
+      NeedsSameNumber: 0
+      NeedsStarBullet: 0
+      WillClearBullet: 0
+    - NeedsBullet: 0
+      NeedsEmpty: 0
+      ColorRequired: -1
+      NumberRequired: 0
+      NeedsSameNumber: 0
+      NeedsStarBullet: 0
+      WillClearBullet: 1
+  - PatternSpaces:
+    - NeedsBullet: 1
+      NeedsEmpty: 0
+      ColorRequired: 0
+      NumberRequired: 0
+      NeedsSameNumber: 0
+      NeedsStarBullet: 0
+      WillClearBullet: 0
+    - NeedsBullet: 0
+      NeedsEmpty: 0
+      ColorRequired: -1
+      NumberRequired: 0
+      NeedsSameNumber: 0
+      NeedsStarBullet: 0
+      WillClearBullet: 1

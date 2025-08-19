@@ -28,6 +28,7 @@ public class PlayerController : MonoBehaviour
         _playerView.Initialize(_playerData);
         _actionController.Initialize(_playerData.MaxAP, _playerData.Actions);
         _patternController.Initialize(_playerData.Patterns);
+        _playerData.Passive.SetupPassive();
     }
 
     public void ModifyCurrentHP(int value) // increases or decreases current HP by the value's amount

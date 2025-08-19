@@ -97,7 +97,7 @@ public class SightView : MonoBehaviour
     {
         if(currentCount > 0)
         {
-            _sendBulletText.text = "Send Bullet\n(" + currentCount + " bullets remaining";
+            _sendBulletText.text = "Place Bullet In Sight\n(" + currentCount + " bullets remaining";
         }
         else
         {

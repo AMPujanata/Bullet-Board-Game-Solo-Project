@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: GenericDraw1CardActionSO
   m_EditorClassIdentifier: 
   ActionCost: 2
-  ActionText: Draw 1 card.
+  ActionText: Draw a pattern.
   ActionIcon: {fileID: 0}
   IsStar: 0

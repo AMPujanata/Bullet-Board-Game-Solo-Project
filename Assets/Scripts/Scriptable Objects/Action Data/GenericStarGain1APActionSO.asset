@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a14dbe75bc712094ea1da1bdf4360c78, type: 3}
-  m_Name: GenericMoveBulletSideOrDownActionSO
+  m_Script: {fileID: 11500000, guid: 5ce43c511b483f740b923cf0aee982ec, type: 3}
+  m_Name: GenericStarGain1APActionSO
   m_EditorClassIdentifier: 
-  ActionCost: 1
-  ActionText: Move a bullet left, right, or down 1 space.
+  ActionCost: 0
+  ActionText: Gain 1 action point.
   ActionIcon: {fileID: 0}
-  IsStar: 0
+  IsStar: 1

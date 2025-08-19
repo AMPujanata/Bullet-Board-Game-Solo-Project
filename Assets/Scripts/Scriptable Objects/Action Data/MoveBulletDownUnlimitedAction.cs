@@ -1,16 +1,10 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "MoveBulletSideOrDownActionSO", menuName = "BaseAction/MoveBulletSideOrDown")]
-public class MoveBulletSideOrDownAction : BaseAction
+[CreateAssetMenu(fileName = "MoveBulletDownUnlimitedActionSO", menuName = "BaseAction/MoveBulletDownUnlimited")]
+public class MoveBulletDownUnlimitedAction : BaseAction
 {
     public override void OnActivated()
     {
-        if (ActionCost == 0)
-        {
-            Debug.LogError("Action cost is 0! This will cause a problem when trying to make the radius later. Please change the value!");
-            return;
-        }
-
         int currentAP = GameManager.Instance.ActivePlayer.ActionController.CurrentAP;
         if (currentAP < ActionCost)
         {
@@ -30,14 +24,14 @@ public class MoveBulletSideOrDownAction : BaseAction
             if (!isSuccessfulSelect) return;
             PopupManager.Instance.ClosePopup();
             PopupManager.Instance.DisplayPopup("Choose the space to move into.", "Cancel", popupLocation, GameManager.Instance.ActivePlayer.SightController.CancelSpaceSelection);
-            
-            Direction[] allowedDirections = { Direction.Down, Direction.Left, Direction.Right };
-            GameManager.Instance.ActivePlayer.SightController.CheckSpacesToMoveIntoOrthogonal(bulletCell, Mathf.FloorToInt(currentAP / ActionCost), allowedDirections, (bool isSuccessfulMove, Vector2Int finalCell, int distance) =>
+
+            Direction[] allowedDirections = { Direction.Down };
+            GameManager.Instance.ActivePlayer.SightController.CheckSpacesToMoveIntoOrthogonal(bulletCell, 7, allowedDirections, (bool isSuccessfulMove, Vector2Int finalCell, int distance) =>
             {
                 if (!isSuccessfulMove) return;
                 PopupManager.Instance.ClosePopup();
 
-                GameManager.Instance.ActivePlayer.ActionController.ModifyCurrentAP(-distance * ActionCost);
+                GameManager.Instance.ActivePlayer.ActionController.ModifyCurrentAP(-ActionCost);
                 GameManager.Instance.ActivePlayer.SightController.MoveBulletInSight(bulletCell, finalCell);
             });
         });

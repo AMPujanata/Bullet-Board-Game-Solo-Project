@@ -12,6 +12,14 @@ public class PatternSpaceView : MonoBehaviour
     [SerializeField] private Sprite _patternBulletNeededSprite;
     [SerializeField] private Sprite _patternEmptyNeededSprite;
 
+    #region Color Icon Sprites
+    [SerializeField] private Sprite _redBulletNeededSprite;
+    [SerializeField] private Sprite _blueBulletNeededSprite;
+    [SerializeField] private Sprite _greenBulletNeededSprite;
+    [SerializeField] private Sprite _yellowBulletNeededSprite;
+    [SerializeField] private Sprite _pinkBulletNeededSprite;
+    #endregion
+
     public void Initialize(PatternSpaceData patternSpaceData)
     {
         if (patternSpaceData.NeedsBullet)
@@ -31,7 +39,24 @@ public class PatternSpaceView : MonoBehaviour
             }
             else if (patternSpaceData.ColorRequired != BulletColor.Any)
             {
-                // add in color icons here
+                switch (patternSpaceData.ColorRequired)
+                {
+                    case BulletColor.Red:
+                        _patternBulletImage.sprite = _redBulletNeededSprite;
+                        break;
+                    case BulletColor.Blue:
+                        _patternBulletImage.sprite = _blueBulletNeededSprite;
+                        break;
+                    case BulletColor.Green:
+                        _patternBulletImage.sprite = _greenBulletNeededSprite;
+                        break;
+                    case BulletColor.Yellow:
+                        _patternBulletImage.sprite = _yellowBulletNeededSprite;
+                        break;
+                    case BulletColor.Pink:
+                        _patternBulletImage.sprite = _pinkBulletNeededSprite;
+                        break;
+                }
             }
         }
         else if (patternSpaceData.NeedsEmpty)

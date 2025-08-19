@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11701ccf4bab07140aa4a19f93340eb9, type: 3}
+  m_Name: EsfirVolkovaData
+  m_EditorClassIdentifier: 
+  PlayerName: Esfir Volkova
+  MaxHP: 4
+  MaxAP: 7
+  Passive: {fileID: 11400000, guid: 0c71c844fb72f1c418b481b931a9d35c, type: 2}
+  Actions:
+  - {fileID: 11400000, guid: 04eb0b6507299c14b9f2ee67679bf0b2, type: 2}
+  - {fileID: 11400000, guid: 5a55f4cdfe3e3b64a8d6902f2fb426ab, type: 2}
+  - {fileID: 11400000, guid: d21dd60db2b007349a6756a9537d717b, type: 2}
+  - {fileID: 11400000, guid: 78386d34e8942834c86ade4e6210bbea, type: 2}
+  - {fileID: 11400000, guid: 12618aa133912fe428d7ab017e835341, type: 2}
+  Patterns:
+  - {fileID: 11400000, guid: 5d2d85334fc113f478db01f8b0ada58d, type: 2}
+  - {fileID: 11400000, guid: 228f8fb59f600e743abf2dac7b960be0, type: 2}
+  - {fileID: 11400000, guid: 9ad3c85a5fb91334092856c9c6832e6b, type: 2}
+  - {fileID: 11400000, guid: 2179fa1f36c94e141a1a3a254cb8bd76, type: 2}
+  - {fileID: 11400000, guid: d4c99c4e70921e84ca3826d2337b82a7, type: 2}
+  - {fileID: 11400000, guid: 4d2213b7d77a155498a83d5f7d49874d, type: 2}
+  - {fileID: 11400000, guid: e667006db65305b4cbe1aab94666b4a4, type: 2}
+  - {fileID: 11400000, guid: caf20f29bbc7b274f986a96767fdc492, type: 2}
+  - {fileID: 11400000, guid: 0fb97fef80bd03245a234e3318f85a9a, type: 2}
+  - {fileID: 11400000, guid: 007d008c10efe6943a6cf0188b9c3770, type: 2}

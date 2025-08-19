@@ -16,8 +16,8 @@ public class PlayerView : MonoBehaviour
 
         ChangeHPValue(playerData.MaxHP, playerData.MaxHP);
 
-        _passiveNameText.text = playerData.PassiveName;
-        _passiveDescriptionText.text = playerData.PassiveDescription;
+        _passiveNameText.text = playerData.Passive.PassiveName;
+        _passiveDescriptionText.text = playerData.Passive.PassiveDescription;
     }
 
     public void ChangeHPValue(int currentHP, int maxHP)

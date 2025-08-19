@@ -22,12 +22,12 @@ public class SightController : MonoBehaviour
     {
         for(int i = 0;  i < bulletCount; i++)
         {
-            _bulletsInCurrentBag.Add(CenterManager.Instance.TakeRandomBulletFromCenter());
+            _bulletsInCurrentBag.Add(CenterManager.Instance.GetRandomBulletFromCenter());
         }
         _sightView.UpdateCurrentBulletsText(_bulletsInCurrentBag.Count);
     }
 
-    public void SendBulletToSight()
+    public void PlaceBulletInSight()
     {
         if(_bulletsInCurrentBag.Count <= 0)
         {
@@ -70,7 +70,14 @@ public class SightController : MonoBehaviour
         SightSpace chosenSpace = _sightView.GetSightSpace(removeCell);
         if (chosenSpace.BulletProperties == null) return; // If there's no bullet, don't bother removing the bullet
         BulletData chosenProperty = chosenSpace.BulletProperties;
-        CenterManager.Instance.AddBulletToCenter(chosenProperty);
+        if(GameManager.Instance.CurrentMode == GameMode.ScoreAttack)
+        {
+            CenterManager.Instance.AddBulletToIntensity(chosenProperty);
+        }
+        else
+        {
+            CenterManager.Instance.AddBulletToCenter(chosenProperty);
+        }
         if(chosenProperty.IsStar) GameManager.Instance.ActivePlayer.ActionController.ActivateStarActions();
         _sightView.RemoveSightBulletObject(removeCell);
     }
@@ -141,7 +148,7 @@ public class SightController : MonoBehaviour
             if (spaceRequirement.NeedsEmpty) return false;
             if ((spaceRequirement.ColorRequired != BulletColor.Any) && (spaceProperty.Color != spaceRequirement.ColorRequired)) return false;
             if ((spaceRequirement.NumberRequired != 0) && (spaceProperty.Number != spaceRequirement.NumberRequired)) return false;
-            // check same number pattern later, more complex than others
+            // same number pattern currently being checked in the wrapping functions themself (hover)
             if (spaceRequirement.NeedsStarBullet && (spaceProperty.IsStar == false)) return false;
         }
 
@@ -256,16 +263,24 @@ public class SightController : MonoBehaviour
                     int sightHoveredRow = Mathf.Clamp(startingRow, 0, sightGrid.GetLength(0) - patternRows);
                     int sightHoveredColumn = Mathf.Clamp(startingColumn, 0, sightGrid.GetLength(1) - patternColumns);
 
+                    List<Vector2Int> needsSameNumberCells = new List<Vector2Int>();
+                    int sameNumberRequirement = -1;
                     if (Input.GetMouseButtonDown(0))
                     {
                         bool isPatternValid = true;
+
                         for (int i = 0; i < patternRows; i++)
                         {
                             for (int j = 0; j < patternColumns; j++)
                             {
                                 Vector2Int comparisonPosition = new Vector2Int(sightHoveredRow + i, sightHoveredColumn + j);
+                                if (_sightSpaceRequirements[i, j].NeedsSameNumber)
+                                {
+                                    needsSameNumberCells.Add(comparisonPosition);
+                                    continue;
+                                }
                                 SightSpace sightSpace = _sightView.GetSightSpace(comparisonPosition);
-                                if (!IsSpaceValidForPattern(_sightSpaceRequirements[i, j], sightSpace.BulletProperties)) // if it matches, set to correct color. otherwise, set to incorrect color
+                                if (!IsSpaceValidForPattern(_sightSpaceRequirements[i, j], sightSpace.BulletProperties))
                                 {
                                     isPatternValid = false;
                                     break;
@@ -273,6 +288,33 @@ public class SightController : MonoBehaviour
                             }
                             if (!isPatternValid) break;
                         }
+
+                        if(needsSameNumberCells.Count > 0)
+                        {
+                            foreach(Vector2Int cell in needsSameNumberCells)
+                            {
+                                Vector2Int comparisonPosition = new Vector2Int(cell.x, cell.y);
+                                SightSpace sightSpace = _sightView.GetSightSpace(comparisonPosition);
+                                if (sightSpace.BulletProperties != null) // make sure not to check properties if space is empty
+                                {
+                                    if(sameNumberRequirement == -1)
+                                    {
+                                        sameNumberRequirement = sightSpace.BulletProperties.Number;
+                                    }
+                                    else if(sightSpace.BulletProperties.Number != sameNumberRequirement)
+                                    {
+                                        isPatternValid = false;
+                                        break;
+                                    }
+                                }
+                                if (!IsSpaceValidForPattern(_sightSpaceRequirements[cell.x - sightHoveredRow, cell.y - sightHoveredColumn], sightSpace.BulletProperties))
+                                {
+                                    isPatternValid = false;
+                                    break;
+                                }
+                            }
+                        }
+
                         if (isPatternValid)
                         {
                             Vector2Int returnValue = new Vector2Int(sightHoveredRow, sightHoveredColumn);
@@ -282,11 +324,18 @@ public class SightController : MonoBehaviour
                         }
                     }
 
+                    needsSameNumberCells.Clear();
+
                     for (int i = 0; i < patternRows; i++)
                     {
                         for (int j = 0; j < patternColumns; j++)
                         {
                             Vector2Int comparisonPosition = new Vector2Int(sightHoveredRow + i, sightHoveredColumn + j);
+                            if (_sightSpaceRequirements[i, j].NeedsSameNumber)
+                            {
+                                needsSameNumberCells.Add(comparisonPosition);
+                                continue;
+                            }
                             SightSpace sightSpace = _sightView.GetSightSpace(comparisonPosition);
                             if (IsSpaceValidForPattern(_sightSpaceRequirements[i, j], sightSpace.BulletProperties)) // if it matches, set to correct color. otherwise, set to incorrect color
                             {
@@ -296,6 +345,40 @@ public class SightController : MonoBehaviour
                             {
                                 sightSpace.SetSpaceValidity(true, false);
                             }
+                        }
+                    }
+
+                    sameNumberRequirement = -1;
+                    bool hasSameNumbers = true;
+
+                    if(needsSameNumberCells.Count > 0)
+                    {
+                        foreach (Vector2Int cell in needsSameNumberCells) // check if pattern is valid or not
+                        {
+                            Vector2Int comparisonPosition = new Vector2Int(cell.x, cell.y);
+                            SightSpace sightSpace = _sightView.GetSightSpace(comparisonPosition);
+                            if (sightSpace.BulletProperties != null) // make sure not to check properties if space is empty
+                            {
+                                if (sameNumberRequirement == -1)
+                                {
+                                    sameNumberRequirement = sightSpace.BulletProperties.Number;
+                                }
+                                else if (sightSpace.BulletProperties.Number != sameNumberRequirement)
+                                {
+                                    hasSameNumbers = false;
+                                    break;
+                                }
+                            }
+                            if (!IsSpaceValidForPattern(_sightSpaceRequirements[cell.x - sightHoveredRow, cell.y - sightHoveredColumn], sightSpace.BulletProperties))
+                            {
+                                hasSameNumbers = false;
+                                break;
+                            }
+                        }
+
+                        foreach (Vector2Int cell in needsSameNumberCells) // then, actually set each space's highlight visibility
+                        {
+                            _sightView.GetSightSpace(cell).SetSpaceValidity(true, hasSameNumbers);
                         }
                     }
                 }

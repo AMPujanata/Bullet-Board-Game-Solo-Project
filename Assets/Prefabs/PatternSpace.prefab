@@ -382,6 +382,11 @@ MonoBehaviour:
   _patternBulletStarImage: {fileID: 7679243517111599081}
   _patternBulletNeededSprite: {fileID: 21300000, guid: 1fd5661ff8b5d154aa1d1995e10a4eec, type: 3}
   _patternEmptyNeededSprite: {fileID: 21300000, guid: aa1d6ca0da253fb4fa9aed2dd3dd354b, type: 3}
+  _redBulletNeededSprite: {fileID: 21300000, guid: d4fe06b54e943d947b9757fdee28a00f, type: 3}
+  _blueBulletNeededSprite: {fileID: 21300000, guid: 2ef565af91ac51149a0427e44d50f906, type: 3}
+  _greenBulletNeededSprite: {fileID: 21300000, guid: ef3fb0f048b258243aad6042de3f6b4b, type: 3}
+  _yellowBulletNeededSprite: {fileID: 21300000, guid: fe0b10c6b0c871e4db2244dc10c48c6b, type: 3}
+  _pinkBulletNeededSprite: {fileID: 21300000, guid: 767563dc74f8e044ba366232fbe29f9f, type: 3}
 --- !u!1 &8568844292881608428
 GameObject:
   m_ObjectHideFlags: 0

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public GameMode CurrentMode = GameMode.ScoreAttack;
+
     public static GameManager Instance { get; private set; }
     private int _currentIntensity = 4;
     private int _startingBullets = 10;
@@ -31,27 +33,34 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         ActivePlayer.SightController.DrawBulletsFromCenter(_startingBullets);
         ActivePlayer.PatternController.DrawToMaxHandSize();
-        // also add powerups setup later
         _activePlayerBoardCanvasGroup.interactable = true;
         yield break;
     }
 
     public void BeginEndPhase()
     {
-        // take a powerup
+        _activePlayerBoardCanvasGroup.interactable = false;
         ActivePlayer.PatternController.DrawToMaxHandSize();
-        ActivePlayer.SightController.DrawBulletsFromCenter(_currentIntensity);
+        if(CurrentMode == GameMode.ScoreAttack)
+        {
+            int extraBullets = CenterManager.Instance.GetNumberOfBulletsInIntensity();
+            ActivePlayer.SightController.DrawBulletsFromCenter(_currentIntensity + extraBullets);
+            CenterManager.Instance.ReturnAllBulletsFromIntensityToCenter();
+        }
+        else
+        {
+            ActivePlayer.SightController.DrawBulletsFromCenter(_currentIntensity);
+        }
         // and then start Cleanup Phase after "all" players are done
         BeginCleanupPhase();
     }
 
     private void BeginCleanupPhase()
     {
-        // draw more powerups
-        _currentIntensity += 1; // and +1 more for each lost Heroine
+        _currentIntensity += 1;
         // take all bullets in incoming and place in current
         ActivePlayer.ActionController.RefreshAP();
-        // start a new round (option phase)
+        _activePlayerBoardCanvasGroup.interactable = true;
     }
 
     public PlayerController ActivePlayer { get; private set; }

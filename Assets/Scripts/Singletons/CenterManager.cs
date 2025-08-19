@@ -18,17 +18,38 @@ public class CenterManager : MonoBehaviour
     }
 
     private List<BulletData> _bulletsInCenter = new List<BulletData>();
+    private List<BulletData> _bulletsInIntensity = new List<BulletData>();
 
-    public BulletData TakeRandomBulletFromCenter()
+    public BulletData GetRandomBulletFromCenter()
     {
         BulletData randomChosenBullet = _bulletsInCenter[Random.Range(0, _bulletsInCenter.Count - 1)];
         _bulletsInCenter.Remove(randomChosenBullet);
         return randomChosenBullet;
     }
 
+    public void ReturnAllBulletsFromIntensityToCenter()
+    {
+        List<BulletData> allIntensityBullets = _bulletsInIntensity;
+        _bulletsInIntensity.Clear();
+        foreach(BulletData data in allIntensityBullets)
+        {
+            AddBulletToCenter(data);
+        }
+    }
+
+    public int GetNumberOfBulletsInIntensity()
+    {
+        return _bulletsInIntensity.Count;
+    }
+
     public void AddBulletToCenter(BulletData newBullet)
     {
         _bulletsInCenter.Add(newBullet);
+    }
+
+    public void AddBulletToIntensity(BulletData newBullet)
+    {
+        _bulletsInIntensity.Add(newBullet);
     }
 
     private void InitializeStartingBullets()
