@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 8285119}
   - component: {fileID: 8285120}
   m_Layer: 5
-  m_Name: Red Current Column
+  m_Name: Red Sight Column
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2389,7 +2389,7 @@ GameObject:
   - component: {fileID: 599720800}
   - component: {fileID: 599720801}
   m_Layer: 5
-  m_Name: Pink Current Column
+  m_Name: Pink Sight Column
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3415,7 +3415,7 @@ GameObject:
   - component: {fileID: 799415692}
   - component: {fileID: 799415697}
   m_Layer: 5
-  m_Name: Current Panel
+  m_Name: Sight Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3454,7 +3454,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61367154ee040984dbe5ff72f86f8dd2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _currentView: {fileID: 799415697}
+  _sightView: {fileID: 799415697}
 --- !u!114 &799415693
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3569,38 +3569,38 @@ MonoBehaviour:
   - BulletColorRequirement: 4
     BulletSprite: {fileID: 21300000, guid: 4066941f204a63f41bba498f3cfc7d4b, type: 3}
     MainUIColor: {r: 0.9490196, g: 0.5921569, b: 0.7529412, a: 1}
-  _currentGrid:
-  - CurrentSpaces:
+  _sightGrid:
+  - SightSpaces:
     - {fileID: 221329678}
     - {fileID: 2056102983}
     - {fileID: 1923720251}
     - {fileID: 1285004694}
     - {fileID: 1519677976}
-  - CurrentSpaces:
+  - SightSpaces:
     - {fileID: 2060763530}
     - {fileID: 1584319855}
     - {fileID: 1434598560}
     - {fileID: 1856436381}
     - {fileID: 1495398000}
-  - CurrentSpaces:
+  - SightSpaces:
     - {fileID: 1837550583}
     - {fileID: 1058896184}
     - {fileID: 439831527}
     - {fileID: 1353867734}
     - {fileID: 1206163354}
-  - CurrentSpaces:
+  - SightSpaces:
     - {fileID: 786888102}
     - {fileID: 106608679}
     - {fileID: 1939541417}
     - {fileID: 2040874800}
     - {fileID: 419339782}
-  - CurrentSpaces:
+  - SightSpaces:
     - {fileID: 2025632157}
     - {fileID: 103271302}
     - {fileID: 1504032637}
     - {fileID: 1847103102}
     - {fileID: 1122810340}
-  - CurrentSpaces:
+  - SightSpaces:
     - {fileID: 1024694419}
     - {fileID: 1467290408}
     - {fileID: 1521719452}
@@ -4044,7 +4044,7 @@ GameObject:
   - component: {fileID: 936579024}
   - component: {fileID: 936579025}
   m_Layer: 5
-  m_Name: Green Current Column
+  m_Name: Green Sight Column
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5702,7 +5702,7 @@ GameObject:
   - component: {fileID: 1311818379}
   - component: {fileID: 1311818378}
   m_Layer: 5
-  m_Name: Current Bullet Field
+  m_Name: Current Sight Field
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6705,8 +6705,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 799415692}
-        m_TargetAssemblyTypeName: CurrentManager, Assembly-CSharp
-        m_MethodName: SendBulletToCurrent
+        m_TargetAssemblyTypeName: SightController, Assembly-CSharp
+        m_MethodName: SendBulletToSight
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6992,7 +6992,7 @@ MonoBehaviour:
   _playerData: {fileID: 11400000, guid: dd2293342729b1d48a2dc8def6fc5e4d, type: 2}
   _playerView: {fileID: 1601856003}
   _actionController: {fileID: 1438830431}
-  _currentController: {fileID: 799415692}
+  _sightController: {fileID: 799415692}
   _patternController: {fileID: 659724636}
 --- !u!114 &1601856003
 MonoBehaviour:
@@ -7253,7 +7253,7 @@ GameObject:
   - component: {fileID: 1645426012}
   - component: {fileID: 1645426013}
   m_Layer: 5
-  m_Name: Yellow Current Column
+  m_Name: Yellow Sight Column
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7947,7 +7947,7 @@ GameObject:
   - component: {fileID: 1762015667}
   - component: {fileID: 1762015668}
   m_Layer: 5
-  m_Name: Blue Current Column
+  m_Name: Blue Sight Column
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

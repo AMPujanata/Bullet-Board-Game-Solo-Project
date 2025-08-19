@@ -10,8 +10,8 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private ActionController _actionController;
     public ActionController ActionController { get { return _actionController; } }
-    [SerializeField] private CurrentController _currentController;
-    public CurrentController CurrentController { get { return _currentController; } }
+    [SerializeField] private SightController _sightController;
+    public SightController SightController { get { return _sightController; } }
     [SerializeField] private PatternController _patternController;
     public PatternController PatternController { get { return _patternController; } }
 

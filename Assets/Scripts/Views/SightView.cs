@@ -4,71 +4,71 @@ using UnityEngine;
 using System;
 
 
-public class CurrentView : MonoBehaviour
+public class SightView : MonoBehaviour
 {
     [Serializable]
-    private class CurrentRow
+    private class SightRow
     {
-        public CurrentSpace[] CurrentSpaces;
+        public SightSpace[] SightSpaces;
     }
     [SerializeField] private TMPro.TMP_Text _sendBulletText;
     [SerializeField] private GameObject _bulletPrefab;
 
     [SerializeField] private BulletColorUIProperty[] _bulletColorUIProperties;
-    [SerializeField] private CurrentRow[] _currentGrid;
+    [SerializeField] private SightRow[] _sightGrid;
 
     private void Awake()
     {
-        int numberOfRows = _currentGrid.Length;
-        int numberOfColumns = _currentGrid[0].CurrentSpaces.Length;
+        int numberOfRows = _sightGrid.Length;
+        int numberOfColumns = _sightGrid[0].SightSpaces.Length;
 
         for (int i = 0; i < numberOfRows; i++)
         {
             for (int j = 0; j < numberOfColumns; j++)
             {
-                _currentGrid[i].CurrentSpaces[j].Initialize(new Vector2Int(i, j));
+                _sightGrid[i].SightSpaces[j].Initialize(new Vector2Int(i, j));
             }
         }
     }
 
-    public CurrentSpace[,] GetCurrentGrid()
+    public SightSpace[,] GetSightGrid()
     {
-        int numberOfRows = _currentGrid.Length;
-        int numberOfColumns = _currentGrid[0].CurrentSpaces.Length;
-        CurrentSpace[,] returnGrid = new CurrentSpace[numberOfRows, numberOfColumns];
+        int numberOfRows = _sightGrid.Length;
+        int numberOfColumns = _sightGrid[0].SightSpaces.Length;
+        SightSpace[,] returnGrid = new SightSpace[numberOfRows, numberOfColumns];
 
         for(int i = 0; i < numberOfRows; i++)
         {
             for(int j = 0; j < numberOfColumns; j++)
             {
-                returnGrid[i, j] = _currentGrid[i].CurrentSpaces[j];
+                returnGrid[i, j] = _sightGrid[i].SightSpaces[j];
             }
         }
 
         return returnGrid;
     }
 
-    public CurrentSpace[] GetCurrentColumnByColor(int requestedColumn)
+    public SightSpace[] GetSightColumnByColor(int requestedColumn)
     {
-        CurrentSpace[] returnColumn = new CurrentSpace[_currentGrid.Length];
+        SightSpace[] returnColumn = new SightSpace[_sightGrid.Length];
 
         for(int i = 0; i < returnColumn.Length; i++)
         {
-            returnColumn[i] = _currentGrid[i].CurrentSpaces[requestedColumn];
+            returnColumn[i] = _sightGrid[i].SightSpaces[requestedColumn];
         }
 
         return returnColumn;
     }
 
-    public CurrentSpace GetCurrentSpace(Vector2Int cell)
+    public SightSpace GetSightSpace(Vector2Int cell)
     {
-        CurrentSpace returnSpace = _currentGrid[cell.x].CurrentSpaces[cell.y];
+        SightSpace returnSpace = _sightGrid[cell.x].SightSpaces[cell.y];
         return returnSpace;
     }
 
-    public void SpawnNewCurrentBulletObject(Vector2Int cell, BulletData bulletData)
+    public void SpawnNewSightBulletObject(Vector2Int cell, BulletData bulletData)
     {
-        CurrentSpace selectedSpace = _currentGrid[cell.x].CurrentSpaces[cell.y];
+        SightSpace selectedSpace = _sightGrid[cell.x].SightSpaces[cell.y];
         selectedSpace.BulletProperties = bulletData;
 
         GameObject newBulletObject = Instantiate(_bulletPrefab, selectedSpace.BulletParent);
@@ -76,18 +76,18 @@ public class CurrentView : MonoBehaviour
         newBulletObject.GetComponent<BulletView>().Initialize(bulletData, chosenColorUIProperty);
     }
 
-    public void RemoveCurrentBulletObject(Vector2Int cell)
+    public void RemoveSightBulletObject(Vector2Int cell)
     {
-        CurrentSpace selectedSpace = _currentGrid[cell.x].CurrentSpaces[cell.y];
+        SightSpace selectedSpace = _sightGrid[cell.x].SightSpaces[cell.y];
         selectedSpace.BulletProperties = null;
 
         Destroy(selectedSpace.BulletParent.GetChild(0).gameObject);
     }
 
-    public void MoveCurrentBulletObject(Vector2Int oldCell, Vector2Int newCell)
+    public void MoveSightBulletObject(Vector2Int oldCell, Vector2Int newCell)
     {
-        CurrentSpace oldSpace = _currentGrid[oldCell.x].CurrentSpaces[oldCell.y];
-        CurrentSpace newSpace = _currentGrid[newCell.x].CurrentSpaces[newCell.y];
+        SightSpace oldSpace = _sightGrid[oldCell.x].SightSpaces[oldCell.y];
+        SightSpace newSpace = _sightGrid[newCell.x].SightSpaces[newCell.y];
         GameObject bulletObjectToMove = oldSpace.BulletParent.GetChild(0).gameObject;
         bulletObjectToMove.transform.SetParent(newSpace.BulletParent);
         bulletObjectToMove.transform.position = newSpace.BulletParent.transform.position;

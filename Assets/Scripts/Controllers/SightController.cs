@@ -4,17 +4,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-[RequireComponent(typeof(CurrentView))]
-public class CurrentController : MonoBehaviour
+[RequireComponent(typeof(SightView))]
+public class SightController : MonoBehaviour
 {
-    [SerializeField] private CurrentView _currentView;
+    [SerializeField] private SightView _sightView;
     private List<BulletData> _bulletsInCurrentBag = new List<BulletData>();
 
     #region Hover Routine Variables
     private bool _isAcceptingHoverInputs = false;
     private Vector2Int _previousActiveSpacePosition = new Vector2Int(-1, -1);
     private Vector2Int _activeSpacePosition = new Vector2Int(-1, -1);
-    private PatternSpaceData[,] _currentSpaceRequirements = null;
+    private PatternSpaceData[,] _sightSpaceRequirements = null;
     private bool _shouldCancelSpaceSelection = false;
     #endregion
 
@@ -24,10 +24,10 @@ public class CurrentController : MonoBehaviour
         {
             _bulletsInCurrentBag.Add(CenterManager.Instance.TakeRandomBulletFromCenter());
         }
-        _currentView.UpdateCurrentBulletsText(_bulletsInCurrentBag.Count);
+        _sightView.UpdateCurrentBulletsText(_bulletsInCurrentBag.Count);
     }
 
-    public void SendBulletToCurrent()
+    public void SendBulletToSight()
     {
         if(_bulletsInCurrentBag.Count <= 0)
         {
@@ -39,16 +39,16 @@ public class CurrentController : MonoBehaviour
 
         BulletData bulletToSpawn = _bulletsInCurrentBag[UnityEngine.Random.Range(0, _bulletsInCurrentBag.Count - 1)];
         _bulletsInCurrentBag.Remove(bulletToSpawn);
-        _currentView.UpdateCurrentBulletsText(_bulletsInCurrentBag.Count);
-        CurrentSpace[] chosenCurrentColumn = _currentView.GetCurrentColumnByColor((int)bulletToSpawn.Color);
+        _sightView.UpdateCurrentBulletsText(_bulletsInCurrentBag.Count);
+        SightSpace[] chosenSightColumn = _sightView.GetSightColumnByColor((int)bulletToSpawn.Color);
 
         int spacesToMoveDown = bulletToSpawn.Number;
         int spacesMoved = 0;
         int spaceToSpawnInto;
 
-        for (spaceToSpawnInto = 0; spaceToSpawnInto < chosenCurrentColumn.Length; spaceToSpawnInto++)
+        for (spaceToSpawnInto = 0; spaceToSpawnInto < chosenSightColumn.Length; spaceToSpawnInto++)
         {
-            if (chosenCurrentColumn[spaceToSpawnInto].BulletProperties == null) spacesMoved++;
+            if (chosenSightColumn[spaceToSpawnInto].BulletProperties == null) spacesMoved++;
             if (spacesMoved >= spacesToMoveDown)
             {
                 break;
@@ -57,7 +57,7 @@ public class CurrentController : MonoBehaviour
 
         if(spacesMoved >= spacesToMoveDown)
         {
-            _currentView.SpawnNewCurrentBulletObject(new Vector2Int(spaceToSpawnInto, (int)bulletToSpawn.Color), bulletToSpawn);
+            _sightView.SpawnNewSightBulletObject(new Vector2Int(spaceToSpawnInto, (int)bulletToSpawn.Color), bulletToSpawn);
         }
         else
         {
@@ -65,17 +65,17 @@ public class CurrentController : MonoBehaviour
         }
     }
 
-    public void RemoveBulletFromCurrent(Vector2Int removeCell)
+    public void RemoveBulletFromSight(Vector2Int removeCell)
     {
-        CurrentSpace chosenSpace = _currentView.GetCurrentSpace(removeCell);
+        SightSpace chosenSpace = _sightView.GetSightSpace(removeCell);
         if (chosenSpace.BulletProperties == null) return; // If there's no bullet, don't bother removing the bullet
         BulletData chosenProperty = chosenSpace.BulletProperties;
         CenterManager.Instance.AddBulletToCenter(chosenProperty);
         if(chosenProperty.IsStar) GameManager.Instance.ActivePlayer.ActionController.ActivateStarActions();
-        _currentView.RemoveCurrentBulletObject(removeCell);
+        _sightView.RemoveSightBulletObject(removeCell);
     }
 
-    public void RemoveBulletsFromCurrentWithPattern(Vector2Int startingCell, PatternSpaceData[,] patternSpaceDatas)
+    public void RemoveBulletsFromSightWithPattern(Vector2Int startingCell, PatternSpaceData[,] patternSpaceDatas)
     {
         int patternRows = patternSpaceDatas.GetLength(0);
         int patternColumns = patternSpaceDatas.GetLength(1);
@@ -86,22 +86,22 @@ public class CurrentController : MonoBehaviour
             {
                 if (patternSpaceDatas[i,j].WillClearBullet) // if it matches, set to correct color. otherwise, set to incorrect color
                 {
-                    Vector2Int currentPosition = new Vector2Int(startingCell.x + i, startingCell.y + j);
-                    RemoveBulletFromCurrent(currentPosition);
+                    Vector2Int sightPosition = new Vector2Int(startingCell.x + i, startingCell.y + j);
+                    RemoveBulletFromSight(sightPosition);
                 }
             }
         }
     }
 
-    public void MoveBulletInCurrent(Vector2Int oldCell, Vector2Int newCell)
+    public void MoveBulletInSight(Vector2Int oldCell, Vector2Int newCell)
     {
-        CurrentSpace chosenSpace = _currentView.GetCurrentSpace(oldCell);
+        SightSpace chosenSpace = _sightView.GetSightSpace(oldCell);
         if (chosenSpace.BulletProperties == null) return; // If there's no bullet, don't bother moving the bullet
-        CurrentSpace finalSpace = _currentView.GetCurrentSpace(newCell);
+        SightSpace finalSpace = _sightView.GetSightSpace(newCell);
         BulletData chosenProperty = chosenSpace.BulletProperties;
         finalSpace.BulletProperties = chosenProperty;
         chosenSpace.BulletProperties = null;
-        _currentView.MoveCurrentBulletObject(oldCell, newCell);
+        _sightView.MoveSightBulletObject(oldCell, newCell);
     }
 
     public void UpdateActiveSpace(Vector2Int cell)
@@ -120,14 +120,14 @@ public class CurrentController : MonoBehaviour
 
     private void ResetAllSpaceHighlights()
     {
-        CurrentSpace[,] currentGrid = _currentView.GetCurrentGrid();
-        int currentRows = currentGrid.GetLength(0);
-        int currentColumns = currentGrid.GetLength(1);
-        for (int i = 0; i < currentRows; i++)
+        SightSpace[,] sightGrid = _sightView.GetSightGrid();
+        int sightRows = sightGrid.GetLength(0);
+        int sightColumns = sightGrid.GetLength(1);
+        for (int i = 0; i < sightRows; i++)
         {
-            for (int j = 0; j < currentColumns; j++)
+            for (int j = 0; j < sightColumns; j++)
             {
-                currentGrid[i, j].SetSpaceValidity(false, false);
+                sightGrid[i, j].SetSpaceValidity(false, false);
             }
         }
     }
@@ -151,11 +151,11 @@ public class CurrentController : MonoBehaviour
 
     public void CheckSpacesToMoveIntoOrthogonal(Vector2Int startingCell, int radius, Direction[] allowedDirections, Action<bool, Vector2Int, int> callback)
     {
-        CurrentSpace[,] currentGrid = _currentView.GetCurrentGrid();
+        SightSpace[,] sightGrid = _sightView.GetSightGrid();
         int upBoundary = 0;
-        int downBoundary = currentGrid.GetLength(0) - 1;
+        int downBoundary = sightGrid.GetLength(0) - 1;
         int leftBoundary = 0;
-        int rightBoundary = currentGrid.GetLength(1) - 1;
+        int rightBoundary = sightGrid.GetLength(1) - 1;
 
         // clamp within the Grid's boundaries, and set the spaces to search inbase on allowed directions
         int rowsStart = Mathf.Clamp(Array.Exists(allowedDirections, direction => direction == Direction.Up) ? startingCell.x - radius : startingCell.x, upBoundary, downBoundary);
@@ -172,10 +172,10 @@ public class CurrentController : MonoBehaviour
                 int distance = Mathf.Abs(row - startingCell.x) + Mathf.Abs(column - startingCell.y); // calculate distance from starting cell
                 if (distance <= radius)
                 {
-                    if (currentGrid[row, column].BulletProperties == null && !((row == startingCell.x) && (column == startingCell.y))) // don't highlight spaces with bullets already in them and don't highlight starting space
+                    if (sightGrid[row, column].BulletProperties == null && !((row == startingCell.x) && (column == startingCell.y))) // don't highlight spaces with bullets already in them and don't highlight starting space
                     {
                         validCellsWithDistances.Add(new Vector2Int(row, column), distance);
-                        currentGrid[row, column].SetSpaceValidity(true, true);
+                        sightGrid[row, column].SetSpaceValidity(true, true);
                     }
                 }
             }
@@ -199,9 +199,9 @@ public class CurrentController : MonoBehaviour
 
                 foreach (RaycastResult result in results)
                 {
-                    if (result.gameObject.GetComponent<CurrentSpace>()) // find the first current space our mouse is over
+                    if (result.gameObject.GetComponent<SightSpace>()) // find the first sight space our mouse is over
                     {
-                        Vector2Int cellPosition = result.gameObject.GetComponent<CurrentSpace>().CurrentCell;
+                        Vector2Int cellPosition = result.gameObject.GetComponent<SightSpace>().SightCell;
                         if (validCellsWithDistances.ContainsKey(cellPosition))
                         {
                             ResetAllSpaceHighlights();
@@ -225,7 +225,7 @@ public class CurrentController : MonoBehaviour
     {
         _isAcceptingHoverInputs = true;
 
-        _currentSpaceRequirements = spaceRequirements;
+        _sightSpaceRequirements = spaceRequirements;
         StartCoroutine(SelectValidSpacesOnHoverRoutine(callback));
     }
 
@@ -243,18 +243,18 @@ public class CurrentController : MonoBehaviour
                     // our pattern's "anchor" is on our mouse, but that "anchor" corresponds to the "topleft middle" square, or in other words: hovered space - ((Ceil(length / 2) - 1)
                     // the extra -1 is needed to account for the fact arrays start from 0
                     // EX: Length 1 = 0, Length 2 = 0, Length 3 = -1, Length  4 = -1, Length 5 = -2
-                    // Also, clamp the pattern to be within the current grid arrays
+                    // Also, clamp the pattern to be within the sight grid arrays
 
-                    CurrentSpace[,] currentGrid = _currentView.GetCurrentGrid();
+                    SightSpace[,] sightGrid = _sightView.GetSightGrid();
 
-                    int patternRows = _currentSpaceRequirements.GetLength(0);
-                    int patternColumns = _currentSpaceRequirements.GetLength(1);
+                    int patternRows = _sightSpaceRequirements.GetLength(0);
+                    int patternColumns = _sightSpaceRequirements.GetLength(1);
 
                     int startingRow = _activeSpacePosition.x - (Mathf.CeilToInt((float)patternRows / 2) - 1);
                     int startingColumn = _activeSpacePosition.y - (Mathf.CeilToInt((float)patternColumns / 2) - 1);
 
-                    int currentHoveredRow = Mathf.Clamp(startingRow, 0, currentGrid.GetLength(0) - patternRows);
-                    int currentHoveredColumn = Mathf.Clamp(startingColumn, 0, currentGrid.GetLength(1) - patternColumns);
+                    int sightHoveredRow = Mathf.Clamp(startingRow, 0, sightGrid.GetLength(0) - patternRows);
+                    int sightHoveredColumn = Mathf.Clamp(startingColumn, 0, sightGrid.GetLength(1) - patternColumns);
 
                     if (Input.GetMouseButtonDown(0))
                     {
@@ -263,9 +263,9 @@ public class CurrentController : MonoBehaviour
                         {
                             for (int j = 0; j < patternColumns; j++)
                             {
-                                Vector2Int comparisonPosition = new Vector2Int(currentHoveredRow + i, currentHoveredColumn + j);
-                                CurrentSpace currentSpace = _currentView.GetCurrentSpace(comparisonPosition);
-                                if (!IsSpaceValidForPattern(_currentSpaceRequirements[i, j], currentSpace.BulletProperties)) // if it matches, set to correct color. otherwise, set to incorrect color
+                                Vector2Int comparisonPosition = new Vector2Int(sightHoveredRow + i, sightHoveredColumn + j);
+                                SightSpace sightSpace = _sightView.GetSightSpace(comparisonPosition);
+                                if (!IsSpaceValidForPattern(_sightSpaceRequirements[i, j], sightSpace.BulletProperties)) // if it matches, set to correct color. otherwise, set to incorrect color
                                 {
                                     isPatternValid = false;
                                     break;
@@ -275,7 +275,7 @@ public class CurrentController : MonoBehaviour
                         }
                         if (isPatternValid)
                         {
-                            Vector2Int returnValue = new Vector2Int(currentHoveredRow, currentHoveredColumn);
+                            Vector2Int returnValue = new Vector2Int(sightHoveredRow, sightHoveredColumn);
                             CheckValidSpacesOnHoverCleanup();
                             callback.Invoke(true, returnValue);
                             yield break;
@@ -286,15 +286,15 @@ public class CurrentController : MonoBehaviour
                     {
                         for (int j = 0; j < patternColumns; j++)
                         {
-                            Vector2Int comparisonPosition = new Vector2Int(currentHoveredRow + i, currentHoveredColumn + j);
-                            CurrentSpace currentSpace = _currentView.GetCurrentSpace(comparisonPosition);
-                            if (IsSpaceValidForPattern(_currentSpaceRequirements[i, j], currentSpace.BulletProperties)) // if it matches, set to correct color. otherwise, set to incorrect color
+                            Vector2Int comparisonPosition = new Vector2Int(sightHoveredRow + i, sightHoveredColumn + j);
+                            SightSpace sightSpace = _sightView.GetSightSpace(comparisonPosition);
+                            if (IsSpaceValidForPattern(_sightSpaceRequirements[i, j], sightSpace.BulletProperties)) // if it matches, set to correct color. otherwise, set to incorrect color
                             {
-                                currentSpace.SetSpaceValidity(true, true);
+                                sightSpace.SetSpaceValidity(true, true);
                             }
                             else
                             {
-                                currentSpace.SetSpaceValidity(true, false);
+                                sightSpace.SetSpaceValidity(true, false);
                             }
                         }
                     }
@@ -313,7 +313,7 @@ public class CurrentController : MonoBehaviour
         _isAcceptingHoverInputs = false;
         _previousActiveSpacePosition.Set(-1, -1);
         _activeSpacePosition.Set(-1, -1);
-        _currentSpaceRequirements = null;
+        _sightSpaceRequirements = null;
         _shouldCancelSpaceSelection = false;
         ResetAllSpaceHighlights();
     }

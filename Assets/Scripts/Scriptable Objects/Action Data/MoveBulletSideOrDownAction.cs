@@ -22,25 +22,25 @@ public class MoveBulletSideOrDownAction : BaseAction
         }
 
         Vector2 popupLocation = Camera.main.ViewportToWorldPoint(new Vector2(0.8f, 0.5f));
-        PopupManager.Instance.DisplayPopup("Choose a bullet to move.", "Cancel", popupLocation, GameManager.Instance.ActivePlayer.CurrentController.CancelSpaceSelection);
+        PopupManager.Instance.DisplayPopup("Choose a bullet to move.", "Cancel", popupLocation, GameManager.Instance.ActivePlayer.SightController.CancelSpaceSelection);
 
         PatternSpaceData anyBullet = new PatternSpaceData(true);
         PatternSpaceData[,] patternData = new PatternSpaceData[1, 1] { { anyBullet } };
 
-        GameManager.Instance.ActivePlayer.CurrentController.CheckValidSpacesOnHover(patternData, (bool isSuccessfulSelect, Vector2Int bulletCell) =>
+        GameManager.Instance.ActivePlayer.SightController.CheckValidSpacesOnHover(patternData, (bool isSuccessfulSelect, Vector2Int bulletCell) =>
         {
             if (!isSuccessfulSelect) return;
             PopupManager.Instance.ClosePopup();
-            PopupManager.Instance.DisplayPopup("Choose the space to move into.", "Cancel", popupLocation, GameManager.Instance.ActivePlayer.CurrentController.CancelSpaceSelection);
+            PopupManager.Instance.DisplayPopup("Choose the space to move into.", "Cancel", popupLocation, GameManager.Instance.ActivePlayer.SightController.CancelSpaceSelection);
             
             Direction[] allowedDirections = { Direction.Down, Direction.Left, Direction.Right };
-            GameManager.Instance.ActivePlayer.CurrentController.CheckSpacesToMoveIntoOrthogonal(bulletCell, Mathf.FloorToInt(currentAP / ActionCost), allowedDirections, (bool isSuccessfulMove, Vector2Int finalCell, int distance) =>
+            GameManager.Instance.ActivePlayer.SightController.CheckSpacesToMoveIntoOrthogonal(bulletCell, Mathf.FloorToInt(currentAP / ActionCost), allowedDirections, (bool isSuccessfulMove, Vector2Int finalCell, int distance) =>
             {
                 if (!isSuccessfulMove) return;
                 PopupManager.Instance.ClosePopup();
 
                 GameManager.Instance.ActivePlayer.ActionController.ModifyCurrentAP(-distance * ActionCost);
-                GameManager.Instance.ActivePlayer.CurrentController.MoveBulletInCurrent(bulletCell, finalCell);
+                GameManager.Instance.ActivePlayer.SightController.MoveBulletInSight(bulletCell, finalCell);
             });
         });
     }

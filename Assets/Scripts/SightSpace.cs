@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class CurrentSpace : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class SightSpace : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [field:SerializeField] public Transform BulletParent { get; private set; }
     [SerializeField] private Image _spaceValidityImage;
@@ -10,12 +10,12 @@ public class CurrentSpace : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     [SerializeField] private Color _invalidSpaceColor;
     public BulletData BulletProperties;
 
-    public Vector2Int CurrentCell { get; private set; }
+    public Vector2Int SightCell { get; private set; }
     private bool _isInitialized = false;
 
     public void Initialize(Vector2Int cell)
     {
-        CurrentCell = cell;
+        SightCell = cell;
         _isInitialized = true;
     }
 
@@ -35,12 +35,12 @@ public class CurrentSpace : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (!_isInitialized) return;
-        GameManager.Instance.ActivePlayer.CurrentController.UpdateActiveSpace(CurrentCell);
+        GameManager.Instance.ActivePlayer.SightController.UpdateActiveSpace(SightCell);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         if (!_isInitialized) return;
-        GameManager.Instance.ActivePlayer.CurrentController.RemoveActiveSpace(CurrentCell);
+        GameManager.Instance.ActivePlayer.SightController.RemoveActiveSpace(SightCell);
     }
 }

@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
     {
         _activePlayerBoardCanvasGroup.interactable = false;
         yield return new WaitForSeconds(0.5f);
-        ActivePlayer.CurrentController.DrawBulletsFromCenter(_startingBullets);
+        ActivePlayer.SightController.DrawBulletsFromCenter(_startingBullets);
         ActivePlayer.PatternController.DrawToMaxHandSize();
         // also add powerups setup later
         _activePlayerBoardCanvasGroup.interactable = true;
@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour
     {
         // take a powerup
         ActivePlayer.PatternController.DrawToMaxHandSize();
-        ActivePlayer.CurrentController.DrawBulletsFromCenter(_currentIntensity);
+        ActivePlayer.SightController.DrawBulletsFromCenter(_currentIntensity);
         // and then start Cleanup Phase after "all" players are done
         BeginCleanupPhase();
     }
