@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
     public GameMode CurrentMode = GameMode.ScoreAttack;
 
     public static GameManager Instance { get; private set; }
-    private int _currentIntensity = 4;
+    public int CurrentIntensity { get; private set; } = 4;
     private int _startingBullets = 10;
 
     private void Awake()
@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour
         ActivePlayer.SightController.DrawBulletsFromCenter(_startingBullets);
         ActivePlayer.PatternController.DrawToMaxHandSize();
         _activePlayerBoardCanvasGroup.interactable = true;
+        ActivePlayer.SightController.UpdateCurrentIntensity(CurrentIntensity, CenterManager.Instance.GetNumberOfBulletsInIntensity());
         yield break;
     }
 
@@ -44,12 +45,12 @@ public class GameManager : MonoBehaviour
         if(CurrentMode == GameMode.ScoreAttack)
         {
             int extraBullets = CenterManager.Instance.GetNumberOfBulletsInIntensity();
-            ActivePlayer.SightController.DrawBulletsFromCenter(_currentIntensity + extraBullets);
+            ActivePlayer.SightController.DrawBulletsFromCenter(CurrentIntensity + extraBullets);
             CenterManager.Instance.ReturnAllBulletsFromIntensityToCenter();
         }
         else
         {
-            ActivePlayer.SightController.DrawBulletsFromCenter(_currentIntensity);
+            ActivePlayer.SightController.DrawBulletsFromCenter(CurrentIntensity);
         }
         // and then start Cleanup Phase after "all" players are done
         BeginCleanupPhase();
@@ -57,7 +58,8 @@ public class GameManager : MonoBehaviour
 
     private void BeginCleanupPhase()
     {
-        _currentIntensity += 1;
+        CurrentIntensity += 1;
+        ActivePlayer.SightController.UpdateCurrentIntensity(CurrentIntensity, CenterManager.Instance.GetNumberOfBulletsInIntensity());
         // take all bullets in incoming and place in current
         ActivePlayer.ActionController.RefreshAP();
         _activePlayerBoardCanvasGroup.interactable = true;

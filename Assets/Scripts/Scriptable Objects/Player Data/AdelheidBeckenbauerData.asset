@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11701ccf4bab07140aa4a19f93340eb9, type: 3}
+  m_Name: AdelheidBeckenbauerData
+  m_EditorClassIdentifier: 
+  PlayerName: Adelheid Beckenbauer
+  MaxHP: 4
+  MaxAP: 7
+  Passive: {fileID: 11400000, guid: b984b62ab98178748a8fb768845ddb80, type: 2}
+  Actions:
+  - {fileID: 11400000, guid: 04eb0b6507299c14b9f2ee67679bf0b2, type: 2}
+  - {fileID: 11400000, guid: 5a55f4cdfe3e3b64a8d6902f2fb426ab, type: 2}
+  - {fileID: 11400000, guid: 3742371681eea2847aa85e89878621fc, type: 2}
+  - {fileID: 11400000, guid: 9de87978d7a5a7a48b3fbb129f6aa193, type: 2}
+  - {fileID: 11400000, guid: 12618aa133912fe428d7ab017e835341, type: 2}
+  Patterns:
+  - {fileID: 11400000, guid: 645d1297e0ddc824faa14244c61f5fe8, type: 2}
+  - {fileID: 11400000, guid: 199ee93ffeebeda459c4fdb1b8724d0a, type: 2}
+  - {fileID: 11400000, guid: 63c46868db7781646959fcfaeaa2d08d, type: 2}
+  - {fileID: 11400000, guid: 55f82840cf744374eaa06e5444858360, type: 2}
+  - {fileID: 11400000, guid: 9f882e9bf28eaa94591da3536a7759a8, type: 2}
+  - {fileID: 11400000, guid: 72bc739c412f3e549ae47962887ab498, type: 2}
+  - {fileID: 11400000, guid: ecce7689d0d51f344baa887c312d9892, type: 2}
+  - {fileID: 11400000, guid: 3b2c72807be039542bb45bb0eb51affa, type: 2}
+  - {fileID: 11400000, guid: acd6c56e81b628b4a913f68193a6e9b0, type: 2}
+  - {fileID: 11400000, guid: d2b34e5d410e8e24ab593ce423b5260b, type: 2}

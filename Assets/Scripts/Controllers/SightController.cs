@@ -70,9 +70,11 @@ public class SightController : MonoBehaviour
         SightSpace chosenSpace = _sightView.GetSightSpace(removeCell);
         if (chosenSpace.BulletProperties == null) return; // If there's no bullet, don't bother removing the bullet
         BulletData chosenProperty = chosenSpace.BulletProperties;
+        chosenProperty.IsFacedown = false; // always flip bullets face up before returning
         if(GameManager.Instance.CurrentMode == GameMode.ScoreAttack)
         {
             CenterManager.Instance.AddBulletToIntensity(chosenProperty);
+            UpdateCurrentIntensity(GameManager.Instance.CurrentIntensity, CenterManager.Instance.GetNumberOfBulletsInIntensity());
         }
         else
         {
@@ -110,7 +112,21 @@ public class SightController : MonoBehaviour
         chosenSpace.BulletProperties = null;
         _sightView.MoveSightBulletObject(oldCell, newCell);
     }
+    
+    public void FlipBulletFaceDown(Vector2Int cell)
+    {
+        SightSpace chosenSpace = _sightView.GetSightSpace(cell);
+        if (chosenSpace.BulletProperties == null) return; // If there's no bullet you can't flip it face down.
+        chosenSpace.BulletProperties.IsFacedown = true;
+        _sightView.ModifySightBulletProperty(cell, chosenSpace.BulletProperties);
+    }
 
+    public void UpdateCurrentIntensity(int currentIntensity, int extraBulletsNextRound = -1)
+    {
+        _sightView.UpdateCurrentIntensityText(currentIntensity, extraBulletsNextRound);
+    }
+
+    #region Highlighted Space Functions
     public void UpdateActiveSpace(Vector2Int cell)
     {
         if (!_isAcceptingHoverInputs) return; // only update if it is currently looking for hover inputs
@@ -146,16 +162,26 @@ public class SightController : MonoBehaviour
         if (spaceProperty != null) // this is a wrapper to make sure no comparisons are made with properties of the null space property
         {
             if (spaceRequirement.NeedsEmpty) return false;
-            if ((spaceRequirement.ColorRequired != BulletColor.Any) && (spaceProperty.Color != spaceRequirement.ColorRequired)) return false;
-            if ((spaceRequirement.NumberRequired != 0) && (spaceProperty.Number != spaceRequirement.NumberRequired)) return false;
-            // same number pattern currently being checked in the wrapping functions themself (hover)
-            if (spaceRequirement.NeedsStarBullet && (spaceProperty.IsStar == false)) return false;
+            if (spaceProperty.IsFacedown) // facedown bullets have no number or star, but are treated as any color
+            {
+                if (spaceRequirement.NeedsFaceUp || spaceRequirement.NeedsStarBullet || spaceRequirement.NumberRequired != 0) return false;
+                if (spaceRequirement.ColorRequired != BulletColor.Any && spaceProperty.Color != spaceRequirement.ColorRequired) return false;
+            }
+            else
+            {
+                if (spaceRequirement.ColorRequired != BulletColor.Any && spaceProperty.Color != spaceRequirement.ColorRequired) return false;
+                if ((spaceRequirement.NumberRequired != 0) && (spaceProperty.Number != spaceRequirement.NumberRequired)) return false;
+                // same number pattern currently being checked in the wrapping functions themself (hover)
+                if (spaceRequirement.NeedsStarBullet && (spaceProperty.IsStar == false)) return false;
+            }
         }
 
         // if all conditions are met, return true
         return true;
     }
+    #endregion
 
+    #region Check Spaces Functions
     public void CheckSpacesToMoveIntoOrthogonal(Vector2Int startingCell, int radius, Direction[] allowedDirections, Action<bool, Vector2Int, int> callback)
     {
         SightSpace[,] sightGrid = _sightView.GetSightGrid();
@@ -191,10 +217,43 @@ public class SightController : MonoBehaviour
         StartCoroutine(SelectSpaceToMoveIntoRoutine(validCellsWithDistances, callback));
     }
 
+    public void CheckSpacesToMoveIntoDiagonal(Vector2Int startingCell, int radius, Action<bool, Vector2Int, int> callback) // currently always assumes all diagonals are allowed
+    {
+        SightSpace[,] sightGrid = _sightView.GetSightGrid();
+
+        int upBoundary = 0;
+        int downBoundary = sightGrid.GetLength(0) - 1;
+        int leftBoundary = 0;
+        int rightBoundary = sightGrid.GetLength(1) - 1;
+
+        int rowsStart = Mathf.Clamp(startingCell.x - radius, upBoundary, downBoundary);
+        int rowsEnd = Mathf.Clamp(startingCell.x + radius, upBoundary, downBoundary);
+        int columnsStart = Mathf.Clamp(startingCell.y - radius, leftBoundary, rightBoundary);
+        int columnsEnd = Mathf.Clamp(startingCell.y + radius, leftBoundary, rightBoundary);
+
+        Dictionary<Vector2Int, int> validCellsWithDistances = new Dictionary<Vector2Int, int>();
+        for (int row = rowsStart; row <= rowsEnd; row++)
+        {
+            for(int column = columnsStart; column <= columnsEnd; column++)
+            {
+                int horizontalDistance = Mathf.Abs(column - startingCell.y);
+                int verticalDistance = Mathf.Abs(row - startingCell.x);
+                if(sightGrid[row, column].BulletProperties == null && (Mathf.Abs(horizontalDistance - verticalDistance) % 2) == 0 && ((startingCell.x != row) || (startingCell.y != column))) // using a mathematical algorithm, all grids with a total distance that is even are valid. Except the starting space
+                {
+                    validCellsWithDistances.Add(new Vector2Int(row, column), Mathf.Max(horizontalDistance, verticalDistance)); // and the actual distance is equal to the higher one out of horizontal and vertical distance
+                    sightGrid[row, column].SetSpaceValidity(true, true);
+                }
+            }
+        }
+
+        StartCoroutine(SelectSpaceToMoveIntoRoutine(validCellsWithDistances, callback));
+    }
+
     private IEnumerator SelectSpaceToMoveIntoRoutine(Dictionary<Vector2Int, int> validCellsWithDistances, Action<bool, Vector2Int, int> callback) // currently supports orthogonally adjacent squares only
     {
         while (!_shouldCancelSpaceSelection)
         {
+            yield return null;
             if (Input.GetMouseButtonDown(0)) // try to do something when the left mouse button is clicked
             {
                 PointerEventData eventData = new PointerEventData(EventSystem.current)
@@ -218,7 +277,6 @@ public class SightController : MonoBehaviour
                     }
                 }
             }
-            yield return null;
         }
         // Asked to cancel, callback that the function was cancelled
         ResetAllSpaceHighlights();
@@ -226,6 +284,7 @@ public class SightController : MonoBehaviour
         callback.Invoke(false, new Vector2Int(-1, -1), -1);
         yield break;
     }
+    #endregion
 
     #region On Hover Functions
     public void CheckValidSpacesOnHover(PatternSpaceData[,] spaceRequirements, Action<bool, Vector2Int> callback)
@@ -240,6 +299,7 @@ public class SightController : MonoBehaviour
     {
         while (!_shouldCancelSpaceSelection)
         {
+            yield return null;
             if (_previousActiveSpacePosition != _activeSpacePosition || Input.GetMouseButton(0))
             {
                 _previousActiveSpacePosition = _activeSpacePosition;
@@ -383,7 +443,6 @@ public class SightController : MonoBehaviour
                     }
                 }
             }
-            yield return null;
         }
         // function was cancelled, do cleanup and tell the callback it was cancelled
         CheckValidSpacesOnHoverCleanup();

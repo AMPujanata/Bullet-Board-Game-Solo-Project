@@ -10,14 +10,18 @@ public class ActionButtonView : MonoBehaviour
     [SerializeField] private TMP_Text _actionCostText;
     [SerializeField] private TMP_Text _actionDescriptionText;
 
-    public void Initialize(string actionCost, string actionDescription, Sprite actionIconSprite = null, Action onActionClick = null)
+    public void Initialize(BaseAction action)
     {
-        _actionCostText.text = actionCost;
-        _actionDescriptionText.text = actionDescription;
-        _actionIcon.sprite = actionIconSprite;
-        if (onActionClick != null)
+        _actionCostText.text = action.ActionCost.ToString();
+        _actionDescriptionText.text = action.ActionText;
+        _actionIcon.sprite = action.ActionIcon;
+        if (action.IsStar)
         {
-            _actionButton.onClick.AddListener(() => onActionClick());
+            _actionCostText.text = "S";
+        }
+        else
+        {
+            _actionButton.onClick.AddListener(action.OnActivated);
         }
     }
 }

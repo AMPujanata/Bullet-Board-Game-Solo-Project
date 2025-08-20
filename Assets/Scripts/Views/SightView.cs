@@ -12,6 +12,7 @@ public class SightView : MonoBehaviour
         public SightSpace[] SightSpaces;
     }
     [SerializeField] private TMPro.TMP_Text _sendBulletText;
+    [SerializeField] private TMPro.TMP_Text _currentIntensityText;
     [SerializeField] private GameObject _bulletPrefab;
 
     [SerializeField] private BulletColorUIProperty[] _bulletColorUIProperties;
@@ -76,6 +77,16 @@ public class SightView : MonoBehaviour
         newBulletObject.GetComponent<BulletView>().Initialize(bulletData, chosenColorUIProperty);
     }
 
+    public void ModifySightBulletProperty(Vector2Int cell, BulletData newData)
+    {
+        SightSpace selectedSpace = _sightGrid[cell.x].SightSpaces[cell.y];
+        selectedSpace.BulletProperties = newData;
+
+        GameObject bulletObject = selectedSpace.BulletParent.GetComponentInChildren<BulletView>().gameObject;
+        BulletColorUIProperty chosenColorUIProperty = Array.Find(_bulletColorUIProperties, property => property.BulletColorRequirement == selectedSpace.BulletProperties.Color);
+        bulletObject.GetComponent<BulletView>().Initialize(newData, chosenColorUIProperty);
+    }
+
     public void RemoveSightBulletObject(Vector2Int cell)
     {
         SightSpace selectedSpace = _sightGrid[cell.x].SightSpaces[cell.y];
@@ -102,6 +113,18 @@ public class SightView : MonoBehaviour
         else
         {
             _sendBulletText.text = "Begin End Phase";
+        }
+    }
+
+    public void UpdateCurrentIntensityText(int currentIntensity, int extraBulletsNextRound = -1)
+    {
+        if(extraBulletsNextRound >= 0)
+        {
+            _currentIntensityText.text = currentIntensity + " Intensity\n(+" + extraBulletsNextRound + " Bullets next round)";
+        }
+        else
+        {
+            _currentIntensityText.text = currentIntensity + " Intensity";
         }
     }
 }

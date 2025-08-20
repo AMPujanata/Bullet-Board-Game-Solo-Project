@@ -16,7 +16,11 @@ public class DebugClearBulletAction : BaseAction
         Vector2 popupLocation = Camera.main.ViewportToWorldPoint(new Vector2(0.8f, 0.5f));
         PopupManager.Instance.DisplayPopup("Choose a bullet to clear.", "Cancel", popupLocation, GameManager.Instance.ActivePlayer.SightController.CancelSpaceSelection);
 
-        PatternSpaceData anyBullet = new PatternSpaceData(true, false, BulletColor.Any, 0, false, false, true);
+        PatternSpaceData anyBullet = new PatternSpaceData()
+        {
+            NeedsBullet = true,
+            WillClearBullet = true
+        };
         PatternSpaceData[,] patternData = new PatternSpaceData[1, 1] { { anyBullet } };
 
         GameManager.Instance.ActivePlayer.SightController.CheckValidSpacesOnHover(patternData,  (bool isSuccessful, Vector2Int finalCell)=>

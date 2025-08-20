@@ -1,0 +1,86 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1754dbb7c2c2f324d9e11030b594cd20, type: 3}
+  m_Name: AdelheidTheDrop
+  m_EditorClassIdentifier: 
+  PatternName: The Drop
+  PatternDescription: '"Few joys in life compare to waiting for this one moment."'
+  PatternOwner: Adelheid Beckenbauer
+  PatternGrid:
+  - PatternSpaces:
+    - NeedsBullet: 0
+      NeedsEmpty: 0
+      ColorRequired: -1
+      NumberRequired: 0
+      NeedsSameNumber: 0
+      NeedsStarBullet: 0
+      WillClearBullet: 0
+      NeedsFaceUp: 0
+    - NeedsBullet: 1
+      NeedsEmpty: 0
+      ColorRequired: -1
+      NumberRequired: 0
+      NeedsSameNumber: 0
+      NeedsStarBullet: 0
+      WillClearBullet: 0
+      NeedsFaceUp: 0
+  - PatternSpaces:
+    - NeedsBullet: 0
+      NeedsEmpty: 0
+      ColorRequired: -1
+      NumberRequired: 0
+      NeedsSameNumber: 0
+      NeedsStarBullet: 0
+      WillClearBullet: 0
+      NeedsFaceUp: 0
+    - NeedsBullet: 1
+      NeedsEmpty: 0
+      ColorRequired: 4
+      NumberRequired: 0
+      NeedsSameNumber: 0
+      NeedsStarBullet: 0
+      WillClearBullet: 0
+      NeedsFaceUp: 0
+  - PatternSpaces:
+    - NeedsBullet: 0
+      NeedsEmpty: 0
+      ColorRequired: -1
+      NumberRequired: 0
+      NeedsSameNumber: 0
+      NeedsStarBullet: 0
+      WillClearBullet: 1
+      NeedsFaceUp: 0
+    - NeedsBullet: 1
+      NeedsEmpty: 0
+      ColorRequired: 4
+      NumberRequired: 0
+      NeedsSameNumber: 0
+      NeedsStarBullet: 0
+      WillClearBullet: 0
+      NeedsFaceUp: 0
+  - PatternSpaces:
+    - NeedsBullet: 0
+      NeedsEmpty: 0
+      ColorRequired: -1
+      NumberRequired: 0
+      NeedsSameNumber: 0
+      NeedsStarBullet: 0
+      WillClearBullet: 1
+      NeedsFaceUp: 0
+    - NeedsBullet: 0
+      NeedsEmpty: 0
+      ColorRequired: -1
+      NumberRequired: 0
+      NeedsSameNumber: 0
+      NeedsStarBullet: 0
+      WillClearBullet: 1
+      NeedsFaceUp: 0

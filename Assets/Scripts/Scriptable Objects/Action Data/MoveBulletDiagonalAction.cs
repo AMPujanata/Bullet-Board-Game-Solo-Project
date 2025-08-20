@@ -1,7 +1,7 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "MoveBulletUpActionSO", menuName = "BaseAction/MoveBulletUp")]
-public class MoveBulletUpAction : BaseAction
+[CreateAssetMenu(fileName = "MoveBulletDiagonalActionSO", menuName = "BaseAction/MoveBulletDiagonal")]
+public class MoveBulletDiagonalAction : BaseAction
 {
     public override void OnActivated()
     {
@@ -34,8 +34,7 @@ public class MoveBulletUpAction : BaseAction
             PopupManager.Instance.ClosePopup();
             PopupManager.Instance.DisplayPopup("Choose the space to move into.", "Cancel", popupLocation, GameManager.Instance.ActivePlayer.SightController.CancelSpaceSelection);
 
-            Direction[] allowedDirections = { Direction.Up };
-            GameManager.Instance.ActivePlayer.SightController.CheckSpacesToMoveIntoOrthogonal(bulletCell, Mathf.FloorToInt(currentAP / ActionCost), allowedDirections, (bool isSuccessfulMove, Vector2Int finalCell, int distance) =>
+            GameManager.Instance.ActivePlayer.SightController.CheckSpacesToMoveIntoDiagonal(bulletCell, Mathf.FloorToInt(currentAP / ActionCost), (bool isSuccessfulMove, Vector2Int finalCell, int distance) =>
             {
                 if (!isSuccessfulMove) return;
                 PopupManager.Instance.ClosePopup();

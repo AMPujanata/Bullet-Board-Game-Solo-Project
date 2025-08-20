@@ -35,7 +35,8 @@ public class PatternSpaceData
     public bool NeedsSameNumber;
     public bool NeedsStarBullet;
     public bool WillClearBullet;
-    public PatternSpaceData(bool needsBullet = false, bool needsEmpty = false, BulletColor colorRequired = BulletColor.Any, int numberRequired = 0, bool needsSameNumber = false, bool needsStarBullet = false, bool willClearBullet = false)
+    [HideInInspector] public bool NeedsFaceUp; // There is never a pattern that needs to be serialized with NeedsFaceUp.
+    public PatternSpaceData(bool needsBullet = false, bool needsEmpty = false, BulletColor colorRequired = BulletColor.Any, int numberRequired = 0, bool needsSameNumber = false, bool needsStarBullet = false, bool willClearBullet = false, bool needsFaceUp = false)
     {
         NeedsBullet = needsBullet;
         NeedsEmpty = needsEmpty;
@@ -44,5 +45,6 @@ public class PatternSpaceData
         NeedsSameNumber = needsSameNumber;
         NeedsStarBullet = needsStarBullet;
         WillClearBullet = willClearBullet;
+        NeedsFaceUp = needsFaceUp;
     }
 }

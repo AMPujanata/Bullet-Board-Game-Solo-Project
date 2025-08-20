@@ -26,13 +26,6 @@ public class ActionView : MonoBehaviour
     {
         _actionSpaces[index].SpaceProperties = action;
         GameObject newActionButton = Instantiate(_actionButtonPrefab, _actionSpaces[index].gameObject.transform);
-        if (action.IsStar) // don't add the OnActivated to the button
-        {
-            newActionButton.GetComponent<ActionButtonView>().Initialize(action.ActionCost.ToString(), action.ActionText, action.ActionIcon, null);
-        }
-        else // otherwise, do
-        {
-            newActionButton.GetComponent<ActionButtonView>().Initialize(action.ActionCost.ToString(), action.ActionText, action.ActionIcon, action.OnActivated);
-        }
+        newActionButton.GetComponent<ActionButtonView>().Initialize(action);
     }
 }

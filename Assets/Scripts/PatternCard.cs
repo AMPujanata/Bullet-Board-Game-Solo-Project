@@ -9,7 +9,7 @@ public class PatternCard : MonoBehaviour
     [SerializeField] private TMP_Text _patternOwner;
     [SerializeField] private Transform _patternSpaceGridParent;
     [SerializeField] private GameObject _patternSpacePrefab;
-    public PatternCardData PatternCardDataProperties;
+    public PatternCardData PatternCardDataProperties { get; private set; }
     private PatternSpaceData[,] _patternSpaceGrid;
     public void Initialize(string patternName, string patternDescription, string patternOwner, PatternCardData patternCardData)
     {
