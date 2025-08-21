@@ -34,6 +34,24 @@ public class PatternController : MonoBehaviour
         }
     }
 
+    public void ShuffleDiscardIntoDeck()
+    {
+        if(_cardsInDiscard.Count <= 0)
+        {
+            return;
+        }
+
+        foreach(PatternCardData data in _cardsInDiscard)
+        {
+            _cardsInDeck.Add(data);
+        }
+
+        Debug.Log("Cards in deck: " + _cardsInDeck.Count);
+        _cardsInDiscard.Clear(); 
+        UpdateDeckAndDiscardCount();
+        ShuffleDeck();
+    }
+
     public void UpdateDeckAndDiscardCount()
     {
         _patternView.UpdateDeckCount(_cardsInDeck.Count);
@@ -42,7 +60,11 @@ public class PatternController : MonoBehaviour
 
     public void DrawPatternFromDeck()
     {
-        if (_cardsInDeck.Count <= 0) return; // Can't draw from an empty deck
+        if (_cardsInDeck.Count <= 0) // Can't draw from an empty deck; try to shuffle discard back into deck
+        {
+            ShuffleDiscardIntoDeck();
+            if(_cardsInDeck.Count <= 0) return; // If deck is still empty, return
+        }
 
         PatternCardData drawnCard = _cardsInDeck[0];
         _cardsInDeck.RemoveAt(0);
@@ -53,16 +75,14 @@ public class PatternController : MonoBehaviour
 
     public void DrawToMaxHandSize()
     {
-        int precaution = 0;
+        int previousHandSize = _cardsInHand.Count;
         while (_cardsInHand.Count < MaxHandSize)
         {
             DrawPatternFromDeck();
-            precaution++;
-            if (precaution > 10)
+            if (_cardsInHand.Count == previousHandSize) // Drawing pattern failed, likely due to no cards remaining in deck and discard; terminate early
             {
-                Debug.Log("Infinite loop beginning; breaking!");
                 break;
-            }
+            } 
         }
     }
 

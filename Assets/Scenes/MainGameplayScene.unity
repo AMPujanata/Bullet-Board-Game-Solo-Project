@@ -5796,7 +5796,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Deck
+  m_text: Discard
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -7189,7 +7189,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a004f93d343d9344e877326d4c59fc78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerData: {fileID: 11400000, guid: cd2d3115fc1d16649960c70a0941f383, type: 2}
+  _playerData: {fileID: 11400000, guid: 6545de47ea631c9489418cfa62d40005, type: 2}
   _playerView: {fileID: 1601856003}
   _actionController: {fileID: 1438830431}
   _sightController: {fileID: 799415692}

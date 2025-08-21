@@ -51,7 +51,7 @@ public class PatternCard : MonoBehaviour
     public void SelectPattern()
     {
         Vector2 popupLocation = Camera.main.ViewportToWorldPoint(new Vector2(0.8f, 0.5f));
-        PopupManager.Instance.DisplayPopup("Choose a valid bullet pattern to clear.", "Cancel", popupLocation, GameManager.Instance.ActivePlayer.SightController.CancelSpaceSelection);
+        PopupManager.Instance.DisplayPopup("Choose a valid bullet pattern to clear.", popupLocation, "Cancel", GameManager.Instance.ActivePlayer.SightController.CancelSpaceSelection);
 
         GameManager.Instance.ActivePlayer.SightController.CheckValidSpacesOnHover(_patternSpaceGrid, (bool isSuccessful, Vector2Int finalTopLeftCell) =>
         {

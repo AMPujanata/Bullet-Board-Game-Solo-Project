@@ -23,7 +23,7 @@ public class PopupManager : MonoBehaviour
     [SerializeField] private GameObject _popupPrefab;
     private GameObject _currentPopup;
 
-    public void DisplayPopup(string popupString, string popupButtonString, Vector3 popupLocation, Action onButtonPress = null)
+    public void DisplayPopup(string popupString, Vector3 popupLocation, string popupButton1String, Action onButton1Press = null, string popupButton2String = null, Action onButton2Press = null)
     {
         if (_currentPopup) // if there is already an existing popup
         {
@@ -32,7 +32,7 @@ public class PopupManager : MonoBehaviour
         }
 
         _currentPopup = Instantiate(_popupPrefab, popupLocation, Quaternion.identity, _notificationCanvas.transform);
-        _currentPopup.GetComponent<PopupView>().Initialize(popupString, popupButtonString, onButtonPress);
+        _currentPopup.GetComponent<PopupView>().Initialize(popupString, popupButton1String, onButton1Press, popupButton2String, onButton2Press);
         _mainCanvasGroup.interactable = false;
     }
 

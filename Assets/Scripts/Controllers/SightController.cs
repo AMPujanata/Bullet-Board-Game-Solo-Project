@@ -31,9 +31,8 @@ public class SightController : MonoBehaviour
     {
         if(_bulletsInCurrentBag.Count <= 0)
         {
-            GameManager.Instance.BeginEndPhase();
-            //Vector2 popupLocation = Camera.main.ViewportToWorldPoint(new Vector2(0.5f, 0.5f));
-            //PopupManager.Instance.DisplayPopup("No bullet left to place!", "OK", popupLocation);
+            Vector2 popupLocation = Camera.main.ViewportToWorldPoint(new Vector2(0.5f, 0.5f));
+            PopupManager.Instance.DisplayPopup("Are you sure you want to enter the end phase?", popupLocation, "Yes", GameManager.Instance.BeginEndPhase, "No");
             return;
         }
 
@@ -82,6 +81,7 @@ public class SightController : MonoBehaviour
         }
         if(chosenProperty.IsStar) GameManager.Instance.ActivePlayer.ActionController.ActivateStarActions();
         _sightView.RemoveSightBulletObject(removeCell);
+        GameManager.Instance.AddBulletToTotalClear();
     }
 
     public void RemoveBulletsFromSightWithPattern(Vector2Int startingCell, PatternSpaceData[,] patternSpaceDatas)
@@ -165,7 +165,6 @@ public class SightController : MonoBehaviour
             if (spaceProperty.IsFacedown) // facedown bullets have no number or star, but are treated as any color
             {
                 if (spaceRequirement.NeedsFaceUp || spaceRequirement.NeedsStarBullet || spaceRequirement.NumberRequired != 0) return false;
-                if (spaceRequirement.ColorRequired != BulletColor.Any && spaceProperty.Color != spaceRequirement.ColorRequired) return false;
             }
             else
             {

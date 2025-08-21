@@ -25,10 +25,5 @@ public class PlayerView : MonoBehaviour
         _hpBar.value = currentHP;
         _hpBar.maxValue = maxHP;
         _hpBarText.text = currentHP + " / " + maxHP;
-        if (currentHP <= 0)
-        {
-            Vector2 popupLocation = Camera.main.ViewportToWorldPoint(new Vector2(0.5f, 0.5f));
-            PopupManager.Instance.DisplayPopup("Game Over!", "OK", popupLocation);
-        }
     }
 }

@@ -8,8 +8,9 @@ public class GameManager : MonoBehaviour
 
     public static GameManager Instance { get; private set; }
     public int CurrentIntensity { get; private set; } = 4;
+    public int CurrentRound { get; private set; } = 1;
     private int _startingBullets = 10;
-
+    public int TotalClearedBullets { get; private set; } = 1; // used for end of match statistics
     private void Awake()
     {
         if (Instance == null) Instance = this;
@@ -35,6 +36,7 @@ public class GameManager : MonoBehaviour
         ActivePlayer.PatternController.DrawToMaxHandSize();
         _activePlayerBoardCanvasGroup.interactable = true;
         ActivePlayer.SightController.UpdateCurrentIntensity(CurrentIntensity, CenterManager.Instance.GetNumberOfBulletsInIntensity());
+        CurrentRound = 1;
         yield break;
     }
 
@@ -62,7 +64,22 @@ public class GameManager : MonoBehaviour
         ActivePlayer.SightController.UpdateCurrentIntensity(CurrentIntensity, CenterManager.Instance.GetNumberOfBulletsInIntensity());
         // take all bullets in incoming and place in current
         ActivePlayer.ActionController.RefreshAP();
+        CurrentRound++;
         _activePlayerBoardCanvasGroup.interactable = true;
+    }
+
+    public void TriggerGameOver()
+    {
+        if(CurrentMode == GameMode.ScoreAttack)
+        {
+            Vector2 popupLocation = Camera.main.ViewportToWorldPoint(new Vector2(0.5f, 0.5f));
+            PopupManager.Instance.DisplayPopup("GAME OVER\nRounds Survived: " + CurrentRound + "\nBullets Cleared: " + TotalClearedBullets, popupLocation, "OK");
+        }
+    }
+
+    public void AddBulletToTotalClear()
+    {
+        TotalClearedBullets++;
     }
 
     public PlayerController ActivePlayer { get; private set; }

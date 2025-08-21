@@ -21,7 +21,7 @@ public class ActionButtonView : MonoBehaviour
         }
         else
         {
-            _actionButton.onClick.AddListener(action.OnActivated);
+            _actionButton.onClick.AddListener(() => action.OnActivated((isSuccessful) => { }));
         }
     }
 }

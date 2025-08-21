@@ -16,15 +16,15 @@ public class PlayerController : MonoBehaviour
     public PatternController PatternController { get { return _patternController; } }
 
 
-    private int currentHP;
+    private int _currentHP;
     public int CurrentHP { get; private set; }
-    private int maxHP;
+    private int _maxHP;
 
 
     private void Start()
     {
-        maxHP = _playerData.MaxHP;
-        currentHP = maxHP;
+        _maxHP = _playerData.MaxHP;
+        _currentHP = _maxHP;
         _playerView.Initialize(_playerData);
         _actionController.Initialize(_playerData.MaxAP, _playerData.Actions);
         _patternController.Initialize(_playerData.Patterns);
@@ -33,8 +33,12 @@ public class PlayerController : MonoBehaviour
 
     public void ModifyCurrentHP(int value) // increases or decreases current HP by the value's amount
     {
-        currentHP += value;
-        Mathf.Clamp(currentHP, 0, maxHP);
-        _playerView.ChangeHPValue(currentHP, maxHP);
+        _currentHP += value;
+        _currentHP = Mathf.Clamp(_currentHP, 0, _maxHP);
+        _playerView.ChangeHPValue(_currentHP, _maxHP);
+        if (_currentHP <= 0)
+        {
+            GameManager.Instance.TriggerGameOver();
+        }
     }
 }
