@@ -1,8 +1,5 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class PopupManager : MonoBehaviour
 {
@@ -16,9 +13,19 @@ public class PopupManager : MonoBehaviour
             Destroy(this); // Make sure there's only ever one 
             return; // do NOT run any other code
         }
+        DontDestroyOnLoad(gameObject);
     }
 
-    [SerializeField] private CanvasGroup _mainCanvasGroup;
+    private CanvasGroup _mainCanvasGroup;
+    public CanvasGroup MainCanvasGroup { get
+        {
+            if (_mainCanvasGroup == null)
+            {
+                _mainCanvasGroup = FindObjectOfType<CanvasGroup>();
+            }
+            return _mainCanvasGroup;
+        }
+    }
     [SerializeField] private Canvas _notificationCanvas;
     [SerializeField] private GameObject _popupPrefab;
     private GameObject _currentPopup;
@@ -31,14 +38,19 @@ public class PopupManager : MonoBehaviour
             return; // don't make a new popup
         }
 
+        if(_notificationCanvas.worldCamera == null) // if the render camera is gone (from switching scenes), reassign it to the new main camera
+        {
+            _notificationCanvas.worldCamera = Camera.main;
+        }
+
         _currentPopup = Instantiate(_popupPrefab, popupLocation, Quaternion.identity, _notificationCanvas.transform);
         _currentPopup.GetComponent<PopupView>().Initialize(popupString, popupButton1String, onButton1Press, popupButton2String, onButton2Press);
-        _mainCanvasGroup.interactable = false;
+        MainCanvasGroup.interactable = false;
     }
 
     public void ClosePopup()
     {
-        _mainCanvasGroup.interactable = true;
+        MainCanvasGroup.interactable = true;
         Destroy(_currentPopup);
         _currentPopup = null;
     }

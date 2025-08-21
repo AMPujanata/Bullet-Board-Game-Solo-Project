@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -12,6 +10,7 @@ public class PopupView : MonoBehaviour
     [SerializeField] private TMP_Text _popupButton1Text;
     [SerializeField] private Button _popupButton2;
     [SerializeField] private TMP_Text _popupButton2Text;
+
     public void Initialize(string popupString, string popupButton1String, Action onButton1Press = null, string popupButton2String = null, Action onButton2Press = null)
     {
         _popupText.text = popupString;
@@ -43,7 +42,6 @@ public class PopupView : MonoBehaviour
             {
                 PopupManager.Instance.ClosePopup();
             });
-
         }
         else
         {

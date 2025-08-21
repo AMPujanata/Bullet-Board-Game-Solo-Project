@@ -18,6 +18,11 @@ public class SightController : MonoBehaviour
     private bool _shouldCancelSpaceSelection = false;
     #endregion
 
+    public void Initialize()
+    {
+        _sightView.Initialize(PlaceBulletInSight);
+    }
+
     public void DrawBulletsFromCenter(int bulletCount)
     {
         for(int i = 0;  i < bulletCount; i++)
@@ -27,7 +32,7 @@ public class SightController : MonoBehaviour
         _sightView.UpdateCurrentBulletsText(_bulletsInCurrentBag.Count);
     }
 
-    public void PlaceBulletInSight()
+    private void PlaceBulletInSight()
     {
         if(_bulletsInCurrentBag.Count <= 0)
         {

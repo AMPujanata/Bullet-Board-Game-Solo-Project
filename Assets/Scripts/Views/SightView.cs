@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using System;
-
+using UnityEngine.UI;
 
 public class SightView : MonoBehaviour
 {
@@ -14,11 +12,11 @@ public class SightView : MonoBehaviour
     [SerializeField] private TMPro.TMP_Text _sendBulletText;
     [SerializeField] private TMPro.TMP_Text _currentIntensityText;
     [SerializeField] private GameObject _bulletPrefab;
-
+    [SerializeField] private Button _placeBulletButton;
     [SerializeField] private BulletColorUIProperty[] _bulletColorUIProperties;
     [SerializeField] private SightRow[] _sightGrid;
 
-    private void Awake()
+    public void Initialize(Action placeBulletButtonAction)
     {
         int numberOfRows = _sightGrid.Length;
         int numberOfColumns = _sightGrid[0].SightSpaces.Length;
@@ -30,6 +28,8 @@ public class SightView : MonoBehaviour
                 _sightGrid[i].SightSpaces[j].Initialize(new Vector2Int(i, j));
             }
         }
+
+        _placeBulletButton.onClick.AddListener(() => placeBulletButtonAction());
     }
 
     public SightSpace[,] GetSightGrid()

@@ -5,7 +5,6 @@ using TMPro;
 [RequireComponent(typeof(PlayerView))]
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private PlayerData _playerData;
     [SerializeField] private PlayerView _playerView;
 
     [SerializeField] private ActionController _actionController;
@@ -21,14 +20,15 @@ public class PlayerController : MonoBehaviour
     private int _maxHP;
 
 
-    private void Start()
+    public void Initialize(PlayerData playerData)
     {
-        _maxHP = _playerData.MaxHP;
+        _maxHP = playerData.MaxHP;
         _currentHP = _maxHP;
-        _playerView.Initialize(_playerData);
-        _actionController.Initialize(_playerData.MaxAP, _playerData.Actions);
-        _patternController.Initialize(_playerData.Patterns);
-        _playerData.Passive.SetupPassive();
+        _playerView.Initialize(playerData);
+        _actionController.Initialize(playerData.MaxAP, playerData.Actions);
+        _patternController.Initialize(playerData.Patterns);
+        _sightController.Initialize();
+        playerData.Passive.SetupPassive();
     }
 
     public void ModifyCurrentHP(int value) // increases or decreases current HP by the value's amount
