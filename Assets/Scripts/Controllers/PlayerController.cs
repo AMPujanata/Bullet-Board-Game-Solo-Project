@@ -14,11 +14,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private PatternController _patternController;
     public PatternController PatternController { get { return _patternController; } }
 
-
     private int _currentHP;
     public int CurrentHP { get; private set; }
     private int _maxHP;
-
 
     public void Initialize(PlayerData playerData)
     {

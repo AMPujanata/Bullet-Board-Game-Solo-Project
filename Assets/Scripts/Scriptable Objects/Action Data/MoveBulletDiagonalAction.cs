@@ -3,7 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "MoveBulletDiagonalActionSO", menuName = "BaseAction/MoveBulletDiagonal")]
 public class MoveBulletDiagonalAction : BaseAction
 {
-    public override void OnActivated(System.Action<bool> callback)
+    public override void ActivateAction(System.Action<bool> callback)
     {
         if (ActionCost == 0)
         {

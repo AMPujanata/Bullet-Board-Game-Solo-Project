@@ -3,7 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "MoveBulletUpActionSO", menuName = "BaseAction/MoveBulletUp")]
 public class MoveBulletUpAction : BaseAction
 {
-    public override void OnActivated(System.Action<bool> callback)
+    public override void ActivateAction(System.Action<bool> callback)
     {
         if (ActionCost == 0)
         {

@@ -48,7 +48,7 @@ public class ActionController : MonoBehaviour
             {
                 if (actionSpaces[i].SpaceProperties.IsStar)
                 {
-                    _starActionsQueue.Enqueue(actionSpaces[i].SpaceProperties.OnActivated);
+                    _starActionsQueue.Enqueue(actionSpaces[i].SpaceProperties.ActivateAction);
                 }
             }
         }

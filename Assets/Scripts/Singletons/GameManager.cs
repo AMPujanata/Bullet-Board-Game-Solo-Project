@@ -10,12 +10,13 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
     public int CurrentIntensity { get; private set; } = 4;
     public int CurrentRound { get; private set; } = 1;
-    private int _startingBullets = 10;
+    private const int _startingBullets = 10;
     public int TotalClearedBullets { get; private set; } = 1; // used for end of match statistics
 
     [SerializeField] private PlayerData[] _selectablePlayerDatas;
     [SerializeField] private PlayerData _activePlayerData;
-
+    [SerializeField] private BossData[] _selectableBossDatas;
+    [SerializeField] private BossData _activeBossData;
     private void Awake()
     {
         if (Instance == null) Instance = this;
@@ -62,17 +63,22 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator BeginGameSetup()
     {
-
         Player1 = FindObjectOfType<PlayerController>();
         ActivePlayer = Player1;
         ActivePlayer.Initialize(_activePlayerData);
         _activePlayerBoardCanvasGroup = ActivePlayer.GetComponentInParent<CanvasGroup>();
         _activePlayerBoardCanvasGroup.interactable = false;
-
         ActivePlayer.SightController.DrawBulletsFromCenter(_startingBullets);
+
+        if (CurrentMode == GameMode.BossBattle)
+        {
+            ActiveBoss = FindObjectOfType<BossController>();
+            ActiveBoss.Initialize(_activeBossData);
+        }
+
         ActivePlayer.PatternController.DrawToMaxHandSize();
         _activePlayerBoardCanvasGroup.interactable = true;
-        ActivePlayer.SightController.UpdateCurrentIntensity(CurrentIntensity, CenterManager.Instance.GetNumberOfBulletsInIntensity());
+        ActivePlayer.SightController.UpdateCurrentIntensity(CurrentIntensity, CenterManager.Instance.GetNumberOfBulletsInIntensity()); // add boss support later
         CurrentRound = 1;
         yield break;
     }
@@ -87,20 +93,42 @@ public class GameManager : MonoBehaviour
             ActivePlayer.SightController.DrawBulletsFromCenter(CurrentIntensity + extraBullets);
             CenterManager.Instance.ReturnAllBulletsFromIntensityToCenter();
         }
-        else
-        {
-            ActivePlayer.SightController.DrawBulletsFromCenter(CurrentIntensity);
-        }
+        // boss battle doesnt make you draw from intensity
+
         // and then start Cleanup Phase after "all" players are done
         BeginCleanupPhase();
     }
 
     private void BeginCleanupPhase()
     {
-        CurrentIntensity += 1;
-        ActivePlayer.SightController.UpdateCurrentIntensity(CurrentIntensity, CenterManager.Instance.GetNumberOfBulletsInIntensity());
+        if (CurrentMode == GameMode.ScoreAttack) // intensity doesnt update during boss battles
+        {
+            CurrentIntensity += 1;
+            ActivePlayer.SightController.UpdateCurrentIntensity(CurrentIntensity, CenterManager.Instance.GetNumberOfBulletsInIntensity());
+        }
         // take all bullets in incoming and place in current
         ActivePlayer.ActionController.RefreshAP();
+        if (CurrentMode == GameMode.ScoreAttack)
+        {
+            StartNewRound();
+        }
+        else
+        {
+            BeginBossPhase();
+        }
+    }
+
+    private void BeginBossPhase()
+    {
+        // check boss pattern
+        // check shield breaking
+        // add bullets to current = intensity on rightmost shield slot
+        // draw a new boss pattern
+        StartNewRound();
+    }
+
+    private void StartNewRound()
+    {
         CurrentRound++;
         _activePlayerBoardCanvasGroup.interactable = true;
     }
@@ -122,4 +150,6 @@ public class GameManager : MonoBehaviour
     public PlayerController ActivePlayer { get; private set; }
     private CanvasGroup _activePlayerBoardCanvasGroup;
     public PlayerController Player1 { get; private set; }
+
+    public BossController ActiveBoss { get; private set; }
 }

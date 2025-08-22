@@ -3,7 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "StarFlipBulletFaceDownActionSO", menuName = "BaseAction/StarFlipBulletFaceDown")]
 public class StarFlipBulletFaceDownAction : BaseAction
 {
-    public override void OnActivated(System.Action<bool> callback)
+    public override void ActivateAction(System.Action<bool> callback)
     {
         Vector2 popupLocation = Camera.main.ViewportToWorldPoint(new Vector2(0.8f, 0.5f));
         PopupManager.Instance.DisplayPopup("Choose a bullet to flip face-down.", popupLocation, "Cancel", GameManager.Instance.ActivePlayer.SightController.CancelSpaceSelection);

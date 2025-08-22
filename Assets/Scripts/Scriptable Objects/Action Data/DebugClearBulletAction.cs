@@ -3,7 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "DebugClearBulletActionSO", menuName = "BaseAction/ClearBullet")]
 public class DebugClearBulletAction : BaseAction
 {
-    public override void OnActivated(System.Action<bool> callback)
+    public override void ActivateAction(System.Action<bool> callback)
     {
         int currentAP = GameManager.Instance.ActivePlayer.ActionController.CurrentAP;
         if(currentAP < ActionCost)

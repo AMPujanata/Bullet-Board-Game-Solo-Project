@@ -100,8 +100,8 @@ MonoBehaviour:
   m_MinHeight: 336
   m_PreferredWidth: 240
   m_PreferredHeight: 336
-  m_FlexibleWidth: -1
-  m_FlexibleHeight: -1
+  m_FlexibleWidth: 0
+  m_FlexibleHeight: 0
   m_LayoutPriority: 1
 --- !u!114 &7126299282494196857
 MonoBehaviour:

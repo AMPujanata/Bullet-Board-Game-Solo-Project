@@ -4130,7 +4130,7 @@ PrefabInstance:
     - target: {fileID: 5659615790758430302, guid: f31971ab6a17e6142b1cbadb3bd02fb8, type: 3}
       propertyPath: _activePlayerData
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 11400000, guid: cd2d3115fc1d16649960c70a0941f383, type: 2}
     - target: {fileID: 5659615790758430302, guid: f31971ab6a17e6142b1cbadb3bd02fb8, type: 3}
       propertyPath: _selectablePlayerDatas.Array.size
       value: 2

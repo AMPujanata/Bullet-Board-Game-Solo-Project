@@ -8,5 +8,5 @@ public abstract class BaseAction : ScriptableObject
     public Sprite ActionIcon;
     public bool IsStar;
 
-    public abstract void OnActivated(Action<bool> callback);
+    public abstract void ActivateAction(Action<bool> callback);
 }

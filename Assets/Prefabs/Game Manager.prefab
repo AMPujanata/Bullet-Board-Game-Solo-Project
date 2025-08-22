@@ -44,4 +44,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CurrentMode: 1
+  _selectablePlayerDatas:
+  - {fileID: 11400000, guid: cd2d3115fc1d16649960c70a0941f383, type: 2}
+  - {fileID: 11400000, guid: 6545de47ea631c9489418cfa62d40005, type: 2}
   _activePlayerData: {fileID: 11400000, guid: cd2d3115fc1d16649960c70a0941f383, type: 2}
+  _selectableBossDatas: []
+  _activeBossData: {fileID: 11400000, guid: 98202ba424f4bf145863af16fcdca731, type: 2}
