@@ -16,21 +16,11 @@ MonoBehaviour:
   Passive: {fileID: 11400000, guid: 8422caaf62154c14cb06db1034c65a4f, type: 2}
   Shields:
   - ShieldIntensity: 10
-    NextShieldBreak: 5
+    NextShieldBreak: 1
     OnShieldBreak: {fileID: 0}
   - ShieldIntensity: 10
-    NextShieldBreak: 5
+    NextShieldBreak: 1
     OnShieldBreak: {fileID: 0}
-  - ShieldIntensity: 10
-    NextShieldBreak: 5
-    OnShieldBreak: {fileID: 0}
-  - ShieldIntensity: 10
-    NextShieldBreak: 5
-    OnShieldBreak: {fileID: 0}
-  - ShieldIntensity: 10
-    NextShieldBreak: 5
-    OnShieldBreak: {fileID: 0}
-  OnFinalShieldBreak: {fileID: 0}
   Patterns:
   - {fileID: 11400000, guid: 59aab43b21544ed4faaa308cb1bc34e1, type: 2}
   - {fileID: 11400000, guid: f8612db301d6aab458af94b19c1af888, type: 2}

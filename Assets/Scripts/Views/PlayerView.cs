@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class PlayerView : MonoBehaviour
 {
@@ -9,8 +10,9 @@ public class PlayerView : MonoBehaviour
     [SerializeField] private TMP_Text _hpBarText;
     [SerializeField] private TMP_Text _passiveNameText;
     [SerializeField] private TMP_Text _passiveDescriptionText;
+    [SerializeField] private Button _swapToBossButton;
 
-    public void Initialize(PlayerData playerData)
+    public void Initialize(PlayerData playerData, Action swapToBossAction)
     {
         _nameText.text = playerData.PlayerName;
 
@@ -18,6 +20,7 @@ public class PlayerView : MonoBehaviour
 
         _passiveNameText.text = playerData.Passive.PassiveName;
         _passiveDescriptionText.text = playerData.Passive.PassiveDescription;
+        _swapToBossButton.onClick.AddListener(() => swapToBossAction());
     }
 
     public void ChangeHPValue(int currentHP, int maxHP)

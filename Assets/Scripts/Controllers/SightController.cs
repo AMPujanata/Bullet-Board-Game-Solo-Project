@@ -80,9 +80,9 @@ public class SightController : MonoBehaviour
             CenterManager.Instance.AddBulletToIntensity(chosenProperty);
             UpdateCurrentIntensity(GameManager.Instance.CurrentIntensity, CenterManager.Instance.GetNumberOfBulletsInIntensity());
         }
-        else
+        else if(GameManager.Instance.CurrentMode == GameMode.BossBattle)
         {
-            CenterManager.Instance.AddBulletToCenter(chosenProperty);
+            GameManager.Instance.ActiveBoss.AddBulletToBossIncoming(chosenProperty);
         }
         if(chosenProperty.IsStar) GameManager.Instance.ActivePlayer.ActionController.ActivateStarActions();
         _sightView.RemoveSightBulletObject(removeCell);

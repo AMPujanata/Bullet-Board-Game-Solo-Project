@@ -21,7 +21,7 @@ public class PopupManager : MonoBehaviour
         {
             if (_mainCanvasGroup == null)
             {
-                _mainCanvasGroup = FindObjectOfType<CanvasGroup>();
+                _mainCanvasGroup = FindObjectOfType<CanvasGroup>(true);
             }
             return _mainCanvasGroup;
         }
@@ -32,18 +32,13 @@ public class PopupManager : MonoBehaviour
 
     public void DisplayPopup(string popupString, Vector3 popupLocation, string popupButton1String, Action onButton1Press = null, string popupButton2String = null, Action onButton2Press = null)
     {
-        if (_currentPopup) // if there is already an existing popup
-        {
-            Debug.Log("Already existing popup! Returning!");
-            return; // don't make a new popup
-        }
-
         if(_notificationCanvas.worldCamera == null) // if the render camera is gone (from switching scenes), reassign it to the new main camera
         {
             _notificationCanvas.worldCamera = Camera.main;
         }
 
-        _currentPopup = Instantiate(_popupPrefab, popupLocation, Quaternion.identity, _notificationCanvas.transform);
+        if(!_currentPopup) _currentPopup = Instantiate(_popupPrefab, popupLocation, Quaternion.identity, _notificationCanvas.transform);
+        _currentPopup.gameObject.SetActive(true);
         _currentPopup.GetComponent<PopupView>().Initialize(popupString, popupButton1String, onButton1Press, popupButton2String, onButton2Press);
         MainCanvasGroup.interactable = false;
     }
@@ -51,7 +46,7 @@ public class PopupManager : MonoBehaviour
     public void ClosePopup()
     {
         MainCanvasGroup.interactable = true;
-        Destroy(_currentPopup);
+        _currentPopup.gameObject.SetActive(false);
         _currentPopup = null;
     }
 }

@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
     {
         _maxHP = playerData.MaxHP;
         _currentHP = _maxHP;
-        _playerView.Initialize(playerData);
+        _playerView.Initialize(playerData, SwapToBossPanel);
         _actionController.Initialize(playerData.MaxAP, playerData.Actions);
         _patternController.Initialize(playerData.Patterns);
         _sightController.Initialize();
@@ -38,5 +38,11 @@ public class PlayerController : MonoBehaviour
         {
             GameManager.Instance.TriggerGameOver();
         }
+    }
+
+    public void SwapToBossPanel()
+    {
+        _playerView.gameObject.SetActive(false);
+        GameManager.Instance.ActiveBoss.gameObject.SetActive(true);
     }
 }

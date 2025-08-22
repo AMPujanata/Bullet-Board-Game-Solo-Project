@@ -16,32 +16,34 @@ public class PopupView : MonoBehaviour
         _popupText.text = popupString;
         _popupButton1Text.text = popupButton1String;
 
-        if(onButton1Press != null)
-        {
-            _popupButton1.onClick.RemoveAllListeners();
-            _popupButton1.onClick.AddListener(() => onButton1Press());
-        }
+        _popupButton1.onClick.RemoveAllListeners();
 
         _popupButton1.onClick.AddListener(() =>
         {
             PopupManager.Instance.ClosePopup();
         });
 
+        if (onButton1Press != null)
+        {
+            _popupButton1.onClick.AddListener(() => onButton1Press());
+        }
+        
         if(popupButton2String != null) // only show the second button if necessary
         {
             _popupButton2.gameObject.SetActive(true);
             _popupButton2Text.text = popupButton2String;
 
-            if (onButton2Press != null)
-            {
-                _popupButton2.onClick.RemoveAllListeners();
-                _popupButton2.onClick.AddListener(() => onButton2Press());
-            }
+            _popupButton2.onClick.RemoveAllListeners();
 
             _popupButton2.onClick.AddListener(() =>
             {
                 PopupManager.Instance.ClosePopup();
             });
+
+            if (onButton2Press != null)
+            {
+                _popupButton2.onClick.AddListener(() => onButton2Press());
+            }
         }
         else
         {

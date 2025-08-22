@@ -48,7 +48,6 @@ public class GameManager : MonoBehaviour
 
     public void StartGame()
     {
-        SceneManager.LoadScene("MainGameplayScene");
         StartCoroutine(LoadMainGameplayScene());
     }
 
@@ -56,14 +55,25 @@ public class GameManager : MonoBehaviour
     {
         AsyncOperation asyncLoadGameplay = SceneManager.LoadSceneAsync("MainGameplayScene", LoadSceneMode.Single);
         while (!asyncLoadGameplay.isDone) yield return null;
-        yield return new WaitForEndOfFrame(); // let all objects on scene go through Awake and Start methods first
 
         StartCoroutine(BeginGameSetup());
     }
 
+    public void EndGame()
+    {
+        StartCoroutine(LoadTitleScene());
+    }
+
+    private IEnumerator LoadTitleScene()
+    {
+        AsyncOperation asyncLoadGameplay = SceneManager.LoadSceneAsync("TitleScreenScene", LoadSceneMode.Single);
+        while (!asyncLoadGameplay.isDone) yield return null;
+    }
+
     private IEnumerator BeginGameSetup()
     {
-        Player1 = FindObjectOfType<PlayerController>();
+        yield return new WaitForEndOfFrame(); // let all objects on scene go through Awake and Start methods first
+        Player1 = FindObjectOfType<PlayerController>(true);
         ActivePlayer = Player1;
         ActivePlayer.Initialize(_activePlayerData);
         _activePlayerBoardCanvasGroup = ActivePlayer.GetComponentInParent<CanvasGroup>();
@@ -72,13 +82,21 @@ public class GameManager : MonoBehaviour
 
         if (CurrentMode == GameMode.BossBattle)
         {
-            ActiveBoss = FindObjectOfType<BossController>();
+            ActiveBoss = FindObjectOfType<BossController>(true);
             ActiveBoss.Initialize(_activeBossData);
         }
 
         ActivePlayer.PatternController.DrawToMaxHandSize();
+        if (CurrentMode == GameMode.ScoreAttack)
+        {
+            ActivePlayer.SightController.UpdateCurrentIntensity(CurrentIntensity, CenterManager.Instance.GetNumberOfBulletsInIntensity()); // add boss support later
+        }
+        else if (CurrentMode == GameMode.BossBattle)
+        {
+            ActivePlayer.SightController.UpdateCurrentIntensity(ActiveBoss.GetCurrentBossIntensity());
+        }
+
         _activePlayerBoardCanvasGroup.interactable = true;
-        ActivePlayer.SightController.UpdateCurrentIntensity(CurrentIntensity, CenterManager.Instance.GetNumberOfBulletsInIntensity()); // add boss support later
         CurrentRound = 1;
         yield break;
     }
@@ -121,8 +139,10 @@ public class GameManager : MonoBehaviour
     private void BeginBossPhase()
     {
         // check boss pattern
-        // check shield breaking
-        // add bullets to current = intensity on rightmost shield slot
+        if (_gameIsOver) return; // player cold possibly die from the boss pattern
+        ActiveBoss.CheckShieldBreak();
+        if (_gameIsOver) return; // game is over, no need to process the rest
+        ActivePlayer.SightController.DrawBulletsFromCenter(ActiveBoss.GetCurrentBossIntensity());
         // draw a new boss pattern
         StartNewRound();
     }
@@ -133,12 +153,34 @@ public class GameManager : MonoBehaviour
         _activePlayerBoardCanvasGroup.interactable = true;
     }
 
+    private bool _gameIsOver = false;
     public void TriggerGameOver()
     {
-        if(CurrentMode == GameMode.ScoreAttack)
+        if (_gameIsOver) return; // there is already a game over/victory triggered
+
+        _gameIsOver = true;
+
+        if (CurrentMode == GameMode.ScoreAttack)
         {
             Vector2 popupLocation = Camera.main.ViewportToWorldPoint(new Vector2(0.5f, 0.5f));
-            PopupManager.Instance.DisplayPopup("GAME OVER\nRounds Survived: " + CurrentRound + "\nBullets Cleared: " + TotalClearedBullets, popupLocation, "OK");
+            PopupManager.Instance.DisplayPopup("GAME OVER\nRounds Survived: " + CurrentRound + "\nBullets Cleared: " + TotalClearedBullets, popupLocation, "OK", EndGame);
+        }
+        else if(CurrentMode == GameMode.BossBattle)
+        {
+            Vector2 popupLocation = Camera.main.ViewportToWorldPoint(new Vector2(0.5f, 0.5f));
+            PopupManager.Instance.DisplayPopup("GAME OVER\nRounds Survived: " + CurrentRound + "\nShields Broken:" + ActiveBoss.BrokenShieldsCount, popupLocation, "OK", EndGame);
+        }
+    }
+
+    public void TriggerVictory()
+    {
+        if (_gameIsOver) return; // there is already a game over/victory triggered
+        _gameIsOver = true;
+
+        if (CurrentMode == GameMode.BossBattle) // you can't "win" in score attack
+        {
+            Vector2 popupLocation = Camera.main.ViewportToWorldPoint(new Vector2(0.5f, 0.5f));
+            PopupManager.Instance.DisplayPopup("VICTORY!\nTotal Rounds: " + CurrentRound, popupLocation, "OK", EndGame);
         }
     }
 
