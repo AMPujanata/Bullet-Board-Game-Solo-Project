@@ -33,8 +33,8 @@ public class ActionController : MonoBehaviour
         }
     }
 
-    private Queue<Action<Action<bool>>> _starActionsQueue = new Queue<Action<Action<bool>>>(); // This specific Action type means an Action that takes an Action<bool> as a parameter, which is used for callbacks
-    private bool _currentlyResolvingStarActions = false;                                       // It looks gross but it does work
+    private Queue<BaseAction> _starActionsQueue = new Queue<BaseAction>();
+    private bool _currentlyResolvingStarActions = false;
     public void ActivateStarActions()
     {
         // Because there are some star actions that need player interaction to resolve,
@@ -48,7 +48,7 @@ public class ActionController : MonoBehaviour
             {
                 if (actionSpaces[i].SpaceProperties.IsStar)
                 {
-                    _starActionsQueue.Enqueue(actionSpaces[i].SpaceProperties.ActivateAction);
+                    _starActionsQueue.Enqueue(actionSpaces[i].SpaceProperties);
                 }
             }
         }
@@ -60,16 +60,15 @@ public class ActionController : MonoBehaviour
     {
         if (_starActionsQueue.Count <= 0 || _currentlyResolvingStarActions) return; // no actions left to perform, and don't perform actions while another is happening
         
-        Action<Action<bool>> actionToActivate = _starActionsQueue.Dequeue();
+        BaseAction actionToActivate = _starActionsQueue.Dequeue();
         _currentlyResolvingStarActions = true;
 
-        actionToActivate.Invoke((isSucessful) =>
+        actionToActivate.ActivateAction((isSucessful) =>
         {
             // currently no use for the bool callback, but it is nice to have for troubleshooting
             _currentlyResolvingStarActions = false;
             NextStarActionInQueue();
         });
-        // callback here that turns resolving star actions back on
     }
 
     public void ModifyCurrentAP(int value) // increases or decreases current HP by the value's amount

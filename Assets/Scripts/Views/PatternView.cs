@@ -27,7 +27,7 @@ public class PatternView : MonoBehaviour
     public PatternCard AddCardToHand(PatternCardData addedCard)
     {
         GameObject cardPrefab = Instantiate(_patternCardPrefab, _handZone);
-        cardPrefab.GetComponent<PatternCard>().Initialize(addedCard.PatternName, addedCard.PatternDescription, addedCard.PatternOwner, addedCard);
+        cardPrefab.GetComponent<PatternCard>().Initialize(addedCard);
         return cardPrefab.GetComponent<PatternCard>();
     }
 

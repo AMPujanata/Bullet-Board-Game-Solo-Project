@@ -10,11 +10,16 @@ public class BossView : MonoBehaviour
     [SerializeField] private TMP_Text _passiveDescriptionText;
     [SerializeField] private TMP_Text _bossIncomingBulletText;
     [SerializeField] private Transform _bossShieldsContainer;
-    [SerializeField] private Transform _bossActivePatternContainer;
+    [SerializeField] private Transform _activeBossPatternContainer;
     [SerializeField] private Button _swapToPlayerButton;
 
     [SerializeField] private GameObject _bossShieldPrefab;
     [SerializeField] private GameObject _bossPatternCardPrefab;
+
+    [SerializeField] private TMP_Text _cardsInBossDeckText;
+    [SerializeField] private Image _deckImage;
+    [SerializeField] private TMP_Text _cardsInBossDiscardText;
+    [SerializeField] private Image _discardImage;
 
     private ShieldSpace[] _shieldSpaces;
     public void Initialize(BossData bossData, Action swapToPlayerAction)
@@ -25,7 +30,6 @@ public class BossView : MonoBehaviour
         _swapToPlayerButton.onClick.AddListener(() => swapToPlayerAction());
 
         // boss shields spawn here
-        Debug.Log("Spawning Shields");
         _shieldSpaces = new ShieldSpace[bossData.Shields.Length];
         for(int i = 0; i < bossData.Shields.Length; i++)
         {
@@ -66,5 +70,29 @@ public class BossView : MonoBehaviour
     public ShieldSpace[] GetAllShieldSpaces()
     {
         return _shieldSpaces;
+    }
+
+    public void UpdateDeckCount(int deckCount)
+    {
+        _cardsInBossDeckText.text = string.Join(" ", deckCount, "cards");
+        _deckImage.gameObject.SetActive(deckCount > 0);
+    }
+
+    public void UpdateDiscardCount(int discardCount)
+    {
+        _cardsInBossDiscardText.text = string.Join(" ", discardCount, "cards");
+        _discardImage.gameObject.SetActive(discardCount > 0);
+    }
+
+    public BossPatternCard AddCardToActiveBossPattern(BossPatternCardData addedCard)
+    {
+        GameObject cardPrefab = Instantiate(_bossPatternCardPrefab, _activeBossPatternContainer);
+        cardPrefab.GetComponent<BossPatternCard>().Initialize(addedCard);
+        return cardPrefab.GetComponent<BossPatternCard>();
+    }
+
+    public void DiscardActivatedCard(BossPatternCard discardedCard)
+    {
+        Destroy(discardedCard.gameObject);
     }
 }

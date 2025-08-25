@@ -46,7 +46,6 @@ public class PatternController : MonoBehaviour
             _cardsInDeck.Add(data);
         }
 
-        Debug.Log("Cards in deck: " + _cardsInDeck.Count);
         _cardsInDiscard.Clear(); 
         UpdateDeckAndDiscardCount();
         ShuffleDeck();

@@ -12,7 +12,6 @@ public class TitleManager : MonoBehaviour
     [SerializeField] private GameObject _titleMenu;
     [SerializeField] private Button _scoreAttackButton;
     [SerializeField] private Button _tutorialButton;
-    [SerializeField] private Button _settingsButton;
     [SerializeField] private Button _quitButton;
     #endregion
 
@@ -37,7 +36,6 @@ public class TitleManager : MonoBehaviour
     {
         _scoreAttackButton.onClick.AddListener(() => ScoreAttackSetup());
         _tutorialButton.onClick.AddListener(() => OpenTutorial());
-        _settingsButton.onClick.AddListener(() => OpenSettings());
         _quitButton.onClick.AddListener(() => QuitGame());
 
         _backToTitleButton.onClick.AddListener(() => ChangeActiveMenu(MenuName.TitleMenu));
@@ -92,11 +90,6 @@ public class TitleManager : MonoBehaviour
     {
         Application.OpenURL("https://cdn.shopify.com/s/files/1/0277/6724/2855/files/Bullet_Star_Rulebook.pdf");
         // could be expanded into a full tutorial popup if there is enough time
-    }
-
-    private void OpenSettings()
-    {
-        Debug.Log("Sorry, nothing!");
     }
 
     private void QuitGame()

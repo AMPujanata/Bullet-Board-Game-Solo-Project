@@ -124,7 +124,6 @@ public class GameManager : MonoBehaviour
             CurrentIntensity += 1;
             ActivePlayer.SightController.UpdateCurrentIntensity(CurrentIntensity, CenterManager.Instance.GetNumberOfBulletsInIntensity());
         }
-        // take all bullets in incoming and place in current
         ActivePlayer.ActionController.RefreshAP();
         if (CurrentMode == GameMode.ScoreAttack)
         {
@@ -138,17 +137,21 @@ public class GameManager : MonoBehaviour
 
     private void BeginBossPhase()
     {
-        // check boss pattern
-        if (_gameIsOver) return; // player cold possibly die from the boss pattern
-        ActiveBoss.CheckShieldBreak();
-        if (_gameIsOver) return; // game is over, no need to process the rest
-        ActivePlayer.SightController.DrawBulletsFromCenter(ActiveBoss.GetCurrentBossIntensity());
-        // draw a new boss pattern
-        StartNewRound();
+        ActivePlayer.SwapToBossPanel(); // swap to boss panel so active boss patterns are visible
+        ActiveBoss.ActivateAllBossPatterns((isSuccessful) =>
+        {
+            if (_gameIsOver) return; // player could possibly die from the boss pattern
+            ActiveBoss.CheckShieldBreak();
+            if (_gameIsOver) return; // game is over, no need to process the rest
+            ActivePlayer.SightController.DrawBulletsFromCenter(ActiveBoss.GetCurrentBossIntensity());
+            ActiveBoss.DrawToMaxActivePatternsSize();
+            StartNewRound();
+        });
     }
 
     private void StartNewRound()
     {
+        ActiveBoss.SwapToPlayerPanel(); // swap to player panel again
         CurrentRound++;
         _activePlayerBoardCanvasGroup.interactable = true;
     }

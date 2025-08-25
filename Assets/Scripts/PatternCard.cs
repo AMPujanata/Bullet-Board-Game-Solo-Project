@@ -11,11 +11,11 @@ public class PatternCard : MonoBehaviour
     [SerializeField] private GameObject _patternSpacePrefab;
     public PatternCardData PatternCardDataProperties { get; private set; }
     private PatternSpaceData[,] _patternSpaceGrid;
-    public void Initialize(string patternName, string patternDescription, string patternOwner, PatternCardData patternCardData)
+    public void Initialize(PatternCardData patternCardData)
     {
-        _patternName.text = patternName;
-        _patternDescription.text = patternDescription;
-        _patternOwner.text = patternOwner;
+        _patternName.text = patternCardData.PatternName;
+        _patternDescription.text = patternCardData.PatternDescription;
+        _patternOwner.text = patternCardData.PatternOwner;
         PatternCardDataProperties = patternCardData;
 
         int numberOfRows = PatternCardDataProperties.PatternGrid.Length;

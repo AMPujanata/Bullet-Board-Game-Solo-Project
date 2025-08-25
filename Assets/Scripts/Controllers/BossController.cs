@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,19 +10,33 @@ public class BossController : MonoBehaviour
     public int BrokenShieldsCount { get; private set; }
 
     private List<BulletData> _bulletsInBossIncoming = new List<BulletData>();
+
+    public int MaxActivePatternsSize = 1;
+    private List<BossPatternCardData> _cardsInDeck = new List<BossPatternCardData>();
+    private List<BossPatternCardData> _cardsInDiscard = new List<BossPatternCardData>();
+    private List<BossPatternCard> _activeBossPatternCards = new List<BossPatternCard>(); // hand cards have associated objects, cards in deck don't
+
     public void Initialize(BossData bossData)
     {
         _bossData = bossData;
-        // shuffle patterns
-        // perform boss passive setup
         _bossView.Initialize(_bossData, SwapToPlayerPanel);
+
+        foreach (BossPatternCardData data in _bossData.Patterns)
+        {
+            _cardsInDeck.Add(data);
+        }
+        ShuffleDeck();
+        UpdateDeckAndDiscardCount();
 
         BrokenShieldsCount = 0;
         _bossView.SetNewActiveShield(BrokenShieldsCount);
         _bossView.UpdateBulletIncomingText(_bulletsInBossIncoming.Count);
+
+        bossData.Passive.SetupPassive();
+        DrawToMaxActivePatternsSize();
     }
 
-    private void SwapToPlayerPanel()
+    public void SwapToPlayerPanel()
     {
         _bossView.gameObject.SetActive(false);
         GameManager.Instance.ActivePlayer.gameObject.SetActive(true);
@@ -78,4 +93,108 @@ public class BossController : MonoBehaviour
     {
         return _bossData.Shields[BrokenShieldsCount].ShieldIntensity;
     }
+
+    #region Pattern Functions
+    public void ShuffleDeck()
+    {
+        int deckCount = _cardsInDeck.Count;
+        int loopUpperBound = deckCount - 1;
+        for (var i = 0; i < loopUpperBound; i++)
+        {
+            int randomCardNumber = UnityEngine.Random.Range(i, deckCount);
+            BossPatternCardData tempCard = _cardsInDeck[i];
+            _cardsInDeck[i] = _cardsInDeck[randomCardNumber];
+            _cardsInDeck[randomCardNumber] = tempCard;
+        }
+    }
+
+    public void ShuffleDiscardIntoDeck()
+    {
+        if (_cardsInDiscard.Count <= 0)
+        {
+            return;
+        }
+
+        foreach (BossPatternCardData data in _cardsInDiscard)
+        {
+            _cardsInDeck.Add(data);
+        }
+
+        _cardsInDiscard.Clear();
+        UpdateDeckAndDiscardCount();
+        ShuffleDeck();
+    }
+
+    public void UpdateDeckAndDiscardCount()
+    {
+        _bossView.UpdateDeckCount(_cardsInDeck.Count);
+        _bossView.UpdateDiscardCount(_cardsInDiscard.Count);
+    }
+
+    public void DrawPatternFromDeck()
+    {
+        if (_cardsInDeck.Count <= 0) // Can't draw from an empty deck; try to shuffle discard back into deck
+        {
+            ShuffleDiscardIntoDeck();
+            if (_cardsInDeck.Count <= 0) return; // If deck is still empty, return
+        }
+
+        BossPatternCardData drawnCard = _cardsInDeck[0];
+        _cardsInDeck.RemoveAt(0);
+
+        _activeBossPatternCards.Add(_bossView.AddCardToActiveBossPattern(drawnCard));
+        UpdateDeckAndDiscardCount();
+    }
+
+    public void DrawToMaxActivePatternsSize()
+    {
+        int previousHandSize = _activeBossPatternCards.Count;
+        while (_activeBossPatternCards.Count < MaxActivePatternsSize)
+        {
+            DrawPatternFromDeck();
+            if (_activeBossPatternCards.Count == previousHandSize) // Drawing pattern failed, likely due to no cards remaining in deck and discard; terminate early
+            {
+                break;
+            }
+        }
+    }
+
+    private Queue<BossPatternCard> _bossPatternsQueue = new Queue<BossPatternCard>();
+    private bool _currentlyResolvingBossPatterns = false;
+    public void ActivateAllBossPatterns(Action<bool> finalCallback)
+    {
+        foreach(BossPatternCard card in _activeBossPatternCards)
+        {
+            _bossPatternsQueue.Enqueue(card);
+        }
+
+        NextBossPatternInQueue(finalCallback);
+    }
+
+    private void NextBossPatternInQueue(Action<bool> finalCallback)
+    {
+        if (_bossPatternsQueue.Count <= 0 || _currentlyResolvingBossPatterns) // no patterns left to check, and don't check patterns while another is happening
+        {
+            finalCallback.Invoke(true);
+            return;
+        }
+
+        BossPatternCard activatedCard = _bossPatternsQueue.Dequeue();
+        _currentlyResolvingBossPatterns = true;
+
+        activatedCard.ActivateBossPattern((isSucessful) =>
+        {
+            if (_activeBossPatternCards.Contains(activatedCard))
+            {
+                _activeBossPatternCards.Remove(activatedCard);
+                _cardsInDiscard.Add(activatedCard.BossPatternCardProperties);
+                _bossView.DiscardActivatedCard(activatedCard);
+                UpdateDeckAndDiscardCount();
+            }
+
+            _currentlyResolvingBossPatterns = false;
+            NextBossPatternInQueue(finalCallback);
+        });
+    }
+    #endregion
 }
