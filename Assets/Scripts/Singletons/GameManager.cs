@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
@@ -137,9 +138,11 @@ public class GameManager : MonoBehaviour
 
     private void BeginBossPhase()
     {
+        BossPhaseStart.Invoke();
         ActivePlayer.SwapToBossPanel(); // swap to boss panel so active boss patterns are visible
         ActiveBoss.ActivateAllBossPatterns((isSuccessful) =>
         {
+            ActiveBoss.SwapToPlayerPanel(); // swap to player panel again
             if (_gameIsOver) return; // player could possibly die from the boss pattern
             ActiveBoss.CheckShieldBreak();
             if (_gameIsOver) return; // game is over, no need to process the rest
@@ -151,7 +154,6 @@ public class GameManager : MonoBehaviour
 
     private void StartNewRound()
     {
-        ActiveBoss.SwapToPlayerPanel(); // swap to player panel again
         CurrentRound++;
         _activePlayerBoardCanvasGroup.interactable = true;
     }
@@ -197,4 +199,6 @@ public class GameManager : MonoBehaviour
     public PlayerController Player1 { get; private set; }
 
     public BossController ActiveBoss { get; private set; }
+
+    public UnityEvent BossPhaseStart { get; private set; } = new UnityEvent();
 }

@@ -17,9 +17,7 @@ public class BossView : MonoBehaviour
     [SerializeField] private GameObject _bossPatternCardPrefab;
 
     [SerializeField] private TMP_Text _cardsInBossDeckText;
-    [SerializeField] private Image _deckImage;
     [SerializeField] private TMP_Text _cardsInBossDiscardText;
-    [SerializeField] private Image _discardImage;
 
     private ShieldSpace[] _shieldSpaces;
     public void Initialize(BossData bossData, Action swapToPlayerAction)
@@ -74,14 +72,12 @@ public class BossView : MonoBehaviour
 
     public void UpdateDeckCount(int deckCount)
     {
-        _cardsInBossDeckText.text = string.Join(" ", deckCount, "cards");
-        _deckImage.gameObject.SetActive(deckCount > 0);
+        _cardsInBossDeckText.text = string.Join(" ", deckCount, "cards in Deck");
     }
 
     public void UpdateDiscardCount(int discardCount)
     {
-        _cardsInBossDiscardText.text = string.Join(" ", discardCount, "cards");
-        _discardImage.gameObject.SetActive(discardCount > 0);
+        _cardsInBossDiscardText.text = string.Join(" ", discardCount, "cards in Discard");
     }
 
     public BossPatternCard AddCardToActiveBossPattern(BossPatternCardData addedCard)

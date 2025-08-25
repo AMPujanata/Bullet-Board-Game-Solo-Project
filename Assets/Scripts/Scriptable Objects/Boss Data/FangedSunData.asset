@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02e4f12065cc952478254bd6e2ac6068, type: 3}
+  m_Name: FangedSunData
+  m_EditorClassIdentifier: 
+  BossName: The Fanged Sun
+  Passive: {fileID: 11400000, guid: 91a231120979bd54ebea17d1733d5eaa, type: 2}
+  Shields:
+  - ShieldIntensity: 7
+    NextShieldBreak: 6
+    OnShieldBreak: {fileID: 11400000, guid: 6338b2745b51cd54daba8e8e788ee87c, type: 2}
+  - ShieldIntensity: 7
+    NextShieldBreak: 6
+    OnShieldBreak: {fileID: 11400000, guid: 6338b2745b51cd54daba8e8e788ee87c, type: 2}
+  - ShieldIntensity: 8
+    NextShieldBreak: 4
+    OnShieldBreak: {fileID: 11400000, guid: 6338b2745b51cd54daba8e8e788ee87c, type: 2}
+  - ShieldIntensity: 9
+    NextShieldBreak: 4
+    OnShieldBreak: {fileID: 11400000, guid: 6338b2745b51cd54daba8e8e788ee87c, type: 2}
+  - ShieldIntensity: 10
+    NextShieldBreak: 4
+    OnShieldBreak: {fileID: 0}
+  - ShieldIntensity: 0
+    NextShieldBreak: 0
+    OnShieldBreak: {fileID: 11400000, guid: 574938ebb6e608046bd58812c1d5fa21, type: 2}
+  Patterns:
+  - {fileID: 11400000, guid: 97d7291dff9fd7442ac52b94a865694e, type: 2}
+  - {fileID: 11400000, guid: b063bdafbbc856b47b71c0ed6c2fc84b, type: 2}
+  - {fileID: 11400000, guid: c7283aca44c37424d87195ccd798c133, type: 2}
+  - {fileID: 11400000, guid: 8c33c4203e74dfe488a37849bd78da61, type: 2}
+  - {fileID: 11400000, guid: af5450ae91ad5034d8119f218bd561ef, type: 2}
+  - {fileID: 11400000, guid: 7831ca68de62b9547b7b73705bcbf3d3, type: 2}
+  - {fileID: 11400000, guid: 07e001551c03f84468b81a24aa5c2865, type: 2}
+  - {fileID: 11400000, guid: cac5c62fccc12b74e8965353762c27af, type: 2}

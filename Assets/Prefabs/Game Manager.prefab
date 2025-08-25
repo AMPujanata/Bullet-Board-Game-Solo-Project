@@ -48,5 +48,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: cd2d3115fc1d16649960c70a0941f383, type: 2}
   - {fileID: 11400000, guid: 6545de47ea631c9489418cfa62d40005, type: 2}
   _activePlayerData: {fileID: 11400000, guid: cd2d3115fc1d16649960c70a0941f383, type: 2}
-  _selectableBossDatas: []
-  _activeBossData: {fileID: 11400000, guid: 98202ba424f4bf145863af16fcdca731, type: 2}
+  _selectableBossDatas:
+  - {fileID: 11400000, guid: 3f44d2580cc51084199a417f2633e249, type: 2}
+  - {fileID: 11400000, guid: 1fe1df0a89709be40950815c0dfc76ee, type: 2}
+  _activeBossData: {fileID: 11400000, guid: 3f44d2580cc51084199a417f2633e249, type: 2}

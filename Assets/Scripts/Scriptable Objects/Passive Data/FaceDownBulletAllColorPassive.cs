@@ -5,6 +5,18 @@ public class FaceDownBulletAllColorPassive : BasePassive
 {
     public override void SetupPassive()
     {
-        // Currently facedown bullets are just handled in the space validity checker instead. If another character uses facedown bulelts in a different way, will be moved here 
+        GameManager.Instance.ActivePlayer.SightController.CheckPropertyModifiersList.Add(BulletIsAllColor);
+    }
+
+    private BulletData BulletIsAllColor(BulletData bulletToChange, PatternSpaceData spaceRequirement)
+    {
+        if (bulletToChange.IsFacedown == true)
+        {
+            bulletToChange.Color = spaceRequirement.ColorRequired;
+            bulletToChange.Number = 0;
+            bulletToChange.IsStar = false;
+        }
+
+        return bulletToChange;
     }
 }

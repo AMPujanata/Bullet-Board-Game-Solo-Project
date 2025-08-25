@@ -18,8 +18,11 @@ MonoBehaviour:
   - ShieldIntensity: 10
     NextShieldBreak: 1
     OnShieldBreak: {fileID: 0}
+  - ShieldIntensity: 1
+    NextShieldBreak: 30
+    OnShieldBreak: {fileID: 11400000, guid: 6338b2745b51cd54daba8e8e788ee87c, type: 2}
   - ShieldIntensity: 10
-    NextShieldBreak: 1
+    NextShieldBreak: 30
     OnShieldBreak: {fileID: 0}
   Patterns:
   - {fileID: 11400000, guid: 59aab43b21544ed4faaa308cb1bc34e1, type: 2}

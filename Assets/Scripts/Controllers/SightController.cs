@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(SightView))]
@@ -9,6 +10,8 @@ public class SightController : MonoBehaviour
 {
     [SerializeField] private SightView _sightView;
     private List<BulletData> _bulletsInCurrentBag = new List<BulletData>();
+    public delegate BulletData BulletCheckPropertyModifier(BulletData data, PatternSpaceData requirement);
+    public List<BulletCheckPropertyModifier> CheckPropertyModifiersList { get; private set; } = new List<BulletCheckPropertyModifier>(); 
 
     #region Hover Routine Variables
     private bool _isAcceptingHoverInputs = false;
@@ -69,24 +72,32 @@ public class SightController : MonoBehaviour
         }
     }
 
-    public void RemoveBulletFromSight(Vector2Int removeCell)
+    public void RemoveBulletFromSight(Vector2Int removeCell, bool isDamage = false)
     {
         SightSpace chosenSpace = _sightView.GetSightSpace(removeCell);
         if (chosenSpace.BulletProperties == null) return; // If there's no bullet, don't bother removing the bullet
         BulletData chosenProperty = chosenSpace.BulletProperties;
         chosenProperty.IsFacedown = false; // always flip bullets face up before returning
-        if(GameManager.Instance.CurrentMode == GameMode.ScoreAttack)
+        if (!isDamage)
         {
-            CenterManager.Instance.AddBulletToIntensity(chosenProperty);
-            UpdateCurrentIntensity(GameManager.Instance.CurrentIntensity, CenterManager.Instance.GetNumberOfBulletsInIntensity());
+            if (GameManager.Instance.CurrentMode == GameMode.ScoreAttack)
+            {
+                CenterManager.Instance.AddBulletToIntensity(chosenProperty);
+                UpdateCurrentIntensity(GameManager.Instance.CurrentIntensity, CenterManager.Instance.GetNumberOfBulletsInIntensity());
+            }
+            else if (GameManager.Instance.CurrentMode == GameMode.BossBattle)
+            {
+                GameManager.Instance.ActiveBoss.AddBulletToBossIncoming(chosenProperty);
+            }
+            if (chosenProperty.IsStar) GameManager.Instance.ActivePlayer.ActionController.ActivateStarActions();
+            _sightView.RemoveSightBulletObject(removeCell);
+            GameManager.Instance.AddBulletToTotalClear();
         }
-        else if(GameManager.Instance.CurrentMode == GameMode.BossBattle)
+        else
         {
-            GameManager.Instance.ActiveBoss.AddBulletToBossIncoming(chosenProperty);
+            _sightView.RemoveSightBulletObject(removeCell);
+            GameManager.Instance.ActivePlayer.ModifyCurrentHP(-1);
         }
-        if(chosenProperty.IsStar) GameManager.Instance.ActivePlayer.ActionController.ActivateStarActions();
-        _sightView.RemoveSightBulletObject(removeCell);
-        GameManager.Instance.AddBulletToTotalClear();
     }
 
     public void RemoveBulletsFromSightWithPattern(Vector2Int startingCell, PatternSpaceData[,] patternSpaceDatas)
@@ -107,17 +118,29 @@ public class SightController : MonoBehaviour
         }
     }
 
-    public void MoveBulletInSight(Vector2Int oldCell, Vector2Int newCell)
+    public void MoveBulletInSight(Vector2Int oldCell, Vector2Int newCell) // newCell possibly asking for a space that doesn't exist; verify this
     {
+        Vector2Int sightGridSize = new Vector2Int(GetSightGrid().GetLength(0), GetSightGrid().GetLength(1));
+        if (oldCell.x < 0 || oldCell.x > sightGridSize.x - 1 || oldCell.y < 0 || oldCell.y > sightGridSize.y - 1) return; // don't go on if old cell is out of bounds
         SightSpace chosenSpace = _sightView.GetSightSpace(oldCell);
         if (chosenSpace.BulletProperties == null) return; // If there's no bullet, don't bother moving the bullet
+
+        if(newCell.x > _sightView.GetSightGrid().GetLength(0) - 1) // if the y would move past the bottom of the grid, cause damage
+        {
+            RemoveBulletFromSight(oldCell, true);
+            return;
+        }
+        newCell.x = Mathf.Clamp(newCell.x, 0, sightGridSize.x - 1);
+        newCell.y = Mathf.Clamp(newCell.y, 0, sightGridSize.y - 1);
         SightSpace finalSpace = _sightView.GetSightSpace(newCell);
+        if (finalSpace.BulletProperties != null) return; // If there's a bullet there already, don't move the bullet
+
         BulletData chosenProperty = chosenSpace.BulletProperties;
         finalSpace.BulletProperties = chosenProperty;
         chosenSpace.BulletProperties = null;
         _sightView.MoveSightBulletObject(oldCell, newCell);
     }
-    
+
     public void FlipBulletFaceDown(Vector2Int cell)
     {
         SightSpace chosenSpace = _sightView.GetSightSpace(cell);
@@ -167,17 +190,24 @@ public class SightController : MonoBehaviour
         if (spaceProperty != null) // this is a wrapper to make sure no comparisons are made with properties of the null space property
         {
             if (spaceRequirement.NeedsEmpty) return false;
-            if (spaceProperty.IsFacedown) // facedown bullets have no number or star, but are treated as any color
+
+            BulletData bulletToCheck = new BulletData // duplicate bulletdata so the original space is not affected
             {
-                if (spaceRequirement.NeedsFaceUp || spaceRequirement.NeedsStarBullet || spaceRequirement.NumberRequired != 0) return false;
-            }
-            else
+                Color = spaceProperty.Color,
+                Number = spaceProperty.Number,
+                IsStar = spaceProperty.IsStar,
+                IsFacedown = spaceProperty.IsFacedown
+            };
+
+            for (int i = 0; i < CheckPropertyModifiersList.Count; i++) // activate any passives that modify bullet requirements. bulletToCheck will be a different 
             {
-                if (spaceRequirement.ColorRequired != BulletColor.Any && spaceProperty.Color != spaceRequirement.ColorRequired) return false;
-                if ((spaceRequirement.NumberRequired != 0) && (spaceProperty.Number != spaceRequirement.NumberRequired)) return false;
-                // same number pattern currently being checked in the wrapping functions themself (hover)
-                if (spaceRequirement.NeedsStarBullet && (spaceProperty.IsStar == false)) return false;
+                bulletToCheck = CheckPropertyModifiersList[i].Invoke(bulletToCheck, spaceRequirement);
             }
+
+            if (spaceRequirement.ColorRequired != BulletColor.Any && bulletToCheck.Color != spaceRequirement.ColorRequired) return false;
+            if ((spaceRequirement.NumberRequired != 0) && (bulletToCheck.Number != spaceRequirement.NumberRequired)) return false;
+            // same number pattern currently being checked in the wrapping functions themself (hover)
+            if (spaceRequirement.NeedsStarBullet && (bulletToCheck.IsStar == false)) return false;
         }
 
         // if all conditions are met, return true
@@ -469,4 +499,9 @@ public class SightController : MonoBehaviour
         _shouldCancelSpaceSelection = true;
     }
     #endregion
+
+    public SightSpace[,] GetSightGrid()
+    {
+        return _sightView.GetSightGrid();
+    }
 }

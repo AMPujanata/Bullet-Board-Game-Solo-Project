@@ -10,39 +10,31 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3c0720728ed1b6e4cbd76caac0339353, type: 3}
-  m_Name: FugueCatalystChord
+  m_Name: FangedSunGravitonCurtain
   m_EditorClassIdentifier: 
-  PatternName: Catalyst Chord
-  PatternDescription: '"Let the sound drive you wild."'
-  PatternOwner: Fugue In D Minor
+  PatternName: Graviton Curtain
+  PatternDescription: '"And stay down!"'
+  PatternOwner: The Fanged Sun
   PatternGrid:
   - PatternSpaces:
     - NeedsBullet: 1
       NeedsEmpty: 0
-      ColorRequired: 2
+      ColorRequired: -1
       NumberRequired: 0
-      NeedsSameNumber: 0
+      NeedsSameNumber: 1
       NeedsStarBullet: 0
       WillClearBullet: 0
       NeedsFaceUp: 0
     - NeedsBullet: 1
       NeedsEmpty: 0
-      ColorRequired: 2
+      ColorRequired: -1
       NumberRequired: 0
-      NeedsSameNumber: 0
-      NeedsStarBullet: 0
-      WillClearBullet: 0
-      NeedsFaceUp: 0
-    - NeedsBullet: 1
-      NeedsEmpty: 0
-      ColorRequired: 2
-      NumberRequired: 0
-      NeedsSameNumber: 0
+      NeedsSameNumber: 1
       NeedsStarBullet: 0
       WillClearBullet: 0
       NeedsFaceUp: 0
   - PatternSpaces:
-    - NeedsBullet: 0
+    - NeedsBullet: 1
       NeedsEmpty: 0
       ColorRequired: -1
       NumberRequired: 0
@@ -52,18 +44,10 @@ MonoBehaviour:
       NeedsFaceUp: 0
     - NeedsBullet: 1
       NeedsEmpty: 0
-      ColorRequired: 2
-      NumberRequired: 0
-      NeedsSameNumber: 0
-      NeedsStarBullet: 0
-      WillClearBullet: 0
-      NeedsFaceUp: 0
-    - NeedsBullet: 0
-      NeedsEmpty: 0
       ColorRequired: -1
       NumberRequired: 0
       NeedsSameNumber: 0
       NeedsStarBullet: 0
       WillClearBullet: 0
       NeedsFaceUp: 0
-  OnFailEffect: {fileID: 11400000, guid: a2deaf2e5dc3599418601499100cbe96, type: 2}
+  OnFailEffect: {fileID: 11400000, guid: 574938ebb6e608046bd58812c1d5fa21, type: 2}

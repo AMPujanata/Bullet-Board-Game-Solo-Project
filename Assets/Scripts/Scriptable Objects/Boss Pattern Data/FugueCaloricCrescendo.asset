@@ -66,4 +66,4 @@ MonoBehaviour:
       NeedsStarBullet: 0
       WillClearBullet: 0
       NeedsFaceUp: 0
-  OnFailEffect: {fileID: 11400000, guid: ebadcfc624b9f1146a84db8d4e105432, type: 2}
+  OnFailEffect: {fileID: 11400000, guid: f5539612d7453a0498f2f60b4a8e41e3, type: 2}
