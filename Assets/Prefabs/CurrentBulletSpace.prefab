@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 7741091224387573408}
   - component: {fileID: 1889613455505364868}
   - component: {fileID: 2220331755928535131}
-  - component: {fileID: 847169770746112160}
   - component: {fileID: 7278418922634665696}
+  - component: {fileID: 7930723984797564109}
   m_Layer: 5
   m_Name: CurrentBulletSpace
   m_TagString: Untagged
@@ -100,21 +100,6 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
---- !u!114 &847169770746112160
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1785325221444066509}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_EffectColor: {r: 0.9137255, g: 0.105882354, b: 0.28235295, a: 1}
-  m_EffectDistance: {x: 3, y: 3}
-  m_UseGraphicAlpha: 1
 --- !u!114 &7278418922634665696
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -131,6 +116,21 @@ MonoBehaviour:
   _spaceValidityImage: {fileID: 8851885019648330606}
   _validSpaceColor: {r: 0.45490196, g: 0.74509805, b: 0.26666668, a: 0.6}
   _invalidSpaceColor: {r: 0.9137255, g: 0.105882354, b: 0.28235295, a: 0.6}
+--- !u!114 &7930723984797564109
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1785325221444066509}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0.91372555, g: 0.10588236, b: 0.28235295, a: 1}
+  m_EffectDistance: {x: 3, y: 3}
+  m_UseGraphicAlpha: 1
 --- !u!1 &2160802117916121932
 GameObject:
   m_ObjectHideFlags: 0

@@ -11,6 +11,7 @@ public class TitleManager : MonoBehaviour
     #region Main Title 
     [SerializeField] private GameObject _titleMenu;
     [SerializeField] private Button _scoreAttackButton;
+    [SerializeField] private Button _bossBattleButton;
     [SerializeField] private Button _tutorialButton;
     [SerializeField] private Button _quitButton;
     #endregion
@@ -18,6 +19,8 @@ public class TitleManager : MonoBehaviour
     #region Match Settings
     [SerializeField] private GameObject _matchSettingsMenu;
     [SerializeField] private TMP_Dropdown _characterSelectDropdown;
+    [SerializeField] private TMP_Dropdown _bossSelectDropdown;
+    [SerializeField] private Transform _bossSelectDropdownParent;
     [SerializeField] private Button _startGameButton;
     [SerializeField] private Button _backToTitleButton;
     #endregion
@@ -35,6 +38,7 @@ public class TitleManager : MonoBehaviour
     private void Start()
     {
         _scoreAttackButton.onClick.AddListener(() => ScoreAttackSetup());
+        _bossBattleButton.onClick.AddListener(() => BossBattleSetup());
         _tutorialButton.onClick.AddListener(() => OpenTutorial());
         _quitButton.onClick.AddListener(() => QuitGame());
 
@@ -50,6 +54,16 @@ public class TitleManager : MonoBehaviour
         _characterSelectDropdown.AddOptions(allPlayerNames);
         _characterSelectDropdown.onValueChanged.AddListener((value) => OnCharacterDropdownChanged(_characterSelectDropdown));
         OnCharacterDropdownChanged(_characterSelectDropdown); // Sets initial value to GameManager, since dropdown won't do it automatically
+
+        BossData[] allBosses = GameManager.Instance.GetSelectableBosses();
+        List<string> allBossesNames = new List<string>();
+        foreach (BossData data in allBosses)
+        {
+            allBossesNames.Add(data.BossName);
+        }
+        _bossSelectDropdown.AddOptions(allBossesNames);
+        _bossSelectDropdown.onValueChanged.AddListener((value) => OnCharacterDropdownChanged(_bossSelectDropdown));
+        OnBossDropdownChanged(_bossSelectDropdown); // Sets initial value to GameManager, since dropdown won't do it automatically
     }
 
     private void ChangeActiveMenu(MenuName menuName)
@@ -80,9 +94,31 @@ public class TitleManager : MonoBehaviour
         }
     }
 
+    private void OnBossDropdownChanged(TMP_Dropdown dropdown)
+    {
+        string characterName = dropdown.options[dropdown.value].text;
+        BossData[] allBosses = GameManager.Instance.GetSelectableBosses();
+        foreach (BossData data in allBosses)
+        {
+            if (characterName == data.BossName)
+            {
+                GameManager.Instance.SetActiveBossData(data);
+                break;
+            }
+        }
+    }
+
     private void ScoreAttackSetup()
     {
         GameManager.Instance.CurrentMode = GameMode.ScoreAttack;
+        _bossSelectDropdownParent.gameObject.SetActive(false);
+        ChangeActiveMenu(MenuName.MatchSettings);
+    }
+
+    private void BossBattleSetup()
+    {
+        GameManager.Instance.CurrentMode = GameMode.BossBattle;
+        _bossSelectDropdownParent.gameObject.SetActive(true);
         ChangeActiveMenu(MenuName.MatchSettings);
     }
 

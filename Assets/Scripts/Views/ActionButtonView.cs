@@ -7,6 +7,8 @@ public class ActionButtonView : MonoBehaviour
 {
     [SerializeField] private Button _actionButton;
     [SerializeField] private Image _actionIcon;
+    [SerializeField] private Image _actionBackground;
+    [SerializeField] private Sprite _starActionBGSprite;
     [SerializeField] private TMP_Text _actionCostText;
     [SerializeField] private TMP_Text _actionDescriptionText;
 
@@ -17,7 +19,8 @@ public class ActionButtonView : MonoBehaviour
         _actionIcon.sprite = action.ActionIcon;
         if (action.IsStar)
         {
-            _actionCostText.text = "S";
+            _actionBackground.sprite = _starActionBGSprite;
+            _actionCostText.gameObject.SetActive(false);
         }
         else
         {

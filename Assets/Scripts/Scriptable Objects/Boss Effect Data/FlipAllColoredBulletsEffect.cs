@@ -14,6 +14,7 @@ public class FlipAllColoredBulletsEffect : BaseBossEffect
         {
             for (int y = 0; y < totalColumns; y++)
             {
+                if (sightGrid[x, y].BulletProperties == null) continue; // no point checking if a bullet isn't there
                 if(sightGrid[x, y].BulletProperties.Color == colorToFlip)
                 {
                     GameManager.Instance.ActivePlayer.SightController.FlipBulletFaceDown(new Vector2Int(x, y));

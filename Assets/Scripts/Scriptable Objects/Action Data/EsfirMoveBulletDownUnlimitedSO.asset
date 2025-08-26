@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ActionCost: 2
   ActionText: Move a bullet down any number of spaces.
-  ActionIcon: {fileID: 0}
+  ActionIcon: {fileID: 21300000, guid: 30e5f1bf73503cb45974f89aa034ffd7, type: 3}
   IsStar: 0

@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ActionCost: 1
   ActionText: Move a bullet left, right, or down 1 space.
-  ActionIcon: {fileID: 0}
+  ActionIcon: {fileID: 21300000, guid: 47286f72e3d5bde4db3584c945d36094, type: 3}
   IsStar: 0

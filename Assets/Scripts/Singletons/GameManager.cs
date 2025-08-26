@@ -47,6 +47,16 @@ public class GameManager : MonoBehaviour
         _activePlayerData = activePlayer;
     }
 
+    public BossData[] GetSelectableBosses()
+    {
+        return _selectableBossDatas;
+    }
+
+    public void SetActiveBossData(BossData activeBoss)
+    {
+        _activeBossData = activeBoss;
+    }
+
     public void StartGame()
     {
         StartCoroutine(LoadMainGameplayScene());

@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ActionCost: 2
   ActionText: Draw a pattern.
-  ActionIcon: {fileID: 0}
+  ActionIcon: {fileID: 21300000, guid: 9a51779070dfdbd4fba26fb70171581b, type: 3}
   IsStar: 0

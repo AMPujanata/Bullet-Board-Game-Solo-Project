@@ -17,7 +17,7 @@ public class BossPatternCard : MonoBehaviour
     public void Initialize(BossPatternCardData bossPatternCardData)
     {
         _patternName.text = bossPatternCardData.PatternName;
-        //_patternDescription.text = bossPatternCardData.PatternDescription; // not enough room currently. may be added back later
+        _patternDescription.text = bossPatternCardData.PatternDescription;
         _patternOwner.text = bossPatternCardData.PatternOwner;
         _patternPunishment.text = bossPatternCardData.OnFailEffect.EffectDescription;
         BossPatternCardProperties = bossPatternCardData;

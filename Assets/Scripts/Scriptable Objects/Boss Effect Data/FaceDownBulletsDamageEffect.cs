@@ -13,6 +13,7 @@ public class FaceDownBulletsDamageEffect : BaseBossEffect
         {
             for (int y = 0; y < totalColumns; y++)
             {
+                if (sightGrid[x, y].BulletProperties == null) continue; // no point checking if a bullet isn't there
                 if (sightGrid[x, y].BulletProperties.IsFacedown == true)
                 {
                     GameManager.Instance.ActivePlayer.SightController.RemoveBulletFromSight(new Vector2Int(x, y), true);
