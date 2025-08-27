@@ -13,6 +13,7 @@ public class ShieldData
 public class BossData : ScriptableObject
 {
     public string BossName;
+    [TextArea] public string BossDescription;
     public BaseBossPassive Passive;
     public ShieldData[] Shields;
     public BossPatternCardData[] Patterns;

@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using System;
+using System.Collections;
 
 public class BossPatternCard : MonoBehaviour
 {
@@ -50,6 +51,17 @@ public class BossPatternCard : MonoBehaviour
             }
         }
 
+        if(gameObject.activeInHierarchy) StartCoroutine(UpdateGridSpace()); // can't update grid space if not active
+    }
+
+    private IEnumerator UpdateGridSpace()
+    {
+        RectTransform gridRect = _patternSpaceGridParent.GetComponent<RectTransform>();
+        _patternSpaceGridParent.GetComponent<GridLayoutGroup>().cellSize = new Vector2(0, 0);
+        yield return new WaitForEndOfFrame();
+        float minSize = Mathf.Min(gridRect.rect.width, gridRect.rect.height) / 6; // extra padding
+        _patternSpaceGridParent.GetComponent<GridLayoutGroup>().cellSize = new Vector2(minSize, minSize);
+        yield break;
     }
 
     public void ActivateBossPattern(Action<bool> callback)
@@ -69,5 +81,10 @@ public class BossPatternCard : MonoBehaviour
             BossPatternCardProperties.OnFailEffect.ActivateEffect();
             callback.Invoke(false);
         });
+    }
+
+    private void OnEnable()
+    {
+        UpdateGridSpace();
     }
 }

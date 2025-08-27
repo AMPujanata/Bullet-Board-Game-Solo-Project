@@ -38,6 +38,7 @@ public class BossView : MonoBehaviour
             _shieldSpaces[i] = newShieldSpace;
         }
 
+        SetNewActiveShield(0);
         // boss active pattern can be spawned later
     }
 

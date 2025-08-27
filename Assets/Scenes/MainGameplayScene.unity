@@ -4227,6 +4227,7 @@ MonoBehaviour:
   _deckImage: {fileID: 948951032}
   _cardsInDiscardText: {fileID: 1157026454}
   _discardImage: {fileID: 1188684586}
+  _handMaxWidth: 1100
 --- !u!114 &659724636
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -13,6 +13,9 @@ MonoBehaviour:
   m_Name: EsfirVolkovaData
   m_EditorClassIdentifier: 
   PlayerName: Esfir Volkova
+  PlayerDescription: Esfir is a simple, easy-to-play character with no inherent restrictions
+    or gimmicks to play around. Using your higher than normal pattern counts and
+    ability to move bullets infinitely downwards, line up bullets for a quick clear!
   MaxHP: 4
   MaxAP: 7
   Passive: {fileID: 11400000, guid: 0c71c844fb72f1c418b481b931a9d35c, type: 2}

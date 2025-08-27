@@ -1,9 +1,11 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using System.Collections;
 
 public class PatternCard : MonoBehaviour
 {
+    [SerializeField] private Button _patternCardButton;
     [SerializeField] private TMP_Text _patternName;
     [SerializeField] private TMP_Text _patternDescription;
     [SerializeField] private TMP_Text _patternOwner;
@@ -11,7 +13,7 @@ public class PatternCard : MonoBehaviour
     [SerializeField] private GameObject _patternSpacePrefab;
     public PatternCardData PatternCardDataProperties { get; private set; }
     private PatternSpaceData[,] _patternSpaceGrid;
-    public void Initialize(PatternCardData patternCardData)
+    public void Initialize(PatternCardData patternCardData, bool isShowcasePattern = false)
     {
         _patternName.text = patternCardData.PatternName;
         _patternDescription.text = patternCardData.PatternDescription;
@@ -46,6 +48,19 @@ public class PatternCard : MonoBehaviour
             }
         }
 
+        if(gameObject.activeInHierarchy) StartCoroutine(UpdateGridSpace());
+
+        if(!isShowcasePattern) _patternCardButton.onClick.AddListener(SelectPattern); // some cards are only meant to be seen, not interacted with
+    }
+
+    private IEnumerator UpdateGridSpace()
+    {
+        RectTransform gridRect = _patternSpaceGridParent.GetComponent<RectTransform>();
+        _patternSpaceGridParent.GetComponent<GridLayoutGroup>().cellSize = new Vector2(0, 0);
+        yield return new WaitForEndOfFrame();
+        float minSize = Mathf.Min(gridRect.rect.width, gridRect.rect.height) / 6; // extra padding
+        _patternSpaceGridParent.GetComponent<GridLayoutGroup>().cellSize = new Vector2(minSize, minSize);
+        yield break;
     }
 
     public void SelectPattern()
@@ -61,5 +76,10 @@ public class PatternCard : MonoBehaviour
             GameManager.Instance.ActivePlayer.SightController.RemoveBulletsFromSightWithPattern(finalTopLeftCell, _patternSpaceGrid);
             GameManager.Instance.ActivePlayer.PatternController.DiscardPatternFromHand(this);
         });
+    }
+
+    private void OnEnable()
+    {
+        UpdateGridSpace();
     }
 }

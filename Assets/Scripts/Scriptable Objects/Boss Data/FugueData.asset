@@ -13,6 +13,10 @@ MonoBehaviour:
   m_Name: FugueData
   m_EditorClassIdentifier: 
   BossName: Fugue In D Minor
+  BossDescription: Fugue in D Minor has very high bullet intensity, while her patterns
+    flip down bullets of a certain color. All face-down bullets will eventually hit
+    you, so make sure your board is either empty of the pattern's color, or you clear
+    the pattern!
   Passive: {fileID: 11400000, guid: e8ee60b2cabfe6842a9bcb90ef44f775, type: 2}
   Shields:
   - ShieldIntensity: 12

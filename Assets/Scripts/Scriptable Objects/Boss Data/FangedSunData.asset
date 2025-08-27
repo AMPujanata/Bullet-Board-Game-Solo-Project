@@ -13,6 +13,9 @@ MonoBehaviour:
   m_Name: FangedSunData
   m_EditorClassIdentifier: 
   BossName: The Fanged Sun
+  BossDescription: Fanged Sun has low bullet intensity on her shields, but makes
+    up for it by having extremely punishing failure effects and multiple active patterns.
+    Clear all her patterns immediately to prevent damage!
   Passive: {fileID: 11400000, guid: 91a231120979bd54ebea17d1733d5eaa, type: 2}
   Shields:
   - ShieldIntensity: 7

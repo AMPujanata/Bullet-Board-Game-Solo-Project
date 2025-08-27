@@ -18,6 +18,8 @@ public class TitleManager : MonoBehaviour
 
     #region Match Settings
     [SerializeField] private GameObject _matchSettingsMenu;
+    [SerializeField] private SelectedCharacterPanelView _selectedCharacterPanelView;
+    [SerializeField] private SelectedBossPanelView _selectedBossPanelView;
     [SerializeField] private TMP_Dropdown _characterSelectDropdown;
     [SerializeField] private TMP_Dropdown _bossSelectDropdown;
     [SerializeField] private Transform _bossSelectDropdownParent;
@@ -53,7 +55,6 @@ public class TitleManager : MonoBehaviour
         }
         _characterSelectDropdown.AddOptions(allPlayerNames);
         _characterSelectDropdown.onValueChanged.AddListener((value) => OnCharacterDropdownChanged(_characterSelectDropdown));
-        OnCharacterDropdownChanged(_characterSelectDropdown); // Sets initial value to GameManager, since dropdown won't do it automatically
 
         BossData[] allBosses = GameManager.Instance.GetSelectableBosses();
         List<string> allBossesNames = new List<string>();
@@ -62,8 +63,7 @@ public class TitleManager : MonoBehaviour
             allBossesNames.Add(data.BossName);
         }
         _bossSelectDropdown.AddOptions(allBossesNames);
-        _bossSelectDropdown.onValueChanged.AddListener((value) => OnCharacterDropdownChanged(_bossSelectDropdown));
-        OnBossDropdownChanged(_bossSelectDropdown); // Sets initial value to GameManager, since dropdown won't do it automatically
+        _bossSelectDropdown.onValueChanged.AddListener((value) => OnBossDropdownChanged(_bossSelectDropdown));
     }
 
     private void ChangeActiveMenu(MenuName menuName)
@@ -77,6 +77,17 @@ public class TitleManager : MonoBehaviour
         {
             _titleMenu.SetActive(false);
             _matchSettingsMenu.SetActive(true);
+            OnCharacterDropdownChanged(_characterSelectDropdown);
+
+            if(GameManager.Instance.CurrentMode == GameMode.BossBattle)
+            {
+                _selectedBossPanelView.gameObject.SetActive(true);
+                OnBossDropdownChanged(_bossSelectDropdown);
+            }
+            else
+            {
+                _selectedBossPanelView.gameObject.SetActive(false);
+            }
         }
     }
 
@@ -89,6 +100,7 @@ public class TitleManager : MonoBehaviour
             if(characterName == data.PlayerName)
             {
                 GameManager.Instance.SetActivePlayerData(data);
+                _selectedCharacterPanelView.ChangeCharacter(data);
                 break;
             }
         }
@@ -103,6 +115,7 @@ public class TitleManager : MonoBehaviour
             if (characterName == data.BossName)
             {
                 GameManager.Instance.SetActiveBossData(data);
+                _selectedBossPanelView.ChangeBoss(data);
                 break;
             }
         }

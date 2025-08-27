@@ -16,7 +16,7 @@ public class ShieldSpace : MonoBehaviour
     {
         ShieldProperties = shieldData;
         _shieldBrokenIcon.gameObject.SetActive(false);
-        _shieldCoveredIcon.gameObject.SetActive(true);
+        _shieldCoveredIcon.gameObject.SetActive(false);
         if (isFinalShield)
         {
             _shieldIntensityText.text = "";

@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerData : ScriptableObject
 { 
     public string PlayerName;
+    [TextArea] public string PlayerDescription;
     public int MaxHP;
     public int MaxAP;
     public BasePassive Passive;
