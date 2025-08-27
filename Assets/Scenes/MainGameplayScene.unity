@@ -5298,19 +5298,19 @@ MonoBehaviour:
   _placeBulletButton: {fileID: 1493326139}
   _bulletColorUIProperties:
   - BulletColorRequirement: 0
-    BulletSprite: {fileID: 21300000, guid: 4066941f204a63f41bba498f3cfc7d4b, type: 3}
+    BulletSprite: {fileID: 21300000, guid: e24b4e5a70e462f46ac539ef47ecd9b4, type: 3}
     MainUIColor: {r: 0.91372555, g: 0.10588236, b: 0.28235295, a: 1}
   - BulletColorRequirement: 1
-    BulletSprite: {fileID: 21300000, guid: 4066941f204a63f41bba498f3cfc7d4b, type: 3}
+    BulletSprite: {fileID: 21300000, guid: 56a7e9c671c3b87499ea3bcb90055b38, type: 3}
     MainUIColor: {r: 0, g: 0.54901963, b: 1, a: 1}
   - BulletColorRequirement: 2
-    BulletSprite: {fileID: 21300000, guid: 4066941f204a63f41bba498f3cfc7d4b, type: 3}
+    BulletSprite: {fileID: 21300000, guid: 17a09b068a7b63b41b1b7fec1d6b2ae3, type: 3}
     MainUIColor: {r: 0.454902, g: 0.74509805, b: 0.26666668, a: 1}
   - BulletColorRequirement: 3
-    BulletSprite: {fileID: 21300000, guid: 4066941f204a63f41bba498f3cfc7d4b, type: 3}
+    BulletSprite: {fileID: 21300000, guid: 9d740e30d75f92f42a8983988ca0098e, type: 3}
     MainUIColor: {r: 0.9843138, g: 0.7490196, b: 0.227451, a: 1}
   - BulletColorRequirement: 4
-    BulletSprite: {fileID: 21300000, guid: 4066941f204a63f41bba498f3cfc7d4b, type: 3}
+    BulletSprite: {fileID: 21300000, guid: 17709abb42d163c4191c1ca1e3869821, type: 3}
     MainUIColor: {r: 0.9490196, g: 0.5921569, b: 0.7529412, a: 1}
   _sightGrid:
   - SightSpaces:
