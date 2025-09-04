@@ -5642,6 +5642,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _sightView: {fileID: 799415697}
+  _previousActiveSpacePosition: {x: -1, y: -1}
+  _activeSpacePosition: {x: -1, y: -1}
 --- !u!114 &799415693
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6776,6 +6778,10 @@ PrefabInstance:
       propertyPath: CurrentMode
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 5659615790758430302, guid: f31971ab6a17e6142b1cbadb3bd02fb8, type: 3}
+      propertyPath: _activePlayerData
+      value: 
+      objectReference: {fileID: 11400000, guid: 6545de47ea631c9489418cfa62d40005, type: 2}
     - target: {fileID: 5659615790758430303, guid: f31971ab6a17e6142b1cbadb3bd02fb8, type: 3}
       propertyPath: m_RootOrder
       value: 3

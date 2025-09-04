@@ -15,8 +15,8 @@ public class SightController : MonoBehaviour
 
     #region Hover Routine Variables
     private bool _isAcceptingHoverInputs = false;
-    private Vector2Int _previousActiveSpacePosition = new Vector2Int(-1, -1);
-    private Vector2Int _activeSpacePosition = new Vector2Int(-1, -1);
+    [SerializeField] private Vector2Int _previousActiveSpacePosition = new Vector2Int(-1, -1);
+    [SerializeField] private Vector2Int _activeSpacePosition = new Vector2Int(-1, -1);
     private PatternSpaceData[,] _sightSpaceRequirements = null;
     private bool _shouldCancelSpaceSelection = false;
     #endregion
