@@ -92,7 +92,9 @@ public class SightView : MonoBehaviour
         SightSpace selectedSpace = _sightGrid[cell.x].SightSpaces[cell.y];
         selectedSpace.BulletProperties = null;
 
-        Destroy(selectedSpace.BulletParent.GetChild(0).gameObject);
+        GameObject bulletObject = selectedSpace.BulletParent.GetChild(0).gameObject;
+        OverlayManager.Instance.ShowBulletClearEffect(bulletObject.transform.position);
+        Destroy(bulletObject);
     }
 
     public void MoveSightBulletObject(Vector2Int oldCell, Vector2Int newCell)

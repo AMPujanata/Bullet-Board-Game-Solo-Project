@@ -20,7 +20,7 @@ public class PopupView : MonoBehaviour
 
         _popupButton1.onClick.AddListener(() =>
         {
-            PopupManager.Instance.ClosePopup();
+            OverlayManager.Instance.ClosePopup();
         });
 
         if (onButton1Press != null)
@@ -37,7 +37,7 @@ public class PopupView : MonoBehaviour
 
             _popupButton2.onClick.AddListener(() =>
             {
-                PopupManager.Instance.ClosePopup();
+                OverlayManager.Instance.ClosePopup();
             });
 
             if (onButton2Press != null)

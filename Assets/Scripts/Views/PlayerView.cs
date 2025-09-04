@@ -11,8 +11,9 @@ public class PlayerView : MonoBehaviour
     [SerializeField] private TMP_Text _passiveNameText;
     [SerializeField] private TMP_Text _passiveDescriptionText;
     [SerializeField] private Button _swapToBossButton;
+    [SerializeField] private Button _quitGameButton;
 
-    public void Initialize(PlayerData playerData, Action swapToBossAction)
+    public void Initialize(PlayerData playerData, Action swapToBossAction, Action quitGameAction)
     {
         _nameText.text = playerData.PlayerName;
 
@@ -21,6 +22,10 @@ public class PlayerView : MonoBehaviour
         _passiveNameText.text = playerData.Passive.PassiveName;
         _passiveDescriptionText.text = playerData.Passive.PassiveDescription;
         _swapToBossButton.onClick.AddListener(() => swapToBossAction());
+
+        if (GameManager.Instance.CurrentMode == GameMode.ScoreAttack) _swapToBossButton.gameObject.SetActive(false);
+
+        _quitGameButton.onClick.AddListener(() => quitGameAction());
     }
 
     public void ChangeHPValue(int currentHP, int maxHP)

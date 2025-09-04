@@ -67,13 +67,13 @@ public class BossPatternCard : MonoBehaviour
     public void ActivateBossPattern(Action<bool> callback)
     {
         Vector2 popupLocation = Camera.main.ViewportToWorldPoint(new Vector2(0.8f, 0.5f));
-        PopupManager.Instance.DisplayPopup("Choose a valid bullet pattern to clear.\n(If there are no valid patterns, click cancel.)", popupLocation, "Cancel", GameManager.Instance.ActivePlayer.SightController.CancelSpaceSelection);
+        OverlayManager.Instance.DisplayPopup("Choose a valid bullet pattern to clear.\n(If there are no valid patterns, click cancel.)", popupLocation, "Cancel", GameManager.Instance.ActivePlayer.SightController.CancelSpaceSelection);
 
         GameManager.Instance.ActivePlayer.SightController.CheckValidSpacesOnHover(_patternSpaceGrid, (bool isSuccessful, Vector2Int finalTopLeftCell) =>
         {
             if (isSuccessful) // If it's successful, then the boss's on failing pattern effect doesn't activate
             {
-                PopupManager.Instance.ClosePopup();
+                OverlayManager.Instance.ClosePopup();
                 callback.Invoke(true);
                 return;
             }

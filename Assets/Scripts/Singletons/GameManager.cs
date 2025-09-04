@@ -70,6 +70,12 @@ public class GameManager : MonoBehaviour
         StartCoroutine(BeginGameSetup());
     }
 
+    public void ShowReturnToTitleScenePopup()
+    {
+        Vector2 popupLocation = Camera.main.ViewportToWorldPoint(new Vector2(0.5f, 0.5f));
+        OverlayManager.Instance.DisplayPopup("Are you sure you want to return to the title screen?", popupLocation, "Yes", EndGame, "No", null);
+    }
+
     public void EndGame()
     {
         StartCoroutine(LoadTitleScene());
@@ -152,7 +158,6 @@ public class GameManager : MonoBehaviour
         ActivePlayer.SwapToBossPanel(); // swap to boss panel so active boss patterns are visible
         ActiveBoss.ActivateAllBossPatterns((isSuccessful) =>
         {
-            ActiveBoss.SwapToPlayerPanel(); // swap to player panel again
             if (_gameIsOver) return; // player could possibly die from the boss pattern
             ActiveBoss.CheckShieldBreak();
             if (_gameIsOver) return; // game is over, no need to process the rest
@@ -178,12 +183,12 @@ public class GameManager : MonoBehaviour
         if (CurrentMode == GameMode.ScoreAttack)
         {
             Vector2 popupLocation = Camera.main.ViewportToWorldPoint(new Vector2(0.5f, 0.5f));
-            PopupManager.Instance.DisplayPopup("GAME OVER\nRounds Survived: " + CurrentRound + "\nBullets Cleared: " + TotalClearedBullets, popupLocation, "OK", EndGame);
+            OverlayManager.Instance.DisplayPopup("GAME OVER\nRounds Survived: " + CurrentRound + "\nBullets Cleared: " + TotalClearedBullets, popupLocation, "OK", EndGame);
         }
         else if(CurrentMode == GameMode.BossBattle)
         {
             Vector2 popupLocation = Camera.main.ViewportToWorldPoint(new Vector2(0.5f, 0.5f));
-            PopupManager.Instance.DisplayPopup("GAME OVER\nRounds Survived: " + CurrentRound + "\nShields Broken:" + ActiveBoss.BrokenShieldsCount, popupLocation, "OK", EndGame);
+            OverlayManager.Instance.DisplayPopup("GAME OVER\nRounds Survived: " + CurrentRound + "\nShields Broken:" + ActiveBoss.BrokenShieldsCount, popupLocation, "OK", EndGame);
         }
     }
 
@@ -195,7 +200,7 @@ public class GameManager : MonoBehaviour
         if (CurrentMode == GameMode.BossBattle) // you can't "win" in score attack
         {
             Vector2 popupLocation = Camera.main.ViewportToWorldPoint(new Vector2(0.5f, 0.5f));
-            PopupManager.Instance.DisplayPopup("VICTORY!\nTotal Rounds: " + CurrentRound, popupLocation, "OK", EndGame);
+            OverlayManager.Instance.DisplayPopup("VICTORY!\nTotal Rounds: " + CurrentRound, popupLocation, "OK", EndGame);
         }
     }
 

@@ -9,7 +9,7 @@ public class Draw1CardAction : BaseAction
         if (currentAP < ActionCost)
         {
             Vector2 warningPopupLocation = Camera.main.ViewportToWorldPoint(new Vector2(0.5f, 0.5f));
-            PopupManager.Instance.DisplayPopup("Not enough AP to use action!", warningPopupLocation, "OK");
+            OverlayManager.Instance.DisplayPopup("Not enough AP to use action!", warningPopupLocation, "OK");
             callback.Invoke(false);
             return;
         }
@@ -22,7 +22,7 @@ public class Draw1CardAction : BaseAction
             if(deckCount <= 0)
             {
                 Vector2 warningPopupLocation = Camera.main.ViewportToWorldPoint(new Vector2(0.5f, 0.5f));
-                PopupManager.Instance.DisplayPopup("No cards in deck to draw!", warningPopupLocation, "OK");
+                OverlayManager.Instance.DisplayPopup("No cards in deck to draw!", warningPopupLocation, "OK");
                 callback.Invoke(false);
                 return;
             }

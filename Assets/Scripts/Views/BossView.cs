@@ -12,6 +12,7 @@ public class BossView : MonoBehaviour
     [SerializeField] private Transform _bossShieldsContainer;
     [SerializeField] private Transform _activeBossPatternContainer;
     [SerializeField] private Button _swapToPlayerButton;
+    [SerializeField] private Button _quitGameButton;
 
     [SerializeField] private GameObject _bossShieldPrefab;
     [SerializeField] private GameObject _bossPatternCardPrefab;
@@ -20,12 +21,13 @@ public class BossView : MonoBehaviour
     [SerializeField] private TMP_Text _cardsInBossDiscardText;
 
     private ShieldSpace[] _shieldSpaces;
-    public void Initialize(BossData bossData, Action swapToPlayerAction)
+    public void Initialize(BossData bossData, Action swapToPlayerAction, Action quitGameAction)
     {
         _nameText.text = bossData.BossName;
         _passiveNameText.text = bossData.Passive.PassiveName;
         _passiveDescriptionText.text = bossData.Passive.PassiveDescription;
         _swapToPlayerButton.onClick.AddListener(() => swapToPlayerAction());
+        _quitGameButton.onClick.AddListener(() => quitGameAction());
 
         // boss shields spawn here
         _shieldSpaces = new ShieldSpace[bossData.Shields.Length];

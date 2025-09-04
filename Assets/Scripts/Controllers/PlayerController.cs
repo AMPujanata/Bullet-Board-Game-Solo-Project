@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
     {
         _maxHP = playerData.MaxHP;
         _currentHP = _maxHP;
-        _playerView.Initialize(playerData, SwapToBossPanel);
+        _playerView.Initialize(playerData, SwapToBossPanel, GameManager.Instance.ShowReturnToTitleScenePopup);
         _actionController.Initialize(playerData.MaxAP, playerData.Actions);
         _patternController.Initialize(playerData.Patterns);
         _sightController.Initialize();
@@ -34,6 +34,12 @@ public class PlayerController : MonoBehaviour
         _currentHP += value;
         _currentHP = Mathf.Clamp(_currentHP, 0, _maxHP);
         _playerView.ChangeHPValue(_currentHP, _maxHP);
+
+        if(value <= 0) // if damage was taken, show the take damage effect
+        {
+            OverlayManager.Instance.ShowTakeDamageEffect();
+        }
+
         if (_currentHP <= 0)
         {
             GameManager.Instance.TriggerGameOver();

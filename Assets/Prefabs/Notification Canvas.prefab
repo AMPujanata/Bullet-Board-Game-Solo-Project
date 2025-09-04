@@ -112,5 +112,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 694cbb7639d461e448dcf36e1dd9f0a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _notificationCanvas: {fileID: 7432217599970060578}
+  _overlayCanvas: {fileID: 7432217599970060578}
   _popupPrefab: {fileID: 1096421229409095805, guid: 48414dc936503844394cc3d95e7ca8d7, type: 3}

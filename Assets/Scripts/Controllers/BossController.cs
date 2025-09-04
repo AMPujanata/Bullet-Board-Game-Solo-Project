@@ -19,7 +19,7 @@ public class BossController : MonoBehaviour
     public void Initialize(BossData bossData)
     {
         _bossData = bossData;
-        _bossView.Initialize(_bossData, SwapToPlayerPanel);
+        _bossView.Initialize(_bossData, SwapToPlayerPanel, GameManager.Instance.ShowReturnToTitleScenePopup);
 
         foreach (BossPatternCardData data in _bossData.Patterns)
         {

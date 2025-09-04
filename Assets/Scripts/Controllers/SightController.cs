@@ -40,7 +40,7 @@ public class SightController : MonoBehaviour
         if(_bulletsInCurrentBag.Count <= 0)
         {
             Vector2 popupLocation = Camera.main.ViewportToWorldPoint(new Vector2(0.5f, 0.5f));
-            PopupManager.Instance.DisplayPopup("Are you sure you want to enter the end phase?", popupLocation, "Yes", GameManager.Instance.BeginEndPhase, "No");
+            OverlayManager.Instance.DisplayPopup("Are you sure you want to enter the end phase?", popupLocation, "Yes", GameManager.Instance.BeginEndPhase, "No");
             return;
         }
 
