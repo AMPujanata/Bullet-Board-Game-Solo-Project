@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7432217599970060576}
   - component: {fileID: 7432217599970060583}
   m_Layer: 5
-  m_Name: Notification Canvas
+  m_Name: Overlay Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -114,3 +114,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _overlayCanvas: {fileID: 7432217599970060578}
   _popupPrefab: {fileID: 1096421229409095805, guid: 48414dc936503844394cc3d95e7ca8d7, type: 3}
+  _damageScreenEffectPrefab: {fileID: 5603934958944494387, guid: e606036614860214c8c79ec046f23629, type: 3}
+  _bulletClearPrefab: {fileID: 5076750765759276995, guid: d0475268ab3376c4bb5d8ce279cd7f8e, type: 3}

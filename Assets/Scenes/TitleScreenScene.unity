@@ -7689,7 +7689,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7432217599970060582, guid: 5bebeced66857e846b3114be4fafd67f, type: 3}
       propertyPath: m_Name
-      value: Notification Canvas
+      value: Overlay Canvas
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5bebeced66857e846b3114be4fafd67f, type: 3}

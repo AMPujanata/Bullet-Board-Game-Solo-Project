@@ -5221,20 +5221,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7432217599970060582, guid: 5bebeced66857e846b3114be4fafd67f, type: 3}
       propertyPath: m_Name
-      value: Notification Canvas
+      value: Overlay Canvas
       objectReference: {fileID: 0}
-    - target: {fileID: 7432217599970060583, guid: 5bebeced66857e846b3114be4fafd67f, type: 3}
-      propertyPath: _overlayCanvas
-      value: 
-      objectReference: {fileID: 1435490037}
-    - target: {fileID: 7432217599970060583, guid: 5bebeced66857e846b3114be4fafd67f, type: 3}
-      propertyPath: _bulletClearPrefab
-      value: 
-      objectReference: {fileID: 5076750765759276995, guid: d0475268ab3376c4bb5d8ce279cd7f8e, type: 3}
-    - target: {fileID: 7432217599970060583, guid: 5bebeced66857e846b3114be4fafd67f, type: 3}
-      propertyPath: _damageScreenEffectPrefab
-      value: 
-      objectReference: {fileID: 5603934958944494387, guid: e606036614860214c8c79ec046f23629, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5bebeced66857e846b3114be4fafd67f, type: 3}
 --- !u!1 &714726407
@@ -9287,11 +9275,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73893432b23cb7347adebf9f6a5a8e57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!223 &1435490037 stripped
-Canvas:
-  m_CorrespondingSourceObject: {fileID: 7432217599970060578, guid: 5bebeced66857e846b3114be4fafd67f, type: 3}
-  m_PrefabInstance: {fileID: 713288662}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1438830424
 GameObject:
   m_ObjectHideFlags: 0
